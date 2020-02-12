@@ -46,6 +46,9 @@ There is no way to install the language yet as it's not implemented.
 ### Background
 ...
 
+### Philosophy
+...
+
 ### Syntax
 ...
 
