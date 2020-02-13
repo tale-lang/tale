@@ -60,20 +60,20 @@ Then the Tale will evolve slowly, especially in performance. Right now I have no
 
 But let's look at the roadmap!
 
-### 0.0.0: Preparation
-This version is all about initial documentations, repos setup, etc. Nothing special here.
+### 0.0: Preparation
+This patch is all about initial documentations, repos setup, etc. Nothing special here.
 
-### 0.1.0: Basic syntax
-In this version basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one do.
+### 0.1: Basic syntax
+In this patch basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one do.
 
-### 0.2.0: Types
-In this version I hope I'll be able to add static typing: generics, pattern matching on types, types inference.
+### 0.2: Types
+In this patch I hope I'll be able to add static typing: generics, pattern matching on types, types inference.
 
-### 0.3.0: Packages
-In this version an import system will be added and the evolution of standard library will be started.
+### 0.3: Packages
+In this patch an import system will be added and the evolution of standard library will be started.
 
-### 0.4.0: Performance
-In this version the performance and speed will become main focus. 
+### 0.4: Performance
+In this patch the performance and speed will become main focus. 
 
 ## License
 The package is licensed under the [MIT](https://github.com/tale-lang/tale/blob/master/LICENSE) license.
