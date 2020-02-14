@@ -40,10 +40,24 @@ The language is on very pre-pre-pre alpha stage. It has ideological foundation, 
 There is no way to install the language yet as it's not implemented.
 
 ## Language
-...
 
 ### Background
-...
+The background of the Tale is a simple idea that we can take any particular language and use its underlying paradigm to write English-like (or any other natural language) sentences.
+
+Consider this example of C# code:
+```
+100.Minutes()
+```
+
+From the paradigm perspective of view, there is the integer object `100` and the `Minutes` method call.
+_(Let's ignore the fact that usually `Minutes` is implemented as an extension method, because this is just a feature of C#.)_
+One could argue that in terms of paradigm, any method should be a verb (common mistake!), so the expression `100.Minutes()` should be changed to `TimeSpan.FromMinutes(100)`.
+
+But from the _reader_ perspective of view, `100.Minutes()` looks like "100 minutes", a regular English phrase.
+And like any other English phrase it has meaning, which is very similar to one represented by `100.Minutes()` code.
+
+Seems like there is a conflict between how things work and how they look. What is more important? Is there one?
+The Tale's answer is: both.
 
 ### Philosophy
 ...
