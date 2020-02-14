@@ -88,7 +88,7 @@ In this patch I hope I'll be able to add static typing: generics, pattern matchi
 In this patch an import system will be added and the evolution of standard library will be started.
 
 ### 0.4: Performance
-In this patch the performance and speed will become main focus. 
+In this patch the performance and speed will become main focus.
 
 ## License
 The package is licensed under the [MIT](https://github.com/tale-lang/tale/blob/master/LICENSE) license.
