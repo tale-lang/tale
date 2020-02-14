@@ -54,10 +54,10 @@ _(Let's ignore the fact that usually `Minutes` is implemented as an extension me
 One could argue that in terms of paradigm, any method should be a verb (common mistake!), so the expression `100.Minutes()` should be changed to `TimeSpan.GetFromMinutes(100)`.
 
 But from the _reader_ perspective of view, `100.Minutes()` looks like "100 minutes", a regular English phrase.
-And like any other English phrase it has meaning, which is very similar to one represented by `100.Minutes()` code.
+And like any other English phrase it has meaning, which is very similar to one represented by `TimeSpan.GetFromMinutes(100)` code.
 
 Seems like there is a conflict between how things work and how they look. What is more important? Is there one?
-The Tale's answer is: both.
+The Tale's answer is: both... But with some _buts_. The most important one: code is for humans, not for machines.
 
 ### Philosophy
 ...
