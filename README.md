@@ -28,9 +28,10 @@ add: 1 to: 10
 
 In the first case it seems like `(2 + 2)` is an object and `should be` is a message, but, on the other hand, the second case looks like we're sending message `add:to` to nothing.
 
-And that's the thing! There are no messages, objects, sending, etc. These are just metaphors we use to describe internal state of the program inside some paradigm. The only metaphor of Tale is the code itself.
+And that's the thing! You can write expression of any form and the only difference is whether to put `:` character or not.
+There are no messages, objects, sending, etc. These are just metaphors we use to describe internal state of the program inside some paradigm. The only metaphor of Tale is the code itself.
 
-Though it may contain something we call _generics_, _type classes_, _structs_, _pattern matching_, _lambdas_ and so on, but only as things that allow to write more elegant and clean, we may say, _text_.
+Though it may contain something we call _generics_, _type classes_, _structs_, _pattern matching_, _lambdas_ and so on, but only as things that allow to write more elegant and clean **test**.
 
 ## Status
 The language is on very pre-pre-pre alpha stage. It has ideological foundation, syntax design for a bunch of features and approximate roadmap.
