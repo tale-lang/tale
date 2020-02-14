@@ -45,7 +45,7 @@ There is no way to install the language yet as it's not implemented.
 The background of the Tale is a simple idea that we can take any particular language and use its underlying paradigm to write English-like (or any other natural language) sentences.
 
 Consider this example of C# code:
-```
+``` c#
 100.Minutes()
 ```
 
