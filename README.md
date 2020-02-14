@@ -51,7 +51,7 @@ Consider this example of C# code:
 
 From the paradigm perspective of view, there is the integer object `100` and the `Minutes` method call.
 _(Let's ignore the fact that usually `Minutes` is implemented as an extension method, because this is just a feature of C#.)_
-One could argue that in terms of paradigm, any method should be a verb (common mistake!), so the expression `100.Minutes()` should be changed to `TimeSpan.FromMinutes(100)`.
+One could argue that in terms of paradigm, any method should be a verb (common mistake!), so the expression `100.Minutes()` should be changed to `TimeSpan.GetFromMinutes(100)`.
 
 But from the _reader_ perspective of view, `100.Minutes()` looks like "100 minutes", a regular English phrase.
 And like any other English phrase it has meaning, which is very similar to one represented by `100.Minutes()` code.
