@@ -26,7 +26,7 @@ Or even:
 add: 1 to: 10
 ```
 
-In the first case it seems like `(2 + 2)` is an object and `should be` is a message, but, on the other hand, the second case looks like we're sending message `add:to` to nothing.
+In the first case it seems like `(2 + 2)` is an object and `should be` is a method (or a message), but, on the other hand, the second case looks like we're sending message `add:to` to nothing.
 
 And that's the thing! You can write expression of any form and the only difference is whether to put `:` character or not.
 There are no messages, objects, sending, etc. These are just metaphors we use to describe internal state of the program inside some paradigm. The only metaphor of Tale is the code itself.
