@@ -57,7 +57,9 @@ But from the _reader_ perspective of view, `100.Minutes()` looks like "100 minut
 And like any other English phrase it has meaning, which is very similar to one represented by `TimeSpan.GetFromMinutes(100)` code.
 
 Seems like there is a conflict between how things work and how they look. What is more important? Is there one?
-The Tale's answer is: both... But with some _buts_. The most important one: code is for humans, not for machines.
+The Tale's answer is both: readable code is for humans, but responsive applications are also for humans.
+
+Thus, the language should _enfroce_ declarative and fluent style of programming while allowing considerable performance.
 
 ### Syntax
 ...
