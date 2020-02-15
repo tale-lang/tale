@@ -59,9 +59,6 @@ And like any other English phrase it has meaning, which is very similar to one r
 Seems like there is a conflict between how things work and how they look. What is more important? Is there one?
 The Tale's answer is: both... But with some _buts_. The most important one: code is for humans, not for machines.
 
-### Philosophy
-...
-
 ### Syntax
 ...
 
