@@ -62,7 +62,16 @@ The Tale's answer is both: readable code is for humans, but responsive applicati
 Thus, the language should _enfroce_ declarative and fluent style of programming while allowing considerable performance.
 
 ### Syntax
-...
+The syntax of the Tale is a mix of Python tiny and elegant feel, Haskell expressiveness and Smalltalk keyword messages.
+
+#### Comments
+``` tale
+a = 1 # Here is a one line comment.
+## Here is a multi-line comment.
+
+It can be used to document any kind of stuff.
+##
+```
 
 ### Architecture
 ...
