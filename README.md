@@ -8,6 +8,10 @@
     <i>A programming language for writing code that reads like English but still is strict, formal, and executes blazingly fast.</i>
 </p>
 
+<div align="center">
+    <img src="https://github.com/tale-lang/tale/blob/develop/images/syntax.png" alt="Tale Syntax"></img>
+</div>
+
 <br>
 
 ## Introduction
