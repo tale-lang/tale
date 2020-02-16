@@ -70,15 +70,17 @@ The syntax of the Tale is a mix of Python tiny and elegant feel, Haskell express
 
 a = 1 -- Another one.
 
---- A multi-line comment. Can be used to document any kind of stuff.
-    Here is an example of doc-comment.
-    
-    Accepts:
-        arg1: Some argument of some expression.
-        arg2: Another argument of the expression.
+--- 
+A multi-line comment. Can be used to document any kind of stuff.
+Here is an example of doc-comment.
 
-    Represents: A result of the expression.
+Accepts:
+    x: First addend.
+    y: Second addend.
+
+Represents: A sum of the two numbers.    
 ---
+add: (x) to: (y) = ...
 ```
 
 ### Architecture
