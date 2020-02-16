@@ -82,6 +82,56 @@ Represents: A sum of the two numbers.
 ---
 ```
 
+#### Expressions
+
+##### Assignments
+In the Tale everything is an expression, and expressions can have names.
+
+Consider a simple example:
+``` tale
+author = "Oscar Wilde"
+```
+
+Here we have two expresions: `"Oscar Wilde"`, which is a constant string literal, and `author`, which is a _name_.
+_(The `=` sign is used to assign a name.)_
+
+It's also possible to assign a name to other name:
+``` tale
+x = author
+```
+
+But what is a name actually? Just a bunch of characters that correspond to something. So, when we see the `author` somewhere in
+the code, we know that it's associated with one and only one expression -- `"Oscar Wilde"`.
+
+Actually, the `"Oscar Wilde"` is a name as well, but a constant one, it doesn't point to somewhere, but kinda points to itself.
+
+Let's motivate our next step with this example:
+``` tale
+1 squared = 1
+2 squared = 4
+3 squared = 9
+4 squared = 16
+...
+```
+
+Here we have a _group_ of names, where each represents a squared number. This group of names is very different from just random names,
+because they have something similar: the meaning of squared number and the word `squared`. And because any number can be squared, we don't want to write `(x) squared`
+for every possible `x`.
+
+It'd be much more useful if were able to define something like name template, and that's exactly what Tale can do!
+
+##### Unary names
+Consider this name:
+``` tale
+(x) squared = x * x
+```
+
+A lot of things going here. First of all, `(x) squared` is a name, that doesn't match exactly one set of characters `(x) squared`,
+but every possible `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
+
+Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on, because
+in the definition of `(x) squared` we have a name `x` that is visible only inside of the definition and represents a variable part of the template.
+
 ### Architecture
 ...
 
