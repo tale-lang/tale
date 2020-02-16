@@ -156,10 +156,21 @@ two = 2
 x = one or two
 ```
 
-Here the language can't decide, whether `x` is a combination of `(x) or` and `(x) two` or a single `(x) or (y)` call.
+Here the language has too many options of how to interpret the `one or two` expression.
 To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
 
 #### Keyword forms
+Beyond simple forms is the only one kind: keyword forms. Combined with unary ones they allow developers to write any kind of sentences.
+
+Here is a simple example of a few keyword forms:
+``` tale
+print: (x) = ...
+(x) and: (y) = ...
+add: (x) to: (y) = ...
+add: (x) to: (y) at: (i) = ...
+```
+
+As you can see, the only difference is a `:` character after each _"keyword"_. It helps the compiler to think about code more accurately.
 
 ### Architecture
 ...
