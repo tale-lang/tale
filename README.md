@@ -66,11 +66,18 @@ The syntax of the Tale is a mix of Python tiny and elegant feel, Haskell express
 
 #### Comments
 ``` tale
-a = 1 -- Here is a one line comment.
+-- A one-line comment.
 
---- Here is a multi-line comment.
+a = 1 -- Another one.
 
-It can be used to document any kind of stuff.
+--- A multi-line comment. Can be used to document any kind of stuff.
+    Here is an example of doc-comment.
+    
+    Accepts:
+        arg1: Some argument of some expression.
+        arg2: Another argument of the expression.
+
+    Represents: A result of the expression.
 ---
 ```
 
