@@ -118,7 +118,7 @@ Here we have a _group_ of names, where each represents a squared number. This gr
 because they have something similar: the meaning of squared number and the word `squared`. And because any number can be squared, we don't want to write `(x) squared`
 for every possible `x`.
 
-It'd be much more useful if were able to define something like name template, and that's exactly what Tale can do!
+It'd be much more useful if we were able to define something like name template, and that's exactly what Tale can do!
 
 ##### Unary names
 Consider this name:
