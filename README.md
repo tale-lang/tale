@@ -12,8 +12,6 @@
     <img src="https://github.com/tale-lang/tale/blob/develop/images/syntax.png" alt="Tale Syntax"></img>
 </div>
 
-<br>
-
 ## Introduction
 Many programming languages are described by a primary programming paradigm they support, but Tale is not. Tale is about _form_ and _beauty_.
 
