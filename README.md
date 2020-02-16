@@ -118,19 +118,48 @@ Here we have a _group_ of names, where each represents a squared number. This gr
 because they have something similar: the meaning of squared number and the word `squared`. And because any number can be squared, we don't want to write `(x) squared`
 for every possible `x`.
 
-It'd be much more useful if we were able to define something like name template, and that's exactly what Tale can do!
+It'd be much more useful if we were able to define something like name template or form, and that's exactly what the Tale can do!
 
-##### Unary names
+##### Unary forms
 Consider this name:
 ``` tale
 (x) squared = x * x
 ```
 
-Two things are going on here. First of all, `(x) squared` is also a name, but it doesn't match exactly one set of characters `(x) squared`.
-Instead, it takes into account every possible `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
+Two things are going on here. First of all, `(x) squared` is also a name, but it doesn't match exactly one set of characters.
+Instead, it takes into account every possible way of writing `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
 
-Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on, because
-in the definition of `(x) squared` we have a name `x` that is visible only inside of the definition and represents a variable part of the template.
+Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on.
+This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captures_ first part of the expression and associates it with `x` name.
+
+That's the Tale's view on functions, procedures and methods.
+
+##### Binary forms
+Let's take a look at the `x * x` part of the `(x) squared` name. What is `*` here?
+Knowing the concept of forms, it's reasonable to suppose, that somewhere a form `(x) * (y) = ...` is defined and
+it represents the multiplication operation.
+
+In this way many of mathematical and logical operations are implemented, but can we have a `(x) or (y)` form?
+Unfortunately, no. The Tale allows defining binary forms only with special symbols between arguments (like `+`, `\`, `-`, `;`, `.`, `>=`).
+This is where the language should respect formal nature of programs.
+
+Consider this code:
+``` tale
+(x) or = x
+(x) or (b) = b
+(x) two = x
+
+one = 1
+two = 2
+
+-- `x` is either 1 or 2.
+x = one or two
+```
+
+Here the language can't decide, whether `x` is a combination of `(x) or` and `(x) two` or a single `(x) or (y)` call.
+To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
+
+##### Keyword forms
 
 ### Architecture
 ...
