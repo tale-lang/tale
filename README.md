@@ -182,6 +182,59 @@ Because the compiler processes code from left to right, it'd be hard for it to d
 To elaborate more on that, let's talk about brackets and precedence rules.
 
 #### Brackets and precedence
+There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
+to process code unambigiously.
+
+First of all, keyword expressions. They are executed in pretty simple way.
+
+Let's take a look at this example:
+``` tale
+put: item to: list
+```
+
+Here the compiler will lookup a `put:to:` name. But what if we've defined only tricky names:
+``` tale
+put: (x) = ...
+(x) to: (y) = ...
+```
+
+This is a compilation error, because _composed keyword expressions should be in brackets_. Thus, instead of writing `put: item to: list`,
+we need to explicitly add brackets: `(put: item) to: list`.
+
+How about mixing keyword expressions with unary ones?
+``` tale
+print: 2 squared
+-- Same as:
+print: (2 squared)
+```
+
+So, unary expressions have higher precedence over keyword ones.
+
+Here is another example that demonstrates this rule:
+``` tale
+2 squared or: 3 squared
+-- Same as:
+(2 squared) or: (3 squared)
+```
+
+Operators are in between:
+``` tale
+2 squared == 3 squared
+-- Same as:
+(2 squared) == (3 squared)
+
+x == y or: y == z
+-- Same as:
+(x == y) or: (y == z)
+
+-- In total:
+x squared == y squared or: y squared == z squared
+```
+
+One important scenario of using unary expressions is chaining. For example:
+``` tale
+number asText asBytes
+```
 
 ### Architecture
 ...
