@@ -156,7 +156,7 @@ two = 2
 x = one or two
 ```
 
-Here the language has too many options of how to interpret the `one or two` expression.
+Here the compiler would have too many options of how to interpret the `one or two` expression.
 To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
 
 #### Keyword forms
@@ -168,12 +168,20 @@ print: (x) = ...
 (x) and: (y) = ...
 add: (x) to: (y) = ...
 add: (x) to: (y) at: (i) = ...
-
--- But this is invalid:
-print: (x) async = ...
 ```
 
 As you can see, the only difference is a `:` character after each _"keyword"_. It helps the compiler to think about code more accurately.
+
+It's also worth mentioning one invalid way of defining keyword forms:
+``` tale
+print: (x) async = ...
+```
+
+Because the compiler processes code from left to right, it'd be hard for it to decide, is `async` an unary form or not.
+
+To elaborate more on that, let's talk about brackets and precedence rules.
+
+#### Brackets and precedence
 
 ### Architecture
 ...
