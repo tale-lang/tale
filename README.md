@@ -82,9 +82,7 @@ Represents: A sum of the two numbers.
 ---
 ```
 
-#### Expressions
-
-##### Assignments
+#### Assignments
 In the Tale everything is an expression, and expressions can have names.
 
 Consider a simple example:
@@ -120,7 +118,7 @@ for every possible `x`.
 
 It'd be much more useful if we were able to define something like name template or form, and that's exactly what the Tale can do!
 
-##### Unary forms
+#### Unary forms
 Consider this name:
 ``` tale
 (x) squared = x * x
@@ -134,7 +132,7 @@ This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captu
 
 That's the Tale's view on functions, procedures and methods.
 
-##### Binary forms
+#### Binary forms
 Let's take a look at the `x * x` part of the `(x) squared` name. What is `*` here?
 Knowing the concept of forms, it's reasonable to suppose, that somewhere a form `(x) * (y) = ...` is defined and
 it represents the multiplication operation.
@@ -159,7 +157,7 @@ x = one or two
 Here the language can't decide, whether `x` is a combination of `(x) or` and `(x) two` or a single `(x) or (y)` call.
 To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
 
-##### Keyword forms
+#### Keyword forms
 
 ### Architecture
 ...
