@@ -126,8 +126,8 @@ Consider this name:
 (x) squared = x * x
 ```
 
-A lot of things going here. First of all, `(x) squared` is a name, that doesn't match exactly one set of characters `(x) squared`,
-but every possible `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
+Two things are going on here. First of all, `(x) squared` is also a name, but it doesn't match exactly one set of characters `(x) squared`.
+Instead, it takes into account every possible `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
 
 Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on, because
 in the definition of `(x) squared` we have a name `x` that is visible only inside of the definition and represents a variable part of the template.
