@@ -146,7 +146,7 @@ But let's look at the roadmap!
 This patch is all about initial documentations, repos setup, etc. Nothing special here.
 
 ### 0.1: Basic syntax
-In this patch basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one do.
+In this patch basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one does.
 
 ### 0.2: Types
 In this patch I hope I'll be able to add static typing: generics, pattern matching on types, types inference.
