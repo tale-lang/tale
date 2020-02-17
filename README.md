@@ -196,6 +196,9 @@ Here the compiler will lookup a `put:to:` name. But what if we've defined only t
 ``` tale
 put: (x) = ...
 (x) to: (y) = ...
+
+-- Error:
+put: item to: list
 ```
 
 This is a compilation error, because _composed keyword expressions should be in brackets_. Thus, instead of writing `put: item to: list`,
@@ -304,6 +307,16 @@ x = 2 squared
 x = 2 squared
   multipliedBy: 2
  toString
+```
+
+This feature is pretty useful for creating trees:
+``` tale
+fs = dir: "~"
+       dir: "git"
+         dir: "tale"
+       dir: ".emacs.d"
+       file: ".vimrc"
+       file: ".zshrc"
 ```
 
 ### Architecture
