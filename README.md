@@ -319,6 +319,26 @@ fs = dir: "~"
        file: ".zshrc"
 ```
 
+How about cases when we want to span one expression over multiple lines?
+``` tale
+-- One line.
+put: item to: list at: 0
+
+-- ???
+put: item
+    to: list
+    at: 0
+```
+
+Here the compiler would see `put: (x)` + `(x) to: (y)` + `(x) at: (y)` chain.
+
+In this case just use brackets:
+``` tale
+(put: item
+ to: list
+ at: 0)
+```
+
 ### Architecture
 ...
 
