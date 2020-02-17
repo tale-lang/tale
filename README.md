@@ -229,11 +229,81 @@ x == y or: y == z
 
 -- In total:
 x squared == y squared or: y squared == z squared
+-- Same as:
+((x squared) == (y squared)) or: ((y squared) == (z squared))
 ```
 
-One important scenario of using unary expressions is chaining. For example:
+Everything seems cool and looks really like a small modification of Smalltalk syntax, but there is a problem.
+
+Consider this example of C# code:
+``` c#
+var x = 2.Squared().Multiplied(by: 2).ToString();
+```
+
+Here we have a chain of 3 method calls: `Squared`, `Multiplied` and `ToString()`. Let's see how this looks in Tale:
 ``` tale
-number asText asBytes
+x = 2 squared multipliedBy: 2 toString
+```
+
+Which by rules of precedence should be written as:
+``` tale
+x = (2 squared) multipliedBy: (2 toString)
+```
+
+But we want:
+``` tale
+x = ((2 squared) multipliedBy: 2) toString
+```
+
+Thus, the brackets should be explicit. Imagine we now want to convert the resulting string to UTF-8 bytes array.
+
+In C# we only need to put a new method call at the end of the chain:
+``` c #
+var x = 2.Squared().Multiplied(by: 2).ToString().AsUTF8Bytes();
+```
+
+But in Tale (and Smalltalk as well) you need to wrap everything in brackets:
+``` tale
+x = (((2 squared) multipliedBy: 2) toString) asUTF8Bytes
+```
+
+Which is pretty LISP.
+
+In the Tale this problem is solved by indentation. We can rewrite previous example:
+``` tale
+x = 2 squared
+      multipliedBy: 2
+      toString
+      asUTF8Bytes
+```
+
+As you can see, when a line is indented and an expression of form `(x) ...` is used, compiler calculates an intermediate result and pass it
+to the indented expression.
+
+Any level of indentation can be used as long as its value is same for all chain parts:
+``` tale
+-- ✔
+x = 2 squared
+ multipliedBy: 2
+ toString
+
+-- ✔
+x = 2 squared
+ + 3
+ - 4
+
+-- ✔
+x = 2 squared
+      toString asUTF8Bytes
+
+-- ✔
+x = 2 squared
+      multipliedBy: (5 addedTo: 6)
+
+-- ✘
+x = 2 squared
+  multipliedBy: 2
+ toString
 ```
 
 ### Architecture
