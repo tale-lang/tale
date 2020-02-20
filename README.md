@@ -8,7 +8,9 @@
     <i>A programming language for writing code that reads like English but still is strict, formal, and executes blazingly fast.</i>
 </p>
 
-<br>
+<div align="center">
+    <img src="https://github.com/tale-lang/tale/blob/develop/images/syntax.png" alt="Tale Syntax"></img>
+</div>
 
 ## Introduction
 Many programming languages are described by a primary programming paradigm they support, but Tale is not. Tale is about _form_ and _beauty_.
@@ -62,7 +64,286 @@ The Tale's answer is both: readable code is for humans, but responsive applicati
 Thus, the language should _enfroce_ declarative and fluent style of programming while allowing considerable performance.
 
 ### Syntax
+The syntax of the Tale is a mix of Python tiny and elegant feel, Haskell expressiveness and Smalltalk keyword messages.
+
+#### Comments
+``` tale
+-- A one-line comment.
+
+a = 1 -- Another one.
+
+---
+A multi-line comment. Can be used to document any kind of stuff.
+Here is an example of doc-comment for `+` operator.
+
+Accepts:
+    x: First addend.
+    y: Second addend.
+
+Represents: A sum of the two numbers.
+---
+```
+
+#### Assignments
+In the Tale everything is an expression, and expressions can have names.
+
+Consider a simple example:
+``` tale
+author = "Oscar Wilde"
+```
+
+Here we have two expressions: `"Oscar Wilde"`, which is a constant string literal, and `author`, which is a _name_.
+_(The `=` sign is used to assign a name.)_
+
+It's also possible to assign a name to other name:
+``` tale
+x = author
+```
+
+But what is a name actually? Just a bunch of characters that correspond to something. So, when we see the `author` somewhere in
+the code, we know that it's associated with one and only one expression -- `"Oscar Wilde"`.
+
+Actually, the `"Oscar Wilde"` is a name as well, but a constant one, it doesn't point to somewhere, but kinda points to itself.
+
+Let's motivate our next step with this example:
+``` tale
+1 squared = 1
+2 squared = 4
+3 squared = 9
+4 squared = 16
 ...
+```
+
+Here we have a _group_ of names, where each represents a squared number. This group of names is very different from just random names,
+because they have something similar: the meaning of squared number and the word `squared`. And because any number can be squared, we don't want to write `(x) squared`
+for every possible `x`.
+
+It'd be much more useful if we were able to define something like name template or form, and that's exactly what the Tale can do!
+
+#### Unary forms
+Consider this name:
+``` tale
+(x) squared = x * x
+```
+
+Two things are going on here. First of all, `(x) squared` is also a name, but it doesn't match exactly one set of characters.
+Instead, it takes into account every possible way of writing `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
+
+Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on.
+This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captures_ first part of the expression and associates it with `x` name.
+
+That's the Tale's view on functions, procedures and methods.
+
+#### Binary forms
+Let's take a look at the `x * x` part of the `(x) squared` name. What is `*` here?
+Knowing the concept of forms, it's reasonable to suppose, that somewhere a form `(x) * (y) = ...` is defined and
+it represents the multiplication operation.
+
+In this way many of mathematical and logical operations are implemented, but can we have a `(x) or (y)` form?
+Unfortunately, no. The Tale allows defining binary forms only with special symbols between arguments (like `+`, `\`, `-`, `;`, `.`, `>=`).
+This is where the language should respect formal nature of programs.
+
+Consider this code:
+``` tale
+(x) or = x
+(x) or (b) = b
+(x) two = x
+
+one = 1
+two = 2
+
+-- `x` is either 1 or 2.
+x = one or two
+```
+
+Here the compiler would have too many options of how to interpret the `one or two` expression.
+To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
+
+#### Keyword forms
+Beyond simple forms is the only one kind: keyword forms. Combined with unary ones they allow developers to write any kind of sentences.
+
+Here is a simple example of a few keyword forms:
+``` tale
+print: (x) = ...
+(x) and: (y) = ...
+add: (x) to: (y) = ...
+add: (x) to: (y) at: (i) = ...
+```
+
+As you can see, the only difference is a `:` character after each _"keyword"_. It helps the compiler to think about code more accurately.
+
+It's also worth mentioning one invalid way of defining keyword forms:
+``` tale
+print: (x) async = ...
+```
+
+Because the compiler processes code from left to right, it'd be hard for it to decide, is `async` an unary form or not.
+
+To elaborate more on that, let's talk about brackets and precedence rules.
+
+#### Brackets and precedence
+There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
+to process code unambigiously.
+
+First of all, keyword expressions. They are executed in pretty simple way.
+
+Let's take a look at this example:
+``` tale
+put: item to: list
+```
+
+Here the compiler will lookup a `put:to:` name. But what if we've defined only tricky names:
+``` tale
+put: (x) = ...
+(x) to: (y) = ...
+
+-- Error:
+put: item to: list
+```
+
+This is a compilation error, because _composed keyword expressions should be in brackets_. Thus, instead of writing `put: item to: list`,
+we need to explicitly add brackets: `(put: item) to: list`.
+
+How about mixing keyword expressions with unary ones?
+``` tale
+print: 2 squared
+-- Same as:
+print: (2 squared)
+```
+
+So, unary expressions have higher precedence over keyword ones.
+
+Here is another example that demonstrates this rule:
+``` tale
+2 squared or: 3 squared
+-- Same as:
+(2 squared) or: (3 squared)
+```
+
+Operators are in between:
+``` tale
+2 squared == 3 squared
+-- Same as:
+(2 squared) == (3 squared)
+
+x == y or: y == z
+-- Same as:
+(x == y) or: (y == z)
+
+-- In total:
+x squared == y squared or: y squared == z squared
+-- Same as:
+((x squared) == (y squared)) or: ((y squared) == (z squared))
+```
+
+#### Chaining
+Everything seems cool and looks really like a small modification of Smalltalk syntax, but there is a problem.
+
+Consider this example of C# code:
+``` c#
+var x = 2.Squared().Multiplied(by: 2).ToString();
+```
+
+Here we have a chain of 3 method calls: `Squared`, `Multiplied` and `ToString()`. Let's see how this looks in Tale:
+``` tale
+x = 2 squared multipliedBy: 2 toString
+```
+
+Which by rules of precedence should be written as:
+``` tale
+x = (2 squared) multipliedBy: (2 toString)
+```
+
+But we want:
+``` tale
+x = ((2 squared) multipliedBy: 2) toString
+```
+
+Thus, the brackets should be explicit. Imagine we now want to convert the resulting string to UTF-8 bytes array.
+
+In C# we only need to put a new method call at the end of the chain:
+``` c#
+var x = 2.Squared().Multiplied(by: 2).ToString().AsUTF8Bytes();
+```
+
+But in Tale (and Smalltalk as well) you need to wrap everything in brackets:
+``` tale
+x = (((2 squared) multipliedBy: 2) toString) asUTF8Bytes
+```
+
+To solve this problem Tale introduces a few rules about indentation. Let's check them first.
+
+**Rule 1:** If line is indented, it's automatically attached to previous one with lower indentation level and wrapped in brackets.
+``` tale
+...
+  ...
+  ...
+-- Same as:
+... (...) (...)
+```
+
+So when we write, for example:
+``` tale
+2 squared
+  multipliedBy: 2
+  toString
+```
+
+We get:
+``` tale
+2 squared (multipliedBy: 2) (toString)
+```
+
+Which results in:
+``` tale
+(((2 squared) multipliedBy: 2) toString)
+```
+
+**Rule 2:** If line ends with `;`, it'll cancel the next newline character and any indentation after.
+``` tale
+...;
+...;
+ ...
+-- Same as:
+... ... ...
+```
+
+This feature is pretty useful when you have keyword form and you want to span it over several lines:
+``` tale
+if: x > 0;
+  then: (print: "Greater");
+  else: (print: "Less or equal")
+-- Same as:
+if: x > 0 then: (print: "Greater") else: (print: "Less or equal")
+```
+
+**Rule 3:** If line ends with `x:`, then the `x` identifier is automatically considered as a keyword one,
+and compiler automatically expects next line (or lines) to be indented more than the current.
+These lines are treated as block. More on blocks later, but in short they're like lambdas.
+
+Using this rule you can write nice expressions:
+``` tale
+if: x > 0;
+  then:
+    print: "Greater"
+    print: "Than zero";
+  else:
+    print: "Less or equal"
+    print: "Than zero"
+-- Same as:
+if: x > 0 then: [|print: "Greater". print: "Than zero"|] else: [|print: "Less or equal". print: "Than zero"|]
+```
+
+Cycles are also implemented like that. Consider this example:
+``` tale
+5 times do:
+  print: "Hello, world"
+-- Same as:
+(5 times) do: [|print: "Hello, world"|]
+```
+
+_(Note: strange brackets `[|` and `|]` are just for inner compiler usage,
+they're not available in regular code.)_
 
 ### Architecture
 ...
@@ -78,7 +359,7 @@ But let's look at the roadmap!
 This patch is all about initial documentations, repos setup, etc. Nothing special here.
 
 ### 0.1: Basic syntax
-In this patch basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one do.
+In this patch basic syntax things like assignments, expressions, pattern matching on values, blocks, Unicode characters, etc. will be added. It's expected that after some version like `0.1.X`, the language will be able to handle simple tasks like any scripting one does.
 
 ### 0.2: Types
 In this patch I hope I'll be able to add static typing: generics, pattern matching on types, types inference.
