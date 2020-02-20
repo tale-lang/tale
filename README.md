@@ -236,6 +236,7 @@ x squared == y squared or: y squared == z squared
 ((x squared) == (y squared)) or: ((y squared) == (z squared))
 ```
 
+#### Chaining
 Everything seems cool and looks really like a small modification of Smalltalk syntax, but there is a problem.
 
 Consider this example of C# code:
