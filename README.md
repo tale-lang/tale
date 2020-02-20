@@ -74,7 +74,7 @@ a = 1 -- Another one.
 
 ---
 A multi-line comment. Can be used to document any kind of stuff.
-Here is an example of doc-comment for some addition expression.
+Here is an example of doc-comment for `+` operator.
 
 Accepts:
     x: First addend.
@@ -92,7 +92,7 @@ Consider a simple example:
 author = "Oscar Wilde"
 ```
 
-Here we have two expresions: `"Oscar Wilde"`, which is a constant string literal, and `author`, which is a _name_.
+Here we have two expressions: `"Oscar Wilde"`, which is a constant string literal, and `author`, which is a _name_.
 _(The `=` sign is used to assign a name.)_
 
 It's also possible to assign a name to other name:
