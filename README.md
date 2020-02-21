@@ -135,31 +135,6 @@ This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captu
 
 That's the Tale's view on functions, procedures and methods.
 
-#### Binary forms
-Let's take a look at the `x * x` part of the `(x) squared` name. What is `*` here?
-Knowing the concept of forms, it's reasonable to suppose, that somewhere a form `(x) * (y) = ...` is defined and
-it represents the multiplication operation.
-
-In this way many of mathematical and logical operations are implemented, but can we have a `(x) or (y)` form?
-Unfortunately, no. The Tale allows defining binary forms only with special symbols between arguments (like `+`, `\`, `-`, `;`, `.`, `>=`).
-This is where the language should respect formal nature of programs.
-
-Consider this code:
-``` tale
-(x) or = x
-(x) or (b) = b
-(x) two = x
-
-one = 1
-two = 2
-
--- `x` is either 1 or 2.
-x = one or two
-```
-
-Here the compiler would have too many options of how to interpret the `one or two` expression.
-To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
-
 #### Keyword forms
 Beyond simple forms is the only one kind: keyword forms. Combined with unary ones they allow developers to write any kind of sentences.
 
@@ -180,20 +155,57 @@ print: (x) async = ...
 
 Because the compiler processes code from left to right, it'd be hard for it to decide, is `async` an unary form or not.
 
-To elaborate more on that, let's talk about brackets and precedence rules.
+#### Operator forms
+One special thing needed to mention is _operator_ forms: they're just simple forms
+like unary or keywords, only they consist of special symbols like `+|%&#!><=` etc.
+(including bunch of nice Unicode stuff like `∑`, `√`).
+
+##### Unary operators
+The first type of operator forms are unary operators: they're prefix version of regular
+unary forms.
+
+For example, famous `!` (boolean inversion) symbol can be defined as:
+``` tale
+!(x) = not: x
+-- And used like:
+alive = !dead
+```
+
+The main rule here: unary operators must be _connected_ to an identifier without
+any spaces in between. _(In this way the lexer of the language will be able to correctly
+process code.)_
+
+_(It's also worth mentioning that there are no **postfix** version of unary operators)._
+
+##### Binary operators
+There is also a binary operator forms, like `+` or `-`.
+
+Consider this example of definition of such an operator:
+``` tale
+(x) + (y) = ...
+-- And used like:
+x = 2 + 2
+```
+
+The main rule for binary operators is the opposite of the rule for unary ones:
+there _must_ be a space before and after an operator, so the compiler will be
+able to understand expressions like `2 + ++2`.
+
+Knowing basic blocks of the language, let's now talk about brackets and precedence rules.
 
 #### Brackets and precedence
 There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
 to process code unambigiously.
 
-First of all, keyword expressions. They are executed in pretty simple way.
+##### Keyword forms
+Let's talk a bit about keyword forms first. They are executed in pretty simple way.
 
-Let's take a look at this example:
+Consider this example:
 ``` tale
 put: item to: list
 ```
 
-Here the compiler will lookup a `put:to:` name. But what if we've defined only tricky names:
+Here the compiler will lookup only a `put:to:` name. If we instead define only tricky names:
 ``` tale
 put: (x) = ...
 (x) to: (y) = ...
@@ -202,26 +214,37 @@ put: (x) = ...
 put: item to: list
 ```
 
-This is a compilation error, because _composed keyword expressions should be in brackets_. Thus, instead of writing `put: item to: list`,
-we need to explicitly add brackets: `(put: item) to: list`.
+That would be a compilation error, because _composed keyword expressions should be in brackets_.
+Thus, instead of writing `put: item to: list`, we need to explicitly add brackets: `(put: item) to: list`.
 
-How about mixing keyword expressions with unary ones?
+##### Unary operators
+Another rule is about combining unary operators:
+``` tale
+!!something   -- Apply `!!` operator to `something`.
+!(!something) -- Apply `!` operator to `something` twice.
+```
+
+##### Precedence
+The general precedence order is like that:
+Unary Operators > Unary Forms > Binary Operators > Keyword Forms.
+
+For example:
 ``` tale
 print: 2 squared
 -- Same as:
 print: (2 squared)
-```
 
-So, unary expressions have higher precedence over keyword ones.
+print: -2 squared
+-- Same as:
+print: ((-2) squared)
 
-Here is another example that demonstrates this rule:
-``` tale
+-- With keyword form:
 2 squared or: 3 squared
 -- Same as:
 (2 squared) or: (3 squared)
 ```
 
-Operators are in between:
+Binary operators are in between:
 ``` tale
 2 squared == 3 squared
 -- Same as:
@@ -391,6 +414,74 @@ if x > 0
 if x > 0;
   then: ...;
   else: ...
+```
+
+#### Blocks
+Another powerful feature of the Tale is a concept of blocks. They're pretty similar to anonymous functions in other languages,
+but here they represent a small version of a program with its own scope and variables.
+
+Let's look at the simple example of a block:
+``` tale
+wait: 5 seconds then:
+  print: "Hello, world!"
+```
+
+As you remember, because of **Rule 3**, this code is equal to:
+``` tale
+wait: (5 seconds) then: [|print: "Hello, world!"|]
+```
+
+Here the `wait:then` keyword form captures not only seconds argument, but also a whole block of code.
+The definition of the form looks like that:
+``` tale
+wait (x) then: [|block|] =
+    sleep: x
+    block call
+```
+
+Here is a C# alternative:
+``` c#
+Wait(TimeSpan span, Action then) { ... }
+
+// Which may be called:
+Wait(5.Seconds(), then: () => Console.WriteLine("Hello, world!"));
+```
+
+Note that there are two version of blocks:
+``` tale
+-- Brackets are used to inline blocks with only one expression.
+after: 5 seconds do: (print: "Hello, world!")
+
+-- Third rule of indentation:
+after: 5 seconds do:
+    print: "Hello, world!"
+```
+
+How about blocks with arguments? Blocks with arguments are implemented a bit more interesting than
+in C# or Smalltalk.
+
+Let's look at this example:
+``` tale
+for: i in: items do:
+   print: i
+```
+
+Here we have the `for:in:do` keyword form that captures `i`, `items` and block `[|print: i|]`. What's interesting here is that
+`i` is captured a bit differently that any other argument, because the only thing captured is a name. Even if you have:
+``` tale
+i = 0
+for: i in: items do:
+   print: i
+```
+
+The `i` part of the `for:in:do` form will be different for each `[|print: i|]` block execution. This is very similar to lambda form: `i => print: i`,
+only `i` is defined as a part of the expression.
+
+Here is how the syntax of the loop definition looks like:
+``` tale
+for: [(i)] in: (sequence) do: [|block|] =
+    ... -- Something like `while` loop here.
+        block call: current -- `current` is a current item of a collection.
 ```
 
 ### Architecture
