@@ -134,31 +134,6 @@ This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captu
 
 That's the Tale's view on functions, procedures and methods.
 
-#### Binary forms
-Let's take a look at the `x * x` part of the `(x) squared` name. What is `*` here?
-Knowing the concept of forms, it's reasonable to suppose, that somewhere a form `(x) * (y) = ...` is defined and
-it represents the multiplication operation.
-
-In this way many of mathematical and logical operations are implemented, but can we have a `(x) or (y)` form?
-Unfortunately, no. The Tale allows defining binary forms only with special symbols between arguments (like `+`, `\`, `-`, `;`, `.`, `>=`).
-This is where the language should respect formal nature of programs.
-
-Consider this code:
-``` tale
-(x) or = x
-(x) or (b) = b
-(x) two = x
-
-one = 1
-two = 2
-
--- `x` is either 1 or 2.
-x = one or two
-```
-
-Here the compiler would have too many options of how to interpret the `one or two` expression.
-To solve this problem, the Tale uses Smalltalk syntax of keyword messages.
-
 #### Keyword forms
 Beyond simple forms is the only one kind: keyword forms. Combined with unary ones they allow developers to write any kind of sentences.
 
@@ -179,7 +154,43 @@ print: (x) async = ...
 
 Because the compiler processes code from left to right, it'd be hard for it to decide, is `async` an unary form or not.
 
-To elaborate more on that, let's talk about brackets and precedence rules.
+#### Operator forms
+One special thing needed to mention is _operator_ forms: they're just simple forms
+like unary or keywords, only they consist of special symbols like `+|%&#!><=` etc.
+(including bunch of nice Unicode stuff like `∑`, `√`).
+
+##### Unary operators
+The first type of operator forms are unary operators: they're prefix version of regular
+unary forms.
+
+For example, famous `!` (boolean inversion) symbol can be defined as:
+``` tale
+!(x) = not: x
+-- And used like:
+alive = !dead
+```
+
+The main rule here: unary operators must be _connected_ to an identifier without
+any spaces in between. _(In this way the lexer of the language will be able to correctly
+process code.)_
+
+_(It's also worth mentioning that there are no **postfix** version of unary operators)._
+
+##### Binary operators
+There is also a binary operator forms, like `+` or `-`.
+
+Consider this example of definition of such an operator:
+``` tale
+(x) + (y) = ...
+-- And used like:
+x = 2 + 2
+```
+
+The main rule for binary operators is the opposite of the rule for unary ones:
+there _must_ be a space before and after an operator, so the compiler will be
+able to understand expressions like `2 + ++2`.
+
+Knowing basic blocks of the language, let's now talk about brackets and precedence rules.
 
 #### Brackets and precedence
 There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
