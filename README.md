@@ -484,7 +484,6 @@ for: [(i)] in: (sequence) do: [|block|] =
         block call: current -- `current` is a current item of a collection.
 ```
 
-
 ### Architecture
 ...
 
