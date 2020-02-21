@@ -128,7 +128,7 @@ Consider this name:
 ```
 
 Two things are going on here. First of all, `(x) squared` is also a name, but it doesn't match exactly one set of characters.
-Instead, it takes into account every possible way of writing `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc.
+Instead, it takes into account every possible way of writing `... squared`: `1 squared`, `2 squared`, `100 squared`, `"Oscar Wilde" squared`, `author squared`, etc. _(We'll talk about types and type signatures later)._
 
 Second, every `... squared` corresponds to a different expression: `1 squared` to `1 * 1`, `2 squared` to `2 * 2`, and so on.
 This is achieved by the variable part `(x)`: the name `(x) squared` kinda _captures_ first part of the expression and associates it with `x` name.
