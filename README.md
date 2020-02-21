@@ -382,6 +382,15 @@ print:;
 -- ✔ (ugly)
 print:;
   "Hello, world"
+
+-- ✘
+if x > 0
+  then: ...
+  else: ...
+-- ✔
+if x > 0;
+  then: ...;
+  else: ...
 ```
 
 ### Architecture
