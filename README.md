@@ -82,6 +82,7 @@ Accepts:
 
 Represents: A sum of the two numbers.
 ---
+(x: Int) + (y: Int) = ...
 ```
 
 #### Assignments
