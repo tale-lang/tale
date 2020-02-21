@@ -273,30 +273,30 @@ x = (((2 squared) multipliedBy: 2) toString) asUTF8Bytes
 
 To solve this problem Tale introduces a few rules about indentation. Let's check them first.
 
-**Rule 1:** If line is indented, it's automatically attached to previous one with lower indentation level and wrapped in brackets.
+**Rule 1:** If line is indented, it's automatically attached to previous one with lower indentation level and they both wrapped in brackets.
 ``` tale
 ...
   ...
   ...
 -- Same as:
-... (...) (...)
+(...) (...) (...)
 ```
 
 So when we write, for example:
 ``` tale
-2 squared
+2 multipliedBy: 4
   multipliedBy: 2
   toString
 ```
 
 We get:
 ``` tale
-2 squared (multipliedBy: 2) (toString)
+(2 multipliedBy: 4) (multipliedBy: 2) (toString)
 ```
 
 Which results in:
 ``` tale
-(((2 squared) multipliedBy: 2) toString)
+(((2 multipliedBy: 4) multipliedBy: 2) toString)
 ```
 
 **Rule 2:** If line ends with `;`, it'll cancel the next newline character and any indentation after.
@@ -308,7 +308,7 @@ Which results in:
 ... ... ...
 ```
 
-This feature is pretty useful when you have keyword form and you want to span it over several lines:
+This feature is pretty useful when you have a keyword form and you want to span it over several lines:
 ``` tale
 if: x > 0;
   then: (print: "Greater");
@@ -317,7 +317,7 @@ if: x > 0;
 if: x > 0 then: (print: "Greater") else: (print: "Less or equal")
 ```
 
-**Rule 3:** If line ends with `x:`, then the `x` identifier is automatically considered as a keyword one,
+**Rule 3:** If a line ends with `x:`, then the `x` identifier is automatically considered as a keyword one,
 and compiler automatically expects next line (or lines) to be indented more than the current.
 These lines are treated as block. More on blocks later, but in short they're like lambdas.
 
@@ -344,6 +344,44 @@ Cycles are also implemented like that. Consider this example:
 
 _(Note: strange brackets `[|` and `|]` are just for inner compiler usage,
 they're not available in regular code.)_
+
+**Remark:** _All rules were created for the sake of readability in different popular scenarios,
+especially in methods chaining, and because the rules are a bit specific, there are
+many ways to misuse them, for example:
+``` tale
+-- ✘
+print: 2
+  asString
+-- ✔
+print: 2 asString
+-- ✔
+print: (2
+  asString)
+
+-- ✘
+asString
+  print: "2"
+
+-- ✘
+asString;
+  multipliedBy: 2
+
+-- ✘
+print:
+  "Hello, world"
+  print: "x"
+-- ✔
+print:
+  "Hello, world"
+
+-- ✘
+print:;
+  "Hello, world"
+  print: "x"
+-- ✔ (ugly)
+print:;
+  "Hello, world"
+```
 
 ### Architecture
 ...
