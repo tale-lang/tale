@@ -348,7 +348,7 @@ they're not available in regular code.)_
 
 **Remark:** _All rules were created for the sake of readability in different popular scenarios,
 especially in methods chaining, and because the rules are a bit specific, there are
-many ways to misuse them, for example:
+many ways to misuse them, for example:_
 ``` tale
 -- ✘
 print: 2
