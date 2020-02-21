@@ -416,6 +416,75 @@ if x > 0;
   else: ...
 ```
 
+#### Blocks
+Another powerful feature of the Tale is a concept of blocks. They're pretty similar to anonymous functions in other languages,
+but here they represent a small version of a program with its own scope and variables.
+
+Let's look at the simple example of a block:
+``` tale
+wait: 5 seconds then:
+  print: "Hello, world!"
+```
+
+As you remember, because of **Rule 3**, this code is equal to:
+``` tale
+wait: (5 seconds) then: [|print: "Hello, world!"|]
+```
+
+Here the `wait:then` keyword form captures not only seconds argument, but also a whole block of code.
+The definition of the form looks like that:
+``` tale
+wait (x) then: [|block|] =
+    sleep: x
+    block call
+```
+
+Here is a C# alternative:
+``` c#
+Wait(TimeSpan span, Action then) { ... }
+
+// Which may be called:
+Wait(5.Seconds(), then: () => Console.WriteLine("Hello, world!"));
+```
+
+Note that there are two version of blocks:
+``` tale
+-- Brackets are used to inline blocks with only one expression.
+after: 5 seconds do: (print: "Hello, world!")
+
+-- Third rule of indentation:
+after: 5 seconds do:
+    print: "Hello, world!"
+```
+
+How about blocks with arguments? Blocks with arguments are implemented a bit more interesting than
+in C# or Smalltalk.
+
+Let's look at this example:
+``` tale
+for: i in: items do:
+   print: i
+```
+
+Here we have the `for:in:do` keyword form that captures `i`, `items` and block `[|print: i|]`. What's interesting here is that
+`i` is captured a bit differently that any other argument, because the only thing captured is a name. Even if you have:
+``` tale
+i = 0
+for: i in: items do:
+   print: i
+```
+
+The `i` part of the `for:in:do` form will be different for each `[|print: i|]` block execution. This is very similar to lambda form: `i => print: i`,
+only `i` is defined as a part of the expression.
+
+Here is how the syntax of the loop definition looks like:
+``` tale
+for: [(i)] in: (sequence) do: [|block|] =
+    ... -- Something like `while` loop here.
+        block call: current -- `current` is a current item of a collection.
+```
+
+
 ### Architecture
 ...
 
