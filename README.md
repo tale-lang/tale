@@ -484,6 +484,34 @@ for: [(i)] in: (sequence) do: [|block|] =
         block call: current -- `current` is a current item of a collection.
 ```
 
+#### Variable arguments
+In many languages there is a way to represent multiple arguments or variable number of arguments.
+Now we know only how to split every argument using keywords in keyword forms, but sometimes we
+need, for example, provide a pair of numbers to the function.
+
+Let's take a look:
+``` tale
+number = matrix at: 4, 5
+```
+
+Here we have the form `at:` that accepts three arguments: `matrix`, `4` and `5`.
+Its definition looks like:
+``` tale
+(x) at: (i, j) = ...
+```
+
+As you can see, the comma `,` symbol is used to separate arguments.
+
+There is also a way to expect a variable number of arguments using `*` symbol:
+``` tale
+x = sum: 1, 2, 3
+-- Or:
+x = sum: 1, 2, 3, 4, 5
+
+-- Definition:
+sum: (args*) = ...
+```
+
 ### Architecture
 ...
 
