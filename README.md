@@ -196,14 +196,15 @@ Knowing basic blocks of the language, let's now talk about brackets and preceden
 There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
 to process code unambigiously.
 
-First of all, keyword expressions. They are executed in pretty simple way.
+##### Keyword forms
+Let's talk a bit about keyword forms first. They are executed in pretty simple way.
 
-Let's take a look at this example:
+Consider this example:
 ``` tale
 put: item to: list
 ```
 
-Here the compiler will lookup a `put:to:` name. But what if we've defined only tricky names:
+Here the compiler will lookup only a `put:to:` name. If we instead define only tricky names:
 ``` tale
 put: (x) = ...
 (x) to: (y) = ...
@@ -212,26 +213,37 @@ put: (x) = ...
 put: item to: list
 ```
 
-This is a compilation error, because _composed keyword expressions should be in brackets_. Thus, instead of writing `put: item to: list`,
-we need to explicitly add brackets: `(put: item) to: list`.
+That would be a compilation error, because _composed keyword expressions should be in brackets_.
+Thus, instead of writing `put: item to: list`, we need to explicitly add brackets: `(put: item) to: list`.
 
-How about mixing keyword expressions with unary ones?
+##### Unary operators
+Another rule is about combining unary operators:
+``` tale
+!!something   -- Apply `!!` operator to `something`.
+!(!something) -- Apply `!` operator to `something` twice.
+```
+
+##### Precedence
+The general precedence order is like that:
+Unary Operators > Unary Forms > Binary Operators > Keyword Forms.
+
+For example:
 ``` tale
 print: 2 squared
 -- Same as:
 print: (2 squared)
-```
 
-So, unary expressions have higher precedence over keyword ones.
+print: -2 squared
+-- Same as:
+print: ((-2) squared)
 
-Here is another example that demonstrates this rule:
-``` tale
+-- With keyword form:
 2 squared or: 3 squared
 -- Same as:
 (2 squared) or: (3 squared)
 ```
 
-Operators are in between:
+Binary operators are in between:
 ``` tale
 2 squared == 3 squared
 -- Same as:
