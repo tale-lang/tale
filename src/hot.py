@@ -14,8 +14,6 @@ def clear_console():
 
 
 def reload_modules():
-    """Reloads all Tale modules."""
-
     for module in sys.modules.values():
         if module.__name__.startswith('prototype'):
             reload(module)
