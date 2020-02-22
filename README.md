@@ -39,7 +39,20 @@ Though it may contain something we call _generics_, _type classes_, _structs_, _
 The language is on very pre-pre-pre alpha stage. It has ideological foundation, syntax design for a bunch of features and approximate roadmap.
 
 ## Install
-There is no way to install the language yet as it's not implemented.
+There is no way to install the language yet as it's not implemented. But you can play with the latest version using these steps.
+
+### Preparation
+- Download latest (3.8.1) version of the Python [here](https://www.python.org/downloads/).
+- Clone the repository using `git clone "git@github.com:tale-lang/tale.git"` command.
+- Go to the source directory -- `cd tale/src`.
+- Set up virtualenv -- `virtualenv venv` (if `virtualenv` is not installed, use `pip3 install virtualenv`).
+- Activate virtual environment (if not activated) -- `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
+- Install required packages -- `pip install -r requirements.txt`.
+
+### Usage
+- Go to the source directory -- `cd tale/src`.
+- Activate virtual environment (if not activated) -- `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
+- Execute any program file -- `python cli.py PROGRAM` (e.g. `python cli.py examples/helloworld.tale`).
 
 ## Language
 
