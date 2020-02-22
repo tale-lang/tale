@@ -15,7 +15,7 @@ def clear_console():
 
 def reload_modules():
     for module in sys.modules.values():
-        if module.__name__.startswith('prototype'):
+        if module.__name__.startswith('tale'):
             reload(module)
 
 
