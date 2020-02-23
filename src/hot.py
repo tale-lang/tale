@@ -25,7 +25,7 @@ def reload_modules():
 def cli(program, interval):
     """This script executes Tale CLI on a PROGRAM file with some interval."""
 
-    # It will be reopened each hot reloading cycle.
+    # `program` file will be reopened each hot reloading cycle.
     program.close()
 
     while True:

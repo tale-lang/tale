@@ -9,6 +9,7 @@ from tale.core import execute
 @click.argument('program', type=click.File())
 def cli(program):
     """This script interprets a PROGRAM file as a Tale program."""
+
     code = program.read()
     execute(code)
 
