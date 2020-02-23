@@ -480,7 +480,7 @@ for: i in: items do:
 ```
 
 Here we have the `for:in:do` keyword form that captures `i`, `items` and block `[|print: i|]`. What's interesting here is that
-`i` is captured a bit differently that any other argument, because the only thing captured is a name. Even if you have:
+`i` is captured a bit differently than any other argument, because the only thing captured is a name. Even if you have:
 ``` tale
 i = 0
 for: i in: items do:

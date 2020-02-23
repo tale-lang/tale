@@ -37,6 +37,7 @@ def cli(program, interval):
                 code = program.read()
 
                 import tale.core
+
                 reload_modules()
                 reload(tale.core)
 
