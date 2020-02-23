@@ -33,7 +33,6 @@ def cli(program, interval):
             clear_console()
 
             with open(program.name) as program:
-                # Need to reopen file each time.
                 code = program.read()
 
                 import tale.core
