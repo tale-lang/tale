@@ -1,0 +1,7 @@
+program
+    : statement+
+    ;
+
+statement
+    : 'if'
+    ;
