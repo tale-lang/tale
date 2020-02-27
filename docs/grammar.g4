@@ -1,7 +1,0 @@
-program
-    : statement+
-    ;
-
-statement
-    : 'if'
-    ;
