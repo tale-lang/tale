@@ -44,7 +44,7 @@ There is no way to install the language yet as it's not implemented. But you can
 ### Preparation
 - Download latest (3.8.1) version of the Python [here](https://www.python.org/downloads/).
 - Clone the repository using `git clone "git@github.com:tale-lang/tale.git"` command.
-- Go to the source directory -- `cd tale/src`.
+- Go to the source directory –– `cd tale/src`.
 - Set up virtualenv -- `virtualenv venv` (if `virtualenv` is not installed, use `pip3 install virtualenv`).
 - Activate virtual environment (if not activated) -- `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
 - Install required packages -- `pip install -r requirements.txt`.
