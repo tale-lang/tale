@@ -310,7 +310,7 @@ x = (((2 squared) multipliedBy: 2) toString) asUTF8Bytes
 
 To solve this problem Tale introduces a few rules about indentation. Let's check them first.
 
-**Rule 1:** If line is indented, it's automatically attached to previous one with lower indentation level and they both wrapped in brackets.
+**Rule 1:** If a line is indented, it's automatically attached to previous one with lower indentation level and they both wrapped in brackets.
 ``` tale
 ...
   ...
