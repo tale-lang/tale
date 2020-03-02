@@ -8,10 +8,10 @@ expression: unary
           | keyword
           | primitive;
 expressionInBrackets: '(' expression ')';
-expressionWithOperator: OPERATOR expressionInBrackets;
+expressionInBracketsWithOperator: OPERATOR expressionInBrackets;
 
 unary: unary IDENTIFIER
-     | expressionWithOperator IDENTIFIER
+     | expressionInBracketsWithOperator IDENTIFIER
      | expressionInBrackets IDENTIFIER
      | primitive IDENTIFIER;
 
@@ -19,20 +19,20 @@ binary: binary OPERATOR binaryOperand |
         binaryOperand OPERATOR binaryOperand;
 binaryOperand: unary
              | primitive
-             | expressionWithOperator
+             | expressionInBracketsWithOperator
              | expressionInBrackets;
 
 keyword: keywordPrefix* (keywordName ':' keywordValue)+;
 keywordPrefix: unary
              | binary
              | primitive
-             | expressionWithOperator
+             | expressionInBracketsWithOperator
              | expressionInBrackets;
 keywordName: IDENTIFIER;
 keywordValue: unary
             | binary
             | primitive
-            | expressionWithOperator
+            | expressionInBracketsWithOperator
             | expressionInBrackets;
 
 primitive: primitiveWithOperator
