@@ -1,10 +1,30 @@
 grammar Tale;
 
-// Root.
 program: (statement NEWLINE)+;
-statement: expression;
+statement: assignment | expression;
 
-// Expression.
+
+assignment: assignmentName '=' (expression | expressionInBrackets);
+assignmentName: assignmentForm | IDENTIFIER;
+
+assignmentForm: unaryForm
+              | unaryOperatorForm
+              | binaryForm
+              | keywordForm
+              | IDENTIFIER;
+
+unaryForm: argument IDENTIFIER;
+
+unaryOperatorForm: OPERATOR argument;
+
+binaryForm: argument OPERATOR argument;
+
+keywordForm: argument? (IDENTIFIER ':' argument)+;
+
+argument: '(' argumentName (':' argumentType)? ')';
+argumentName: IDENTIFIER;
+argumentType: IDENTIFIER;
+
 expression: unary
           | binary
           | keyword
@@ -12,13 +32,11 @@ expression: unary
 expressionInBrackets: '(' expression ')';
 expressionInBracketsWithOperator: OPERATOR expressionInBrackets;
 
-// Unary.
 unary: unary IDENTIFIER
      | expressionInBracketsWithOperator IDENTIFIER
      | expressionInBrackets IDENTIFIER
      | primitive IDENTIFIER;
 
-// Binary.
 binary: binary OPERATOR binaryOperand |
         binaryOperand OPERATOR binaryOperand;
 binaryOperand: unary
@@ -26,8 +44,7 @@ binaryOperand: unary
              | expressionInBracketsWithOperator
              | expressionInBrackets;
 
-// Keyword.
-keyword: keywordPrefix* (keywordName ':' keywordValue)+;
+keyword: keywordPrefix? (keywordName ':' keywordValue)+;
 keywordPrefix: unary
              | binary
              | primitive
@@ -40,14 +57,13 @@ keywordValue: unary
             | expressionInBracketsWithOperator
             | expressionInBrackets;
 
-// Primitive.
 primitive: primitiveWithOperator
          | IDENTIFIER
          | NUMBER;
 primitiveWithOperator: OPERATOR IDENTIFIER
                      | OPERATOR NUMBER;
 
-// Tokens.
+
 IDENTIFIER: [a-zA-Z]+;
 NUMBER: [0-9]+;
 OPERATOR: '-'
