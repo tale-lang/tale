@@ -1,12 +1,46 @@
 grammar Tale;
 
-r: statement+;
-statement: assignment;
+program: (statement NEWLINE)+;
+statement: expression;
 
-assignment: name '=' body;
-name: IDENTIFIER;
-body: IDENTIFIER | NUMBER;
+expression: unary
+          | binary
+          | keyword
+          | primitive;
 
-IDENTIFIER: [a-z]+;
+unary: unary IDENTIFIER
+     | OPERATOR '(' expression ')'
+     | '(' expression ')' IDENTIFIER
+     | primitive IDENTIFIER;
+
+binary: binary OPERATOR binaryOperand |
+        binaryOperand OPERATOR binaryOperand;
+binaryOperand: unary
+             | primitive
+             | OPERATOR '(' expression ')'
+             | '(' expression ')';
+
+keyword: (keywordName ':' keywordValue)+;
+keywordName: IDENTIFIER;
+keywordValue: unary
+            | binary
+            | primitive
+            | OPERATOR '(' expression ')'
+            | '(' expression ')';
+
+primitive: primitiveWithOperator
+         | IDENTIFIER
+         | NUMBER;
+
+primitiveWithOperator: OPERATOR IDENTIFIER
+                     | OPERATOR NUMBER;
+
+IDENTIFIER: [a-zA-Z]+;
 NUMBER: [0-9]+;
-WS: [ \t\r\n]+ -> skip;
+OPERATOR: '-'
+        | '+'
+        | '*'
+        | '/';
+
+WS: [ \t]+ -> skip;
+NEWLINE : [\r\n];
