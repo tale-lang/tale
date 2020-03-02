@@ -7,26 +7,33 @@ expression: unary
           | binary
           | keyword
           | primitive;
+expressionInBrackets: '(' expression ')';
+expressionWithOperator: OPERATOR expressionInBrackets;
 
 unary: unary IDENTIFIER
-     | OPERATOR '(' expression ')'
-     | '(' expression ')' IDENTIFIER
+     | expressionWithOperator IDENTIFIER
+     | expressionInBrackets IDENTIFIER
      | primitive IDENTIFIER;
 
 binary: binary OPERATOR binaryOperand |
         binaryOperand OPERATOR binaryOperand;
 binaryOperand: unary
              | primitive
-             | OPERATOR '(' expression ')'
-             | '(' expression ')';
+             | expressionWithOperator
+             | expressionInBrackets;
 
-keyword: (keywordName ':' keywordValue)+;
+keyword: keywordPrefix* (keywordName ':' keywordValue)+;
+keywordPrefix: unary
+             | binary
+             | primitive
+             | expressionWithOperator
+             | expressionInBrackets;
 keywordName: IDENTIFIER;
 keywordValue: unary
             | binary
             | primitive
-            | OPERATOR '(' expression ')'
-            | '(' expression ')';
+            | expressionWithOperator
+            | expressionInBrackets;
 
 primitive: primitiveWithOperator
          | IDENTIFIER
