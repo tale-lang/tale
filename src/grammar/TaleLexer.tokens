@@ -1,0 +1,13 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+IDENTIFIER=5
+NUMBER=6
+OPERATOR=7
+WS=8
+NEWLINE=9
+'='=1
+':'=2
+'('=3
+')'=4
