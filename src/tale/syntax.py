@@ -6,9 +6,17 @@ from grammar.TaleParser import TaleParser
 
 
 class Node:
+    """Represents base class of syntax tree node.
+
+    It's used mainly to hold hierarchy of similar nodes
+    and is able to print itself gracefully
+    with the help of `tree_format` package.
+    """
+
     def __init__(self, instance):
         self.name = type(instance).__name__
         self.value = instance.getText()
+
         if isinstance(instance, antlr4.tree.Tree.TerminalNode):
             self.children = []
         else:
