@@ -1,5 +1,6 @@
 """Command line interface module for hot reloading."""
 
+import os
 import sys
 import subprocess
 import traceback
@@ -7,6 +8,23 @@ from importlib import reload
 from time import sleep
 
 import click
+
+
+def build_grammar_if_changed():
+    def build_grammar():
+        antlr4_path = '/usr/local/lib/antlr-4.8-complete.jar:$CLASSPATH'
+        subprocess.call(f'java -Xmx500M -cp "{antlr4_path}" ' +
+                        f'org.antlr.v4.Tool grammar/Tale.g4 -Dlanguage=Python3',
+                        shell=True)
+
+    this = build_grammar_if_changed  # Just shortcut.
+    change_time = os.stat('grammar/Tale.g4')
+
+    if hasattr(this, 'change_time') and this.change_time != change_time:
+        print('[System] Rebuilding grammar')
+        build_grammar()
+
+    this.change_time = change_time
 
 
 def clear_console():
@@ -30,6 +48,7 @@ def cli(program, interval):
 
     while True:
         try:
+            build_grammar_if_changed()
             clear_console()
 
             with open(program.name) as program:
