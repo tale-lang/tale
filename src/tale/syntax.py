@@ -14,7 +14,14 @@ class Node:
     """
 
     def __init__(self, instance):
+        def without_suffix(x: str, suffix: str):
+            if x.endswith(suffix):
+                return x[:-len(suffix)]
+            else:
+                return 'Terminal'
+
         self.name = type(instance).__name__
+        self.name = without_suffix(self.name, 'Context')
         self.value = instance.getText()
 
         if isinstance(instance, antlr4.tree.Tree.TerminalNode):
