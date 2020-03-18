@@ -36,7 +36,11 @@ class Node:
 
 
 def parse(code: str):
-    """Parses provided code string and returns a syntax tree."""
+    """Parses provided code string and returns a syntax tree.
+
+    Args:
+        code: Code as a string.
+    """
 
     code = antlr4.InputStream(code)
 
