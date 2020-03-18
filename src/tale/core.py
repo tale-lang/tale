@@ -1,4 +1,5 @@
 from tale.syntax import parse
+from tale.runtime import evaluate
 
 
 def execute(code: str):
@@ -20,7 +21,7 @@ def execute(code: str):
     print(str(tree).rstrip())
     print('--------------------------------------------------------------')
 
-    output = ...
+    output = evaluate(tree)
     print('Output:')
     print(output or '<empty>')
     print('--------------------------------------------------------------')
