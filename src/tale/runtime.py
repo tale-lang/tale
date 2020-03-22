@@ -1,6 +1,6 @@
 from typing import Any
 
-import tale.syntax.Node
+from tale.syntax import Node
 
 def evaluate(tree: Node) -> Any:
     return ''
