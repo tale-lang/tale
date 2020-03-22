@@ -6,7 +6,7 @@ from grammar.TaleParser import TaleParser
 
 
 class Node:
-    """Represents base class of syntax tree node.
+    """A node of a syntax tree.
 
     It's used mainly to hold hierarchy of similar nodes
     and is able to print itself gracefully
@@ -14,14 +14,14 @@ class Node:
     """
 
     def __init__(self, instance):
-        def without_suffix(x: str, suffix: str):
+        def without_suffix(x: str, suffix: str, or_: str):
             if x.endswith(suffix):
                 return x[:-len(suffix)]
             else:
-                return 'Terminal'
+                return or_
 
         self.name = type(instance).__name__
-        self.name = without_suffix(self.name, 'Context')
+        self.name = without_suffix(self.name, 'Context', or_='Terminal')
         self.value = instance.getText()
 
         if isinstance(instance, antlr4.tree.Tree.TerminalNode):
