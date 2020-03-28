@@ -45,14 +45,14 @@ There is no way to install the language yet as it's not implemented. But you can
 - Download latest (3.8.1) version of the Python [here](https://www.python.org/downloads/).
 - Clone the repository using `git clone "git@github.com:tale-lang/tale.git"` command.
 - Go to the source directory –– `cd tale/src`.
-- Set up virtualenv -- `virtualenv venv` (if `virtualenv` is not installed, use `pip3 install virtualenv`).
-- Activate virtual environment (if not activated) -- `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
-- Install required packages -- `pip install -r requirements.txt`.
+- Set up virtualenv –– `virtualenv venv` (if `virtualenv` is not installed, use `pip3 install virtualenv`).
+- Activate virtual environment (if not activated) –– `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
+- Install required packages –– `pip install -r requirements.txt`.
 
 ### Usage
-- Go to the source directory -- `cd tale/src`.
-- Activate virtual environment (if not activated) -- `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
-- Execute any program file -- `python cli.py PROGRAM` (e.g. `python cli.py examples/helloworld.tale`).
+- Go to the source directory –– `cd tale/src`.
+- Activate virtual environment (if not activated) –– `source venv/bin/activate` (or `venv/Scripts/activate` on Windows).
+- Execute any program file –– `python cli.py PROGRAM` (e.g. `python cli.py examples/helloworld.tale`).
 
 ## Language
 
@@ -115,7 +115,7 @@ x = author
 ```
 
 But what is a name actually? Just a bunch of characters that correspond to something. So, when we see the `author` somewhere in
-the code, we know that it's associated with one and only one expression -- `"Oscar Wilde"`.
+the code, we know that it's associated with one and only one expression –– `"Oscar Wilde"`.
 
 Actually, the `"Oscar Wilde"` is a name as well, but a constant one, it doesn't point to somewhere, but kinda points to itself.
 
@@ -207,8 +207,7 @@ able to understand expressions like `2 + ++2`.
 Knowing basic blocks of the language, let's now talk about brackets and precedence rules.
 
 #### Brackets and precedence
-There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers
-to process code unambigiously.
+There are some rules of how we can compose expressions of different forms. These rules help compiler as well as programmers to process code unambigiously.
 
 ##### Keyword forms
 Let's talk a bit about keyword forms first. They are executed in pretty simple way.
