@@ -2,6 +2,13 @@ from typing import Any
 
 from tale.syntax import Node
 
+
+class Name:
+    def __init__(self, form, value):
+        self.form = form
+        self.value = value
+
+
 class Evaluation:
     """An evaluation of a syntax tree node.
 
@@ -12,12 +19,16 @@ class Evaluation:
 
     def __init__(self, node: Node):
         self.node = node
+        self.names = {}
 
     def resolve(self, expression: Node) -> Any:
         pass
 
     def bind(self, assignment: Node) -> None:
-        pass
+        form = assignment.children[0]
+        value = assignment.children[2]
+
+        self.names[form.value] = Name(form, value)
 
     def result(self) -> Any:
         value = None
