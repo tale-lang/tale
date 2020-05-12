@@ -24,7 +24,7 @@ class Antlr4Node(Node):
         def beautify(name: str):
             # ANTLR4 appends `Context` at the end of the compound node.
             # For example, if an expression `Program` had parsed,
-            # it'd be have a `ProgramContext` name.
+            # it'd have a `ProgramContext` name.
             if name.endswith('Context'):
                 return name[:-len('Context')]
             
