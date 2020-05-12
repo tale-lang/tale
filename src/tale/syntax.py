@@ -5,12 +5,13 @@ from grammar.TaleLexer import TaleLexer
 from grammar.TaleParser import TaleParser
 
 
-class Node:
+class Antlr4Node:
     """A node of a syntax tree.
 
-    It's used mainly to hold hierarchy of similar nodes
-    and is able to print itself gracefully
-    with the help of `tree_format` package.
+    Holds references to its children, and knows how to print itself.
+
+    Attributes:
+        instance: An instance of ANTLR4 node.
     """
 
     def __init__(self, instance):
@@ -27,7 +28,7 @@ class Node:
         if isinstance(instance, antlr4.tree.Tree.TerminalNode):
             self.children = []
         else:
-            self.children = [Node(x) for x in instance.getChildren()]
+            self.children = [Antlr4Node(x) for x in instance.getChildren()]
 
     def __str__(self):
         return format_tree(self,
@@ -49,4 +50,4 @@ def parse(code: str):
     parser = TaleParser(stream)
     tree = parser.program()
 
-    return Node(tree)
+    return Antlr4Node(tree)
