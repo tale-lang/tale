@@ -1,13 +1,13 @@
-from tale.syntax import parse
-from tale.runtime import evaluate
+from typing import Any
+
+from tale import syntax, runtime
 
 
-def execute(code: str):
-    """Executes code represented by string.
+def execute(code: str) -> Any:
+    """Executes the provided code string.
 
-    This function meant to act as an interpreter entry point:
-    here provided code is parsed to syntax tree, analyzed and
-    executed line by line.
+    This function is meant to be an interpreter entry point:
+    here the code is parsed, analyzed and evaluated to produce an output.
 
     Args:
         code: Code as a string.
@@ -15,13 +15,12 @@ def execute(code: str):
 
     print('--------------------------------------------------------------')
     print('ANTLR4 Output:')
-    tree = parse(code)
+    tree = syntax.parse(code)
     print('--------------------------------------------------------------')
     print('Syntax tree:')
     print(str(tree).rstrip())
     print('--------------------------------------------------------------')
-
-    output = evaluate(tree)
+    output = runtime.evaluate(tree)
     print('Output:')
     print(output or '<empty>')
     print('--------------------------------------------------------------')
