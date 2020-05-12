@@ -1,6 +1,6 @@
 from typing import Any
 
-from tale.syntax import Node
+from tale.syntax.nodes.node import Node
 
 
 class Name:

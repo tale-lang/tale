@@ -21,4 +21,3 @@ class Parser(metaclass=ABCMeta):
             ValueError: If the specified `code` string is empty or represents
                 an invalid Tale program.
         """
-        ...

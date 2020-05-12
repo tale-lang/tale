@@ -1,6 +1,7 @@
 from typing import Any
 
 from tale import syntax, runtime
+from tale.syntax.parsers.antlr4 import Antlr4Parser
 
 
 def execute(code: str) -> Any:
@@ -15,7 +16,7 @@ def execute(code: str) -> Any:
 
     print('--------------------------------------------------------------')
     print('ANTLR4 Output:')
-    tree = syntax.parse(code)
+    tree = Antlr4Parser().ast(code)
     print('--------------------------------------------------------------')
     print('Syntax tree:')
     print(str(tree).rstrip())
