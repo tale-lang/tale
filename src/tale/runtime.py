@@ -44,12 +44,13 @@ class Evaluation:
         return value
 
 def evaluate(tree: Node) -> Any:
-    """Evaluates the syntax tree node and returns a result.
-
-    This method is used by the `core` module after successful parsing of the syntax tree.
+    """Evaluates the syntax tree node to produce the output.
 
     Args:
         tree: A root node of the syntax tree that represents the program.
+
+    Returns:
+        A value that represents the output of the executing program.
     """
 
     return Evaluation(tree).result()
