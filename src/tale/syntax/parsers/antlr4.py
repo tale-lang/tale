@@ -5,7 +5,7 @@ from tree_format import format_tree
 
 from grammar.TaleLexer import TaleLexer
 from grammar.TaleParser import TaleParser
-from tale.syntax.nodes.node import Node
+from tale.syntax.nodes import Node, Assignment
 from tale.syntax.parsers.parser import Parser
 from tale.common import pipe
 
@@ -34,6 +34,17 @@ class Antlr4Node(Node):
 
             return name
 
+        def node(x):
+            name = type(x).__name__
+
+            if name == 'AssignmentContext':
+                return Antlr4Assignment(x)
+
+            return Antlr4Node(x)
+
+        if type(instance).__name__ == 'StatementContext':
+            instance = list(instance.getChildren())[0]
+
         self.name = type(instance).__name__
         self.name = beautify(self.name)
         self.value = instance.getText()
@@ -41,7 +52,7 @@ class Antlr4Node(Node):
         if isinstance(instance, antlr4.tree.Tree.TerminalNode):
             self._children = []
         else:
-            self._children = [Antlr4Node(x) for x in instance.getChildren()]
+            self._children = [node(x) for x in instance.getChildren()]
 
     @property
     def children(self) -> Iterable[Node]: 
@@ -51,6 +62,20 @@ class Antlr4Node(Node):
         return format_tree(self,
                            format_node=lambda x: f'{x.name} "{x.value}"',
                            get_children=lambda x: x.children)
+
+
+class Antlr4Assignment(Antlr4Node, Assignment):
+    def __init__(self, node: Antlr4Node):
+        super().__init__(node)
+        self._node = node
+
+    @property
+    def from_(self) -> Node:
+        ...
+
+    @property
+    def to(self) -> Node:
+        ...
 
 
 class Antlr4Parser(Parser):

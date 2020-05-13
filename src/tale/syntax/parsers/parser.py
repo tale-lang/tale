@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 
-from tale.syntax.nodes.node import Node
+from tale.syntax.nodes import Node
 
 
 class Parser(metaclass=ABCMeta):
