@@ -7,7 +7,7 @@ from grammar.TaleLexer import TaleLexer
 from grammar.TaleParser import TaleParser
 from tale.syntax.nodes.node import Node
 from tale.syntax.parsers.parser import Parser
-from tale.common import compose
+from tale.common import pipe
 
 
 class Antlr4Node(Node):
@@ -61,7 +61,7 @@ class Antlr4Parser(Parser):
     """
 
     def ast(self, code: str) -> Node:
-        parser = compose(
+        parser = pipe(
                 antlr4.InputStream,
                 TaleLexer,
                 antlr4.CommonTokenStream,
