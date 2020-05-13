@@ -7,9 +7,4 @@ class Node(metaclass=ABCMeta):
 
     @abstractproperty
     def children(self) -> Iterable['Node']:
-        """Child nodes of the current.
-
-        Returns:
-            An iterable where each element represents a child node of the
-            current.
-        """
+        """List that represents child nodes."""
