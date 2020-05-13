@@ -1,81 +1,13 @@
-from typing import Iterable
+from typing import Any, Iterable
+import os
 
 import antlr4
-from tree_format import format_tree
 
 from grammar.TaleLexer import TaleLexer
 from grammar.TaleParser import TaleParser
-from tale.syntax.nodes import Node, Assignment
+from tale.syntax.nodes import Node, Assignment, Statement, Form
 from tale.syntax.parsers.parser import Parser
 from tale.common import pipe
-
-
-class Antlr4Node(Node):
-    """A node of the syntax tree.
-
-    Wraps an ANTLR4 syntax tree for more convenient usage.
-    Knows how to print itself to the console.
-
-    Attributes:
-        instance: An instance of ANTLR4 node.
-    """
-
-    def __init__(self, instance):
-        def beautify(name: str):
-            # ANTLR4 appends `Context` at the end of the compound node.
-            # For example, if an expression `Program` had parsed,
-            # it'd have a `ProgramContext` name.
-            if name.endswith('Context'):
-                return name[:-len('Context')]
-            
-            # ANTLR4 uses `TerminalNodeImpl` as a name of the terminal node.
-            if name == 'TerminalNodeImpl':
-                return 'Terminal'
-
-            return name
-
-        def node(x):
-            name = type(x).__name__
-
-            if name == 'AssignmentContext':
-                return Antlr4Assignment(x)
-
-            return Antlr4Node(x)
-
-        if type(instance).__name__ == 'StatementContext':
-            instance = list(instance.getChildren())[0]
-
-        self.name = type(instance).__name__
-        self.name = beautify(self.name)
-        self.value = instance.getText()
-
-        if isinstance(instance, antlr4.tree.Tree.TerminalNode):
-            self._children = []
-        else:
-            self._children = [node(x) for x in instance.getChildren()]
-
-    @property
-    def children(self) -> Iterable[Node]: 
-        return self._children
-
-    def __str__(self):
-        return format_tree(self,
-                           format_node=lambda x: f'{x.name} "{x.value}"',
-                           get_children=lambda x: x.children)
-
-
-class Antlr4Assignment(Antlr4Node, Assignment):
-    def __init__(self, node: Antlr4Node):
-        super().__init__(node)
-        self._node = node
-
-    @property
-    def from_(self) -> Node:
-        ...
-
-    @property
-    def to(self) -> Node:
-        ...
 
 
 class Antlr4Parser(Parser):
@@ -86,11 +18,49 @@ class Antlr4Parser(Parser):
     """
 
     def ast(self, code: str) -> Node:
+        def kind(x):
+            result = type(x).__name__
+
+            # ANTLR4 appends `Context` at the end of the compound node.
+            # For example, if an expression `Program` had parsed,
+            # it'd have a `ProgramContext` name.
+            if result.endswith('Context'):
+                return result[:-len('Context')]
+            
+            # ANTLR4 uses `TerminalNodeImpl` as a name of the terminal node.
+            if result == 'TerminalNodeImpl':
+                return 'Terminal'
+
+            return result
+
+        def content(x):
+            result = x.getText()
+            return result if result != os.linesep else '<CR>'
+
+        def children(x):
+            if isinstance(x, antlr4.tree.Tree.TerminalNode):
+                return []
+            else:
+                return list(map(node, x.getChildren()))
+
+        def node(x):
+            def new_(node: Any, as_: type) -> Node:
+                return as_(kind(node), content(node), children(node))
+
+            if isinstance(x, TaleParser.StatementContext):
+                return new_(x, as_=Statement)
+            if isinstance(x, TaleParser.AssignmentContext):
+                return new_(x, as_=Assignment)
+            if isinstance(x, TaleParser.AssignmentFormContext):
+                return new_(x, as_=Form)
+
+            return new_(x, as_=Node)
+
         parser = pipe(
                 antlr4.InputStream,
                 TaleLexer,
                 antlr4.CommonTokenStream,
                 TaleParser)
-        tree = parser(code).program()
+        program = parser(code).program()
 
-        return Antlr4Node(tree)
+        return node(program)

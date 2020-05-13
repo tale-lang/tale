@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from tale.syntax.nodes import Node, Assignment
+from tale.syntax.nodes import Node, Assignment, Statement
 
 
 class Form:
@@ -43,13 +43,18 @@ class Scope:
         self.bindings.append(Scope.Binding(form ,value))
 
     def resolve(self, node: Node):
-        for child in node.children:
-            x = child.name
-            print(x)
+        def resolve_assignment(x: Assignment):
+            pass
+
+        def resolve_statement(x: Statement):
+            child = x.children[0]
 
             if isinstance(child, Assignment):
-                print('asdasd')
+                resolve_assignment(child)
 
+        for child in node.children:
+            if isinstance(child, Statement):
+                resolve_statement(child)
 
 def evaluate(node: Node) -> Any:
     """Evaluates the syntax tree node and produces the output.
