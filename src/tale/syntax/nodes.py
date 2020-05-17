@@ -54,4 +54,13 @@ class Expression(Statement):
 
 
 class Form(Node):
-    """A node that represents a form of an expression."""
+    """A form of an expression.
+
+    Represents a template that may capture a number of expressions.
+
+    For example, the form `(x) squared` captures `1 squared`, `2 squared`,
+    `3 squared`, and so on.
+
+    Attributes:
+        node: A syntax node that represents the form.
+    """

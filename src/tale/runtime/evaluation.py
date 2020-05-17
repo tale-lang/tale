@@ -1,22 +1,14 @@
 from typing import Any, Optional
 
-from tale.syntax.nodes import Node, Assignment, Statement
+from tale.syntax.nodes import Assignment, Form, Node, Statement
 
 
-class Form:
-    """A form of an expression.
+class Binding:
+    """A binding between a form and a value."""
 
-    Represents a template that may capture a number of expressions.
-
-    For example, the form `(x) squared` captures `1 squared`, `2 squared`,
-    `3 squared`, and so on.
-
-    Attributes:
-        node: A syntax node that represents the form.
-    """
-
-    def __init__(self, node: Node):
-        self.node = node
+    def __init__(self, form: Form, value: Node):
+        self.form = form
+        self.value = value
 
 
 class Scope:
@@ -28,23 +20,24 @@ class Scope:
             is a parent for one.
     """
 
-    class Binding:
-        """A binding between a form and a value."""
-
-        def __init__(self, form: Form, value: Node):
-            self.form = form
-            self.value = value
 
     def __init__(self, parent: Optional['Scope'] = None):
         self.parent = parent
         self.bindings = []
 
     def bind(self, form: Node, value: Node):
-        self.bindings.append(Scope.Binding(form ,value))
+        """Binds the specified value node to the specified form.
+
+        Args:
+            form: A form that holds the binding.
+            value: A value that is bound to the form.
+        """
+
+        self.bindings.append(Binding(form ,value))
 
     def resolve(self, node: Node):
         def resolve_assignment(x: Assignment):
-            pass
+            self.bind(x.form, x.value)
 
         def resolve_statement(x: Statement):
             child = x.children[0]
