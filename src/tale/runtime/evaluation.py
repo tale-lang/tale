@@ -23,9 +23,9 @@ class Scope:
     """A scope of the program execution.
 
     Attributes:
-        parent: An object that represents parent scope of current.
-            For example, an `if` expression inside a function definition
-            is considered as a child scope relatively to the function.
+        parent: An object that represents a parent scope of the current.
+            For example, a function body that contains an if expression
+            is a parent for one.
     """
 
     class Binding:
