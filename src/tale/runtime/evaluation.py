@@ -1,6 +1,6 @@
 from typing import Any, Optional
 
-from tale.syntax.nodes import Assignment, Form, Node, Statement
+from tale.syntax.nodes import Assignment, Expression, Form, Node, Statement
 
 
 class Binding:
@@ -34,30 +34,42 @@ class Scope:
 
         self.bindings.append(Binding(form ,value))
 
-    def resolve(self, node: Node):
+    def resolve(self, node: Node) -> Any:
         """Processes a syntax node.
 
         If node is an assignment, then the new binding will be created in the
         scope.
-        If node is an expression, then its result will be assigned to the
-        return value of the scope.
+        If node is an expression, then it will be resolved.
 
         Args:
             node: A node to resolve.
+
+        Returns:
+            An output of the last expression or None if last node is a
+            Statement.
         """
 
         def resolve_assignment(x: Assignment):
             self.bind(x.form, x.value)
 
-        def resolve_statement(x: Statement):
-            child = x.children[0]
+        def resolve_expression(x: Expression):
+            return x.content
 
-            if isinstance(child, Assignment):
-                resolve_assignment(child)
+        def resolve_statement(x: Statement):
+            x = x.children[0]
+
+            if isinstance(x, Assignment):
+                return resolve_assignment(x)
+            if isinstance(x, Expression):
+                return resolve_expression(x)
+
+        result = None
 
         for child in node.children:
             if isinstance(child, Statement):
-                resolve_statement(child)
+                result = resolve_statement(child)
+
+        return result
 
 def evaluate(node: Node) -> Any:
     """Evaluates the syntax tree node and produces the output.

@@ -33,7 +33,8 @@ def clear_console():
 
 
 def reload_modules():
-    for module in sys.modules.values():
+    modules = list(sys.modules.values())
+    for module in modules:
         if module.__name__.startswith('tale'):
             reload(module)
 
