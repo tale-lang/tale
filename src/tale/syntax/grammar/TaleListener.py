@@ -116,6 +116,33 @@ class TaleListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TaleParser#assignmentBody.
+    def enterAssignmentBody(self, ctx:TaleParser.AssignmentBodyContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#assignmentBody.
+    def exitAssignmentBody(self, ctx:TaleParser.AssignmentBodyContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#simpleAssignmentBody.
+    def enterSimpleAssignmentBody(self, ctx:TaleParser.SimpleAssignmentBodyContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#simpleAssignmentBody.
+    def exitSimpleAssignmentBody(self, ctx:TaleParser.SimpleAssignmentBodyContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#compoundAssignmentBody.
+    def enterCompoundAssignmentBody(self, ctx:TaleParser.CompoundAssignmentBodyContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#compoundAssignmentBody.
+    def exitCompoundAssignmentBody(self, ctx:TaleParser.CompoundAssignmentBodyContext):
+        pass
+
+
     # Enter a parse tree produced by TaleParser#expression.
     def enterExpression(self, ctx:TaleParser.ExpressionContext):
         pass
