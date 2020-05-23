@@ -1,5 +1,3 @@
-from textwrap import dedent
-
 from tale.core import execute
 
 
