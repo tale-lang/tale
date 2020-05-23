@@ -65,7 +65,7 @@ class Scope:
 
         If node is an assignment, then the new binding will be created in the
         scope.
-        If node is an expression, then it will be resolved.
+        If node is an expression, then it will be converted to the value.
 
         Args:
             node: A node to resolve.
