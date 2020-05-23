@@ -39,9 +39,6 @@ class Assignment(Statement):
         `x` is a value (the `value` property of the node).
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def form(self) -> 'Form':
         return self.children[0]
@@ -76,9 +73,6 @@ class UnaryExpression(Expression):
     An unary expression consist of two parts: an argument and the identifier.
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def argument(self) -> 'Node':
         return self.children[0]
@@ -106,9 +100,6 @@ class KeywordExpression(Expression):
     Unlike unary expression, a keyword expression consists of pairs
     of arguments and identifiers.
     """
-
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
 
     @property
     def prefix(self) -> KeywordPrefixExpression:
@@ -156,9 +147,6 @@ class Argument(Node):
     `(x)` is an argument with name `x`.
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def name(self) -> str:
         return self.children[1].content
@@ -175,9 +163,6 @@ class UnaryForm(Form):
         `(x)` is a variable argument of a form;
         `squared` is a simple identifier.
     """
-
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
 
     @property
     def argument(self) -> Argument:
@@ -209,26 +194,28 @@ class KeywordForm(Form):
         `(x)` and `(y)` are arguments.
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
+    @property
+    def prefix(self) -> KeywordPrefixExpression:
+        if isinstance(self.children[0], Argument):
+            return self.children[0]
 
-        self.parts = []
-        self.prefix = None
+    @property
+    def parts(self) -> Iterable[Tuple[Node, Node]]:
+        name = None
+        children = self.children
 
-        if len(children) > 0 and isinstance(children[0], Argument):
-            self.prefix = children[0]
+        if self.prefix is not None:
             children = children[1:]
 
-        current = None
-
-        # TODO: Refactor this.
-
-        for node in children:
-            if node.content == ':':
+        for x in children:
+            if x.content == ':':
                 continue
 
-            if current is None:
-                current = node
+            if name is None:
+                name = x
             else:
-                self.parts.append((current, node))
-                current = None
+                yield (name, x)
+                name = None
+
+
+
