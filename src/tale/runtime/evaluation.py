@@ -12,6 +12,28 @@ class CapturedArgument:
 
 
 class CapturedExpression:
+    """An expression that was captured by a form.
+
+    Represents captured node and arguments.
+
+    For example, the following expression:
+        1 squared
+    Could be captured by the following form:
+        (x) squared = x * x
+
+    Attributes:
+        node: A node that rerepsents a value of the form captured the initial
+            expression.
+            For example, `1 squared` could be captured by `(x) squared = x * x`
+            form, and the `node` would represent `x * x`.
+        arguments: A sequence of arguments that were captured with the
+            expression.
+            For example, when the `1 squared` expression is captured by
+            the `(x) squared = x * x` one, arguments list would contain
+            an instance of `CapturedArgument` with `name` equal to `x`, and
+            `value` equal to node that represents `1`.
+    """
+
     def __init__(self, node: Node, arguments: Iterable[CapturedArgument] = None):
         self.node = node
         self.arguments = arguments or []
@@ -50,6 +72,7 @@ class Binding:
         if isinstance(form, PrimitiveForm) and \
            isinstance(node, PrimitiveExpression):
             return captures_simple(form, node)
+
         if isinstance(form, UnaryForm) and \
            isinstance(node, UnaryExpression):
             return captures_unary(form, node)
