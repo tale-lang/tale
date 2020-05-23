@@ -90,7 +90,7 @@ class KeywordPrefixExpression(Expression):
     For example, the `add: 1 to: list` expression consists of two pairs:
     `(add, 1)` and `(to, 1)`.
 
-    However, sometimes a keyword expression first node is an argument node.
+    However, sometimes the first node of a keyword expression is an argument node.
     For example, the `1 added_to: list` expression consists of `1` and a pair
     `(added_to, list)`. Here the `1` expression is a prefix.
     """
