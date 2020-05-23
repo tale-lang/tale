@@ -81,10 +81,11 @@ class Binding:
             form_parts = list(form.parts)
             node_parts = list(node.parts)
 
-            captured = []
-
             if len(form_parts) != len(node_parts):
                 return None
+
+            captured = []
+
             if form.prefix is not None and node.prefix is None:
                 return None
             if form.prefix is None and node.prefix is not None:
@@ -96,11 +97,11 @@ class Binding:
 
             parts = zip(form_parts, node_parts)
 
-            for (form_name, form_arg), (node_name, node_arg) in parts:
+            for (form_name, form_arg), (node_name, node_value) in parts:
                 if form_name.content != node_name.content:
                     return None
 
-                captured.append(CapturedArgument(form_arg.name, node_arg))
+                captured.append(CapturedArgument(form_arg.name, node_value))
 
             return CapturedExpression(self.value, captured)
 
