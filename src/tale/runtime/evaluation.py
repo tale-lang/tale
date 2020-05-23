@@ -40,7 +40,7 @@ class Scope:
         """Finds a binding that could capture an expression.
 
         Args:
-            node: An expression to capture.
+            expression: An expression to capture.
 
         Returns:
             An instance of `Binding`.
