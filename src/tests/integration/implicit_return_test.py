@@ -14,3 +14,17 @@ x
 
     # Assert.
     assert out == 'x'
+
+
+def test_two_expressions():
+    # Arrange.
+    program = """
+x
+y
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'y'
