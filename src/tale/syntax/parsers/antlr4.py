@@ -65,20 +65,20 @@ class Antlr4Parser(Parser):
 
                 return new_(x, as_=Expression)
 
+            if isinstance(x, TaleParser.PrimitiveContext):
+                return new_(x, as_=PrimitiveExpression)
+            if isinstance(x, TaleParser.UnaryContext):
+                return new_(x, as_=UnaryExpression)
+
             if isinstance(x, TaleParser.KeywordPrefixContext):
                 return new_(x, as_=KeywordPrefixExpression)
-
             if isinstance(x, TaleParser.KeywordNameContext):
                 return new_(x, as_=KeywordNameExpression)
-
             if isinstance(x, TaleParser.KeywordValueContext):
                 return new_(x, as_=KeywordValueExpression)
 
             if isinstance(x, TaleParser.ArgumentContext):
                 return new_(x, as_=Argument)
-
-            if isinstance(x, TaleParser.PrimitiveContext):
-                return new_(x, as_=PrimitiveExpression)
 
             return new_(x, as_=Node)
 

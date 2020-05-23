@@ -4,6 +4,20 @@ from tale.core import execute
 def test_simple_keyword_form():
     # Arrange.
     program = """
+just: (x) = 1
+just: 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '1'
+
+
+def test_simple_keyword_form_returns_arg():
+    # Arrange.
+    program = """
 just: (x) = x
 just: 1
 """
@@ -57,15 +71,16 @@ def test_keyword_form_with_prefix_first_arg():
     assert out == '1'
 
 
-def test_keyword_form_with_prefix_second_arg():
+def test_keyword_form_combined_with_unary_form():
     # Arrange.
     program = """
-(x) just: (y) = y
-1 just: 2
+(x) squared = x
+just: (x) = x
+just: 1 squared
 """
 
     # Act.
     out = execute(program)
 
     # Assert.
-    assert out == '2'
+    assert out == '1'

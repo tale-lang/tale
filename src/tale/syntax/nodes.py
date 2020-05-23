@@ -89,15 +89,15 @@ class UnaryExpression(Expression):
 
 
 class KeywordPrefixExpression(Expression):
-    ...
+    pass
 
 
 class KeywordNameExpression(Expression):
-    ...
+    pass
 
 
 class KeywordValueExpression(Expression):
-    ...
+    pass
 
 
 class KeywordExpression(Expression):
@@ -220,6 +220,8 @@ class KeywordForm(Form):
             children = children[1:]
 
         current = None
+
+        # TODO: Refactor this.
 
         for node in children:
             if node.content == ':':

@@ -1,9 +1,9 @@
 from typing import Any, Iterable, Optional
 
 from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
-                               KeywordForm, Node, PrimitiveExpression,
-                               PrimitiveForm, Statement, UnaryExpression,
-                               UnaryForm)
+                               KeywordForm, KeywordValueExpression, Node,
+                               PrimitiveExpression, PrimitiveForm, Statement,
+                               UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -108,6 +108,9 @@ class Binding:
 
         form = self.form
 
+        if isinstance(node, KeywordValueExpression):
+            node = node.children[0]
+
         if isinstance(form, PrimitiveForm) and \
            isinstance(node, PrimitiveExpression):
             return captures_simple(form, node)
@@ -146,7 +149,12 @@ class Scope:
         captures = (x.capture(node) for x in self.bindings)
         captures = (x for x in captures if x)
 
-        return next(captures, None)
+        result = next(captures, None)
+
+        if result is not None:
+            return result
+        if self.parent is not None:
+            return self.parent.capture(node)
 
     def bind(self, form: Node, value: Node):
         """Binds the specified value node to the specified form.
