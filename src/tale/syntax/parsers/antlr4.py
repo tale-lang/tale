@@ -5,7 +5,7 @@ import antlr4
 
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
-from tale.syntax.nodes import Node, Assignment, Statement, Form
+from tale.syntax.nodes import Assignment, Expression, Form, Node, Statement
 from tale.syntax.parsers.parser import Parser
 from tale.common import pipe
 
@@ -53,6 +53,8 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=Assignment)
             if isinstance(x, TaleParser.AssignmentFormContext):
                 return new_(x, as_=Form)
+            if isinstance(x, TaleParser.ExpressionContext):
+                return new_(x, as_=Expression)
 
             return new_(x, as_=Node)
 
