@@ -6,6 +6,15 @@ from tale.syntax.nodes import (Assignment, Expression, Form, Node,
 
 
 class CapturedArgument:
+    """An argument that were captured with an expression.
+
+    Consider looking at the `CapturedExpression` comment for more detailed docs.
+
+    Attributes:
+        name: A name of the argument.
+        value: A node that represents an actual value of the argument.
+    """
+
     def __init__(self, name: str, value: Node):
         self.name = name
         self.value = value
