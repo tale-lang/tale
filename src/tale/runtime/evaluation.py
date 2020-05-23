@@ -35,6 +35,17 @@ class Scope:
         self.bindings.append(Binding(form ,value))
 
     def resolve(self, node: Node):
+        """Processes a syntax node.
+
+        If node is an assignment, then the new binding will be created in the
+        scope.
+        If node is an expression, then its result will be assigned to the
+        return value of the scope.
+
+        Args:
+            node: A node to resolve.
+        """
+
         def resolve_assignment(x: Assignment):
             self.bind(x.form, x.value)
 
