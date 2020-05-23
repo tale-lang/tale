@@ -71,8 +71,7 @@ class Scope:
             node: A node to resolve.
 
         Returns:
-            An output of the last expression or None if last node is a
-            Statement.
+            An output of the last expression or None.
         """
 
         def resolve_assignment(x: Assignment):
