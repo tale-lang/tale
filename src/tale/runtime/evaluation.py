@@ -145,15 +145,13 @@ class Scope:
             An instance of `CapturedExpression`.
         """
 
+        def parent_capture():
+            return self.parent.capture(node) if self.parent is not None else None
+
         captures = (x.capture(node) for x in self.bindings)
         captures = (x for x in captures if x)
 
-        result = next(captures, None)
-
-        if result is not None:
-            return result
-        if self.parent is not None:
-            return self.parent.capture(node)
+        return next(captures, None) or parent_capture()
 
     def bind(self, form: Node, value: Node):
         """Binds the specified value node to the specified form.
