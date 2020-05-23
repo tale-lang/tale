@@ -35,15 +35,6 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#assignmentName.
-    def enterAssignmentName(self, ctx:TaleParser.AssignmentNameContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#assignmentName.
-    def exitAssignmentName(self, ctx:TaleParser.AssignmentNameContext):
-        pass
-
-
     # Enter a parse tree produced by TaleParser#assignmentForm.
     def enterAssignmentForm(self, ctx:TaleParser.AssignmentFormContext):
         pass
@@ -86,6 +77,15 @@ class TaleListener(ParseTreeListener):
 
     # Exit a parse tree produced by TaleParser#keywordForm.
     def exitKeywordForm(self, ctx:TaleParser.KeywordFormContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#simpleForm.
+    def enterSimpleForm(self, ctx:TaleParser.SimpleFormContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#simpleForm.
+    def exitSimpleForm(self, ctx:TaleParser.SimpleFormContext):
         pass
 
 

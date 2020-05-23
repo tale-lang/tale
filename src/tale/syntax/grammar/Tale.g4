@@ -4,14 +4,13 @@ program: NEWLINE* (statement NEWLINE*)*;
 statement: assignment | expression;
 
 
-assignment: assignmentName '=' (expression | expressionInBrackets);
-assignmentName: assignmentForm | IDENTIFIER;
+assignment: assignmentForm '=' (expression | expressionInBrackets);
 
 assignmentForm: unaryForm
               | unaryOperatorForm
               | binaryForm
               | keywordForm
-              | IDENTIFIER;
+              | simpleForm;
 
 unaryForm: argument IDENTIFIER;
 
@@ -20,6 +19,8 @@ unaryOperatorForm: OPERATOR argument;
 binaryForm: argument OPERATOR argument;
 
 keywordForm: argument? (IDENTIFIER ':' argument)+;
+
+simpleForm: IDENTIFIER;
 
 argument: '(' argumentName (':' argumentType)? ')';
 argumentName: IDENTIFIER;

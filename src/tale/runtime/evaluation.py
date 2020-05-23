@@ -1,6 +1,51 @@
-from typing import Any, Optional
+from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import Assignment, Expression, Form, Node, Statement
+from tale.syntax.nodes import (Assignment, Expression, Form, Node,
+                               PrimitiveExpression, PrimitiveForm, Statement,
+                               UnaryExpression, UnaryForm)
+
+
+class CapturedArgument:
+    """An argument that were captured with an expression.
+
+    Consider looking at the `CapturedExpression` comment for more detailed docs.
+
+    Attributes:
+        name: A name of the argument.
+        value: A node that represents an actual value of the argument.
+    """
+
+    def __init__(self, name: str, value: Node):
+        self.name = name
+        self.value = value
+
+
+class CapturedExpression:
+    """An expression that was captured by a form.
+
+    Represents captured node and arguments.
+
+    For example, the following expression:
+        1 squared
+    Could be captured by the following form:
+        (x) squared = x * x
+
+    Attributes:
+        node: A node that rerepsents a value of the form captured the initial
+            expression.
+            For example, `1 squared` could be captured by `(x) squared = x * x`
+            form, and the `node` would represent `x * x`.
+        arguments: A sequence of arguments that were captured with the
+            expression.
+            For example, when the `1 squared` expression is captured by
+            the `(x) squared = x * x` one, arguments list would contain
+            an instance of `CapturedArgument` with `name` equal to `x`, and
+            `value` equal to node that represents `1`.
+    """
+
+    def __init__(self, node: Node, arguments: Iterable[CapturedArgument] = None):
+        self.node = node
+        self.arguments = arguments or []
 
 
 class Binding:
@@ -10,17 +55,36 @@ class Binding:
         self.form = form
         self.value = value
 
-    def captures(self, expression: str) -> bool:
-        """Checks whether the form of the binding could capture an expression.
+    def capture(self, node: Node) -> CapturedExpression:
+        """Captures an expression if it's possible.
 
         Args:
-            expression: A string that represents a piece of code.
+            node: A node that represents an expression.
 
         Returns:
-            `True` if `expression` could be catured by `form`, otherwise `False`.
+            An instance of `CapturedExpression` if `expression` matches the
+            form of the binding, otherwise `None`.
         """
 
-        return self.form.content == expression
+        def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
+            if form.content == node.content:
+                return CapturedExpression(self.value)
+
+        def captures_unary(form: UnaryForm, node: UnaryExpression):
+            if form.identifier == node.identifier:
+                return CapturedExpression(
+                        self.value,
+                        [CapturedArgument(form.argument.name, node.argument)])
+
+        form = self.form
+
+        if isinstance(form, PrimitiveForm) and \
+           isinstance(node, PrimitiveExpression):
+            return captures_simple(form, node)
+
+        if isinstance(form, UnaryForm) and \
+           isinstance(node, UnaryExpression):
+            return captures_unary(form, node)
 
 
 class Scope:
@@ -31,24 +95,24 @@ class Scope:
             For example, a function scope is a parent for if statement scope.
     """
 
-
     def __init__(self, parent: Optional['Scope'] = None):
         self.parent = parent
         self.bindings = []
 
-    def binding(self, expression: str):
-        """Finds a binding that could capture an expression.
+    def capture(self, node: Node) -> CapturedExpression:
+        """Finds a binding that could capture an expression, and captures it.
 
         Args:
-            expression: An expression to capture.
+            node: A node that represents an expression.
 
         Returns:
-            An instance of `Binding`.
+            An instance of `CapturedExpression`.
         """
 
-        for binding in self.bindings:
-            if binding.captures(expression):
-                return binding
+        captures = (x.capture(node) for x in self.bindings)
+        captures = (x for x in captures if x)
+
+        return next(captures, None)
 
     def bind(self, form: Node, value: Node):
         """Binds the specified value node to the specified form.
@@ -65,7 +129,7 @@ class Scope:
 
         If node is an assignment, then the new binding will be created in the
         scope.
-        If node is an expression, then it will be resolved.
+        If node is an expression, then it will be converted to the value.
 
         Args:
             node: A node to resolve.
@@ -75,15 +139,22 @@ class Scope:
         """
 
         def resolve_assignment(x: Assignment):
+            print('Resolving: ' + x.content)
             self.bind(x.form, x.value)
 
         def resolve_expression(x: Expression):
-            binding = self.binding(x.content)
+            print('Resolving: ' + x.content)
+            captured = self.capture(x)
 
-            if binding is None:
+            if captured is None:
                 return x.content
             else:
-                return resolve_expression(binding.value)
+                scope = Scope(parent=self)
+
+                for arg in captured.arguments:
+                    scope.bind(PrimitiveForm(arg.name), arg.value)
+
+                return scope.resolve(captured.node)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
@@ -93,11 +164,14 @@ class Scope:
             if isinstance(x, Expression):
                 return resolve_expression(x)
 
+        if isinstance(node, Expression):
+            return resolve_expression(node)
+
         result = None
 
-        for child in node.children:
-            if isinstance(child, Statement):
-                result = resolve_statement(child)
+        for x in node.children:
+            if isinstance(x, Statement):
+                result = resolve_statement(x)
 
         return result
 
