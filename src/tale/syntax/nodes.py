@@ -64,6 +64,18 @@ class Assignment(Statement):
         return self.children[2]
 
 
+class AssignmentBody(Node):
+    """An assignment body node.
+
+    Can be either a simple expression:
+        x = 1
+    Or a sequence of statements:
+        x =
+            y = 1
+            y
+    """
+
+
 class Expression(Statement):
     """An expression node.
 

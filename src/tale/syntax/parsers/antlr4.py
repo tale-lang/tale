@@ -7,9 +7,9 @@ from tree_format import format_tree
 from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
-from tale.syntax.nodes import (Argument, Assignment, Expression,
-                               KeywordExpression, KeywordForm, KeywordName,
-                               KeywordPrefix, KeywordValue, Node,
+from tale.syntax.nodes import (Argument, Assignment, AssignmentBody,
+                               Expression, KeywordExpression, KeywordForm,
+                               KeywordName, KeywordPrefix, KeywordValue, Node,
                                PrimitiveExpression, PrimitiveForm, Program,
                                Statement, Token, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
@@ -75,7 +75,7 @@ class Antlr4Parser(Parser):
 
             if isinstance(x, TaleParser.AssignmentBodyContext):
                 x = list(x.getChildren())[0]
-                return node(x)
+                return new_(x, as_=AssignmentBody)
             
             if isinstance(x, TaleParser.SimpleAssignmentBodyContext):
                 x = list(x.getChildren())[0]
@@ -129,6 +129,7 @@ class Antlr4Parser(Parser):
             if isinstance(x, antlr4.TerminalNode):
                 return new_(x, as_=Token)
 
+            print(type(x))
             return new_(x, as_=Node)
 
         parser = pipe(

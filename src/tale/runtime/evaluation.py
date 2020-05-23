@@ -178,7 +178,7 @@ class Scope:
         """
 
         def resolve_assignment(x: Assignment):
-            print(f'Binding: {x.form.content}')
+            print(f'Assigning: {x.form.content}')
             self.bind(x.form, x.value)
 
         def resolve_expression(x: Expression):
@@ -186,10 +186,8 @@ class Scope:
             captured = self.capture(x)
 
             if captured is None:
-                print('Resolving as is')
                 return x.content
             else:
-                print('Captured expression')
                 scope = Scope(parent=self)
 
                 for arg in captured.arguments:
@@ -213,6 +211,8 @@ class Scope:
         for x in node.children:
             if isinstance(x, Statement):
                 result = resolve_statement(x)
+            if isinstance(x, Expression):
+                result = resolve_expression(x)
 
         return result
 
