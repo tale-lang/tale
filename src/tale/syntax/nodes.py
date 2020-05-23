@@ -33,14 +33,6 @@ class Program(Node):
     """A main program node."""
 
 
-class Indent(Node):
-    """An indent node."""
-
-
-class Dedent(Node):
-    """A dedent node."""
-
-
 class Statement(Node):
     """A statement node.
 

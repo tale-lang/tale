@@ -29,12 +29,7 @@ def nextToken(self):
 program: (NEWLINE | statement)*;
 statement: assignment | expression;
 
-
-assignment: simpleAssignment
-          | compoundAssignment;
-
-simpleAssignment: assignmentForm '=' (expression | expressionInBrackets);
-compoundAssignment: assignmentForm '=' INDENT statement+ DEDENT;
+assignment: assignmentForm '=' assignmentBody;
 
 assignmentForm: unaryForm
               | unaryOperatorForm
@@ -43,19 +38,20 @@ assignmentForm: unaryForm
               | simpleForm;
 
 unaryForm: argument IDENTIFIER;
-
 unaryOperatorForm: OPERATOR argument;
-
 binaryForm: argument OPERATOR argument;
-
 keywordForm: argument? (IDENTIFIER ':' argument)+;
-
 simpleForm: IDENTIFIER;
 
 argument: '(' argumentName (':' argumentType)? ')';
 argumentName: IDENTIFIER;
 argumentType: IDENTIFIER;
 
+assignmentBody: simpleAssignmentBody
+              | compoundAssignmentBody;
+
+simpleAssignmentBody: expression | expressionInBrackets;
+compoundAssignmentBody: INDENT statement+ DEDENT;
 
 expression: unary
           | binary

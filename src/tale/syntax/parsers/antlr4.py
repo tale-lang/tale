@@ -67,14 +67,15 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=Statement)
 
             if isinstance(x, TaleParser.AssignmentContext):
+                return new_(x, as_=Assignment)
+
+            if isinstance(x, TaleParser.AssignmentBodyContext):
                 x = list(x.getChildren())[0]
                 return node(x)
-
-            if isinstance(x, TaleParser.SimpleAssignmentContext):
-                return new_(x, as_=Assignment)
-
-            if isinstance(x, TaleParser.CompoundAssignmentContext):
-                return new_(x, as_=Assignment)
+            
+            if isinstance(x, TaleParser.SimpleAssignmentBodyContext):
+                x = list(x.getChildren())[0]
+                return node(x)
 
             if isinstance(x, TaleParser.AssignmentFormContext):
                 x = list(x.getChildren())[0]

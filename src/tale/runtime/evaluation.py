@@ -207,7 +207,6 @@ class Scope:
 
         if isinstance(node, Expression):
             return resolve_expression(node)
-        print(type(node))
 
         result = None
 
