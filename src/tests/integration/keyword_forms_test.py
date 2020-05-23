@@ -15,6 +15,34 @@ just: 1
     assert out == '1'
 
 
+def test_unary_form_with_two_parts_first_arg():
+    # Arrange.
+    program = """
+add: (x) to: (y) = x
+add: 1 to: 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '1'
+
+
+def test_unary_form_with_two_parts_second_arg():
+    # Arrange.
+    program = """
+add: (x) to: (y) = y
+add: 1 to: 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '2'
+
+
 def test_unary_form_with_prefix_first_arg():
     # Arrange.
     program = """
