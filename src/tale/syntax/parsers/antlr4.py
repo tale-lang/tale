@@ -3,8 +3,8 @@ import os
 
 import antlr4
 
-from grammar.TaleLexer import TaleLexer
-from grammar.TaleParser import TaleParser
+from tale.syntax.grammar.TaleLexer import TaleLexer
+from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import Node, Assignment, Statement, Form
 from tale.syntax.parsers.parser import Parser
 from tale.common import pipe
