@@ -27,3 +27,17 @@ def test_nested_expression():
 
     # Assert.
     assert out == '1'
+
+
+def test_not_matched_expression():
+    # Arrange.
+    program = """
+(x) just = x
+1 jusx
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '1jusx'
