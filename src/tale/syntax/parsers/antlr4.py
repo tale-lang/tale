@@ -126,6 +126,9 @@ class Antlr4Parser(Parser):
             if (x.getText() == 'newLine'):
                 return Token('<NL>')
 
+            if isinstance(x, antlr4.TerminalNode):
+                return new_(x, as_=Token)
+
             return new_(x, as_=Node)
 
         parser = pipe(
