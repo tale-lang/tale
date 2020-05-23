@@ -16,12 +16,29 @@ class Node:
 
     def __init__(self, content: str, children: Optional[Sequence['Node']] = None):
         self.content = content
-        self.children = children
+        self.children = children or []
 
     def __str__(self):
+        def name(node):
+            if type(node) == Node:
+                return ' "' + node.content + '"'
+            return ''
+
         return format_tree(self,
-                           format_node=lambda x: f'{type(x).__name__} "{x.content}"',
+                           format_node=lambda x: f'{type(x).__name__}{name(x)}',
                            get_children=lambda x: x.children)
+
+
+class Program(Node):
+    """A main program node."""
+
+
+class Indent(Node):
+    """An indent node."""
+
+
+class Dedent(Node):
+    """A dedent node."""
 
 
 class Statement(Node):

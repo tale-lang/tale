@@ -34,7 +34,7 @@ assignment: simpleAssignment
           | compoundAssignment;
 
 simpleAssignment: assignmentForm '=' (expression | expressionInBrackets);
-compoundAssignment: assignmentForm '=' INDENT (NEWLINE | statement)+ DEDENT;
+compoundAssignment: assignmentForm '=' INDENT statement+ DEDENT;
 
 assignmentForm: unaryForm
               | unaryOperatorForm
@@ -60,7 +60,7 @@ argumentType: IDENTIFIER;
 expression: unary
           | binary
           | keyword
-          | primitive;
+          | primitive NEWLINE;
 expressionInBrackets: '(' expression ')';
 expressionInBracketsWithOperator: OPERATOR expressionInBrackets;
 

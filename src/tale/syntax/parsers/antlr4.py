@@ -11,8 +11,8 @@ from tale.syntax.nodes import (Argument, Assignment, Expression,
                                KeywordExpression, KeywordForm,
                                KeywordNameExpression, KeywordPrefixExpression,
                                KeywordValueExpression, Node,
-                               PrimitiveExpression, PrimitiveForm, Statement,
-                               UnaryExpression, UnaryForm)
+                               PrimitiveExpression, PrimitiveForm, Program,
+                               Statement, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -60,6 +60,9 @@ class Antlr4Parser(Parser):
             def new_(node: Any, as_: type) -> Node:
                 return as_(content(node), children(node))
 
+            if isinstance(x, TaleParser.ProgramContext):
+                return new_(x, as_=Program)
+
             if isinstance(x, TaleParser.StatementContext):
                 return new_(x, as_=Statement)
 
@@ -68,6 +71,9 @@ class Antlr4Parser(Parser):
                 return node(x)
 
             if isinstance(x, TaleParser.SimpleAssignmentContext):
+                return new_(x, as_=Assignment)
+
+            if isinstance(x, TaleParser.CompoundAssignmentContext):
                 return new_(x, as_=Assignment)
 
             if isinstance(x, TaleParser.AssignmentFormContext):
@@ -92,8 +98,6 @@ class Antlr4Parser(Parser):
 
                 return new_(x, as_=Expression)
 
-            if isinstance(x, TaleParser.CompoundAssignmentContext):
-                return node(list(x.getChildren())[0])
 
             if isinstance(x, TaleParser.PrimitiveContext):
                 return new_(x, as_=PrimitiveExpression)
@@ -109,6 +113,13 @@ class Antlr4Parser(Parser):
 
             if isinstance(x, TaleParser.ArgumentContext):
                 return new_(x, as_=Argument)
+
+            if (x.getText() == 'indent'):
+                return Node('<INDENT>')
+            if (x.getText() == 'dedent'):
+                return Node('<DEDENT>')
+            if (x.getText() == 'newLine'):
+                return Node('<NL>')
 
             return new_(x, as_=Node)
 
