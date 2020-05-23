@@ -15,9 +15,8 @@ class Scope:
     """A scope of the program execution.
 
     Attributes:
-        parent: An object that represents a parent scope of the current.
-            For example, a function body that contains an if expression
-            is a parent for one.
+        parent: A parent scope of the current scope.
+            For example, a function scope is a parent for if statement scope.
     """
 
 
