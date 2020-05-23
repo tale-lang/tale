@@ -11,18 +11,19 @@ import click
 
 
 def build_grammar_if_changed():
-    def build_grammar():
+    def build(grammar: str):
         antlr4_path = '/usr/local/lib/antlr-4.8-complete.jar:$CLASSPATH'
         subprocess.call(f'java -Xmx500M -cp "{antlr4_path}" ' +
-                        f'org.antlr.v4.Tool grammar/Tale.g4 -Dlanguage=Python3',
+                        f'org.antlr.v4.Tool {grammar} -Dlanguage=Python3',
                         shell=True)
 
-    this = build_grammar_if_changed  # Just shortcut.
-    change_time = os.stat('grammar/Tale.g4')
+    this = build_grammar_if_changed
+    grammar = 'tale/syntax/grammar/Tale.g4'
+    change_time = os.stat(grammar)
 
     if hasattr(this, 'change_time') and this.change_time != change_time:
         print('[System] Rebuilding grammar')
-        build_grammar()
+        build(grammar)
 
     this.change_time = change_time
 

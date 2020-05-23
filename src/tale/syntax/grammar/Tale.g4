@@ -1,6 +1,6 @@
 grammar Tale;
 
-program: (statement NEWLINE)* statement;
+program: (statement NEWLINE*)*;
 statement: assignment | expression;
 
 
