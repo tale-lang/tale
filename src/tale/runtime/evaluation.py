@@ -55,7 +55,7 @@ def evaluate(node: Node) -> Any:
         tree: A root node of the syntax tree that represents the program.
 
     Returns:
-        A value that represents the output of the executing program.
+        A an output of the program.
     """
 
     return Scope().resolve(node)
