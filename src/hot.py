@@ -17,8 +17,8 @@ def build_grammar_if_changed():
                         f'org.antlr.v4.Tool grammar/Tale.g4 -Dlanguage=Python3',
                         shell=True)
 
-    this = build_grammar_if_changed  # Just shortcut.
-    change_time = os.stat('grammar/Tale.g4')
+    this = build_grammar_if_changed
+    change_time = os.stat('tale/syntax/grammar/Tale.g4')
 
     if hasattr(this, 'change_time') and this.change_time != change_time:
         print('[System] Rebuilding grammar')
