@@ -87,7 +87,7 @@ a = 1 -- Another one.
 
 ---
 A multi-line comment. Can be used to document any kind of stuff.
-Here is an example of doc-comment for `+` operator.
+This is an example of one for `+` operator.
 
 Accepts:
     x: First addend.
