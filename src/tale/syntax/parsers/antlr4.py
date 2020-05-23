@@ -65,6 +65,9 @@ class Antlr4Parser(Parser):
             def new_(node: Any, as_: type) -> Node:
                 return as_(content(node), children(node))
 
+            def new_child(node: Any, as_: type) -> Node:
+                return new_(next(node.getChildren()), as_)
+
             if isinstance(x, TaleParser.ProgramContext):
                 return new_(x, as_=Program)
 
@@ -75,25 +78,25 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=Assignment)
 
             if isinstance(x, TaleParser.AssignmentBodyContext):
-                x = list(x.getChildren())[0]
-                return new_(x, as_=AssignmentBody)
+                return new_child(x, as_=AssignmentBody)
             
             if isinstance(x, TaleParser.SimpleAssignmentBodyContext):
-                x = list(x.getChildren())[0]
-                return node(x)
+                return node(next(x.getChildren()))
 
             if isinstance(x, TaleParser.AssignmentFormContext):
-                x = list(x.getChildren())[0]
+                x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.SimpleFormContext):
                     return new_(x, as_=PrimitiveForm)
+
                 if isinstance(x, TaleParser.UnaryFormContext):
                     return new_(x, as_=UnaryForm)
+
                 if isinstance(x, TaleParser.KeywordFormContext):
                     return new_(x, as_=KeywordForm)
 
             if isinstance(x, TaleParser.ExpressionContext):
-                x = list(x.getChildren())[0]
+                x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.PrimitiveContext):
                     return new_(x, as_=PrimitiveExpression)
@@ -104,16 +107,18 @@ class Antlr4Parser(Parser):
 
                 return new_(x, as_=Expression)
 
-
             if isinstance(x, TaleParser.PrimitiveContext):
                 return new_(x, as_=PrimitiveExpression)
+
             if isinstance(x, TaleParser.UnaryContext):
                 return new_(x, as_=UnaryExpression)
 
             if isinstance(x, TaleParser.KeywordPrefixContext):
                 return new_(x, as_=KeywordPrefix)
+
             if isinstance(x, TaleParser.KeywordNameContext):
                 return new_(x, as_=KeywordName)
+
             if isinstance(x, TaleParser.KeywordValueContext):
                 return new_(x, as_=KeywordValue)
 
@@ -122,15 +127,16 @@ class Antlr4Parser(Parser):
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')
+
             if (x.getText() == 'dedent'):
                 return Token('<DEDENT>')
+
             if (x.getText() == 'newLine'):
                 return Token('<NL>')
 
             if isinstance(x, antlr4.TerminalNode):
                 return new_(x, as_=Token)
 
-            print(type(x))
             return new_(x, as_=Node)
 
         parser = pipe(
