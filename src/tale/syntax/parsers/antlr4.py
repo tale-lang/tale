@@ -18,7 +18,8 @@ from tale.syntax.parsers.parser import Parser
 class Antlr4DebugNode:
     """An ANTLR4 syntax node that is used for debugging purposes.
 
-    Needed to check the raw syntax tree created by ANTLR4.
+    It's mainly needed for checking the raw syntax tree created by ANTLR4.
+    The raw syntax tree is a bit longer than the one created for Tale.
     """
 
     def __init__(self, node):
