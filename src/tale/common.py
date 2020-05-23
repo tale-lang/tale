@@ -1,5 +1,29 @@
-from typing import Any, Callable, List
 from functools import reduce
+from itertools import zip_longest
+from typing import Any, Callable, Iterable, List
+
+
+def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
+    """Groups an iterable into chunks of the specified size.
+
+    Args:
+        iterable: An iterable that will be grouped.
+        by: A size of each chunk.
+
+    Returns:
+        A sequence of tuples of the constant size.
+
+    Examples:
+        >>> list(group([1, 2, 3, 4], by=1))
+        [(1,), (2,), (3,), (4,)]
+        >>> list(group([1, 2, 3, 4], by=2))
+        [(1, 2), (3, 4)]
+        >>> list(group([1, 2, 3, 4], by=3))
+        [(1, 2, 3), (4, None, None)]
+    """
+
+    args = [iter(iterable)] * by
+    return zip_longest(*args)
 
 
 def pipe(*funcs: List[Callable]) -> Any:

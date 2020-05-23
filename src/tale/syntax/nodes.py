@@ -1,12 +1,8 @@
 from typing import Any, Iterable, Optional, Sequence, Tuple
-from itertools import zip_longest
 
 from tree_format import format_tree
 
-
-def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
-    args = [iter(iterable)] * by
-    return zip_longest(*args)
+from tale.common import group
 
 
 class Node:
