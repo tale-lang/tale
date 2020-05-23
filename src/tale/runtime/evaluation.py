@@ -1,8 +1,9 @@
 from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import (Assignment, Expression, Form, Node,
-                               PrimitiveExpression, PrimitiveForm, Statement,
-                               UnaryExpression, UnaryForm)
+from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
+                               KeywordForm, Node, PrimitiveExpression,
+                               PrimitiveForm, Statement, UnaryExpression,
+                               UnaryForm)
 
 
 class CapturedArgument:
@@ -76,6 +77,35 @@ class Binding:
                         self.value,
                         [CapturedArgument(form.argument.name, node.argument)])
 
+        def captures_keyword(form: KeywordForm, node: KeywordExpression):
+            form_parts = list(form.parts)
+            node_parts = list(node.parts)
+
+            captured = []
+
+            if len(form_parts) != len(node_parts):
+                return None
+            if form.prefix is not None and node.prefix is None:
+                return None
+            if form.prefix is None and node.prefix is not None:
+                return None
+            if form.prefix is not None and node.prefix is not None:
+                captured.append(CapturedArgument(
+                    form.prefix.name,
+                    node.prefix))
+
+            parts = iter(node_parts)
+
+            for name, arg in form_parts:
+                node_name, node_arg = next(parts)
+
+                if name.content != node_name.content:
+                    return None
+
+                captured.append(CapturedArgument(arg.name, node_arg))
+
+            return CapturedExpression(self.value, captured)
+
         form = self.form
 
         if isinstance(form, PrimitiveForm) and \
@@ -85,6 +115,10 @@ class Binding:
         if isinstance(form, UnaryForm) and \
            isinstance(node, UnaryExpression):
             return captures_unary(form, node)
+
+        if isinstance(form, KeywordForm) and \
+           isinstance(node, KeywordExpression):
+            return captures_keyword(form, node)
 
 
 class Scope:

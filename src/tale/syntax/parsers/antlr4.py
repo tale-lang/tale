@@ -6,7 +6,10 @@ import antlr4
 from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
-from tale.syntax.nodes import (Argument, Assignment, Expression, Node,
+from tale.syntax.nodes import (Argument, Assignment, Expression,
+                               KeywordExpression, KeywordForm,
+                               KeywordNameExpression, KeywordPrefixExpression,
+                               KeywordValueExpression, Node,
                                PrimitiveExpression, PrimitiveForm, Statement,
                                UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
@@ -36,8 +39,10 @@ class Antlr4Parser(Parser):
 
             if isinstance(x, TaleParser.StatementContext):
                 return new_(x, as_=Statement)
+
             if isinstance(x, TaleParser.AssignmentContext):
                 return new_(x, as_=Assignment)
+
             if isinstance(x, TaleParser.AssignmentFormContext):
                 x = list(x.getChildren())[0]
 
@@ -45,6 +50,8 @@ class Antlr4Parser(Parser):
                     return new_(x, as_=PrimitiveForm)
                 if isinstance(x, TaleParser.UnaryFormContext):
                     return new_(x, as_=UnaryForm)
+                if isinstance(x, TaleParser.KeywordFormContext):
+                    return new_(x, as_=KeywordForm)
 
             if isinstance(x, TaleParser.ExpressionContext):
                 x = list(x.getChildren())[0]
@@ -53,8 +60,19 @@ class Antlr4Parser(Parser):
                     return new_(x, as_=PrimitiveExpression)
                 if isinstance(x, TaleParser.UnaryContext):
                     return new_(x, as_=UnaryExpression)
+                if isinstance(x, TaleParser.KeywordContext):
+                    return new_(x, as_=KeywordExpression)
 
                 return new_(x, as_=Expression)
+
+            if isinstance(x, TaleParser.KeywordPrefixContext):
+                return new_(x, as_=KeywordPrefixExpression)
+
+            if isinstance(x, TaleParser.KeywordNameContext):
+                return new_(x, as_=KeywordNameExpression)
+
+            if isinstance(x, TaleParser.KeywordValueContext):
+                return new_(x, as_=KeywordValueExpression)
 
             if isinstance(x, TaleParser.ArgumentContext):
                 return new_(x, as_=Argument)
