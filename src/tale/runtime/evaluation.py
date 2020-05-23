@@ -1,7 +1,7 @@
 from typing import Any, Iterable, Optional
 
 from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
-                               KeywordForm, KeywordValueExpression, Node,
+                               KeywordForm, KeywordValue, Node,
                                PrimitiveExpression, PrimitiveForm, Statement,
                                UnaryExpression, UnaryForm)
 
@@ -107,7 +107,7 @@ class Binding:
 
         form = self.form
 
-        if isinstance(node, KeywordValueExpression):
+        if isinstance(node, KeywordValue):
             node = node.children[0]
 
         if isinstance(form, PrimitiveForm) and \
@@ -178,7 +178,7 @@ class Scope:
         """
 
         def resolve_assignment(x: Assignment):
-            print('Resolving: ' + x.content)
+            print(f'Binding: {x.form.content}')
             self.bind(x.form, x.value)
 
         def resolve_expression(x: Expression):
@@ -186,8 +186,10 @@ class Scope:
             captured = self.capture(x)
 
             if captured is None:
+                print('Resolving as is')
                 return x.content
             else:
+                print('Captured expression')
                 scope = Scope(parent=self)
 
                 for arg in captured.arguments:
@@ -205,6 +207,7 @@ class Scope:
 
         if isinstance(node, Expression):
             return resolve_expression(node)
+        print(type(node))
 
         result = None
 

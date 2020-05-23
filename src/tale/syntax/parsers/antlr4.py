@@ -9,8 +9,8 @@ from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Argument, Assignment, Expression,
                                KeywordExpression, KeywordForm,
-                               KeywordNameExpression, KeywordPrefixExpression,
-                               KeywordValueExpression, Node,
+                               KeywordName, KeywordPrefix,
+                               KeywordValue, Node,
                                PrimitiveExpression, PrimitiveForm, Program,
                                Statement, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
@@ -105,11 +105,11 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=UnaryExpression)
 
             if isinstance(x, TaleParser.KeywordPrefixContext):
-                return new_(x, as_=KeywordPrefixExpression)
+                return new_(x, as_=KeywordPrefix)
             if isinstance(x, TaleParser.KeywordNameContext):
-                return new_(x, as_=KeywordNameExpression)
+                return new_(x, as_=KeywordName)
             if isinstance(x, TaleParser.KeywordValueContext):
-                return new_(x, as_=KeywordValueExpression)
+                return new_(x, as_=KeywordValue)
 
             if isinstance(x, TaleParser.ArgumentContext):
                 return new_(x, as_=Argument)

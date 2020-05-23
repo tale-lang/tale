@@ -101,7 +101,7 @@ class UnaryExpression(Expression):
         return self.children[1].content
 
 
-class KeywordPrefixExpression(Expression):
+class KeywordPrefix(Expression):
     """A prefix of a keyword expression.
 
     Usually, a keyword expression consists of sequence of pairs where each pair
@@ -115,7 +115,7 @@ class KeywordPrefixExpression(Expression):
     """
 
 
-class KeywordNameExpression(Expression):
+class KeywordName(Node):
     """A name of the keyword expression part.
 
     For example, the `add: 1 to: list` expression consists of two names:
@@ -123,7 +123,7 @@ class KeywordNameExpression(Expression):
     """
 
 
-class KeywordValueExpression(Expression):
+class KeywordValue(Expression):
     """A value of the keyword expression part.
 
     For example, the `add: 1 to: list` expression consists of two values:
@@ -142,12 +142,12 @@ class KeywordExpression(Expression):
     """
 
     @property
-    def prefix(self) -> KeywordPrefixExpression:
-        if isinstance(self.children[0], KeywordPrefixExpression):
+    def prefix(self) -> KeywordPrefix:
+        if isinstance(self.children[0], KeywordPrefix):
             return self.children[0]
 
     @property
-    def parts(self) -> Iterable[Tuple[KeywordNameExpression, KeywordValueExpression]]:
+    def parts(self) -> Iterable[Tuple[KeywordName, KeywordValue]]:
         def is_not_prefix_and_colon(x: Node):
             return x is not self.prefix and x.content != ':'
 
@@ -235,7 +235,7 @@ class KeywordForm(Form):
     """
 
     @property
-    def prefix(self) -> KeywordPrefixExpression:
+    def prefix(self) -> KeywordPrefix:
         if isinstance(self.children[0], Argument):
             return self.children[0]
 
