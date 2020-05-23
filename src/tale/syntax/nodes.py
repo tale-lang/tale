@@ -225,10 +225,10 @@ class KeywordForm(Form):
         name = None
         children = self.children
 
-        if self.prefix is not None:
-            children = children[1:]
-
         for x in children:
+            if x is self.prefix:
+                continue
+
             if isinstance(x, Argument):
                 yield (name, x)
             elif x.content != ':':
