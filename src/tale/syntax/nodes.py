@@ -211,11 +211,7 @@ class KeywordForm(Form):
             if x.content == ':':
                 continue
 
-            if name is None:
-                name = x
-            else:
+            if isinstance(x, Argument):
                 yield (name, x)
-                name = None
-
-
-
+            else:
+                name = x
