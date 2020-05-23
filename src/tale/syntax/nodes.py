@@ -83,15 +83,33 @@ class UnaryExpression(Expression):
 
 
 class KeywordPrefixExpression(Expression):
-    pass
+    """A prefix of a keyword expression.
+
+    Usually, a keyword expression consist of sequence of pairs where each pair
+    represents an identifier and a value.
+    For example, the `add: 1 to: list` expression consists of two pairs:
+    `(add, 1)` and `(to, 1)`.
+
+    However, sometimes a keyword expression first node is an argument node.
+    For example, the `1 added_to: list` expression consists of `1` and a pair
+    `(added_to, list)`. Here the `1` expression is a prefix.
+    """
 
 
 class KeywordNameExpression(Expression):
-    pass
+    """A name of the keyword expression part.
+
+    For example, the `add: 1 to: list` expression consists of two names:
+    `add` and `to`.
+    """
 
 
 class KeywordValueExpression(Expression):
-    pass
+    """A value of the keyword expression part.
+
+    For example, the `add: 1 to: list` expression consists of two values:
+    `1` and `list`.
+    """
 
 
 class KeywordExpression(Expression):
