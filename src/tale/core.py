@@ -5,13 +5,19 @@ from tale.syntax.parsers.antlr4 import Antlr4Parser
 
 
 def execute(code: str) -> Any:
-    """Executes the provided code string.
-
-    This function is meant to be an interpreter entry point:
-    here the code is parsed, analyzed and evaluated to produce an output.
+    """Executes a code string.
 
     Args:
         code: Code as a string.
+
+    Returns:
+        A result of the code execution.
+
+    Examples:
+        >>> execute('2 + 2')
+        4
+        >>> execute('x = 1')
+        None
     """
 
     print('--------------------------------------------------------------')
