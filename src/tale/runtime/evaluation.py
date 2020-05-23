@@ -1,6 +1,7 @@
 from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import (Assignment, Expression, Form, Node,
+from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
+                               KeywordForm, KeywordValueExpression, Node,
                                PrimitiveExpression, PrimitiveForm, Statement,
                                UnaryExpression, UnaryForm)
 
@@ -76,7 +77,38 @@ class Binding:
                         self.value,
                         [CapturedArgument(form.argument.name, node.argument)])
 
+        def captures_keyword(form: KeywordForm, node: KeywordExpression):
+            form_parts = list(form.parts)
+            node_parts = list(node.parts)
+            
+            if len(form_parts) != len(node_parts):
+                return None
+
+            captured = []
+
+            if form.prefix is not None and node.prefix is None:
+                return None
+            if form.prefix is None and node.prefix is not None:
+                return None
+            if form.prefix is not None and node.prefix is not None:
+                captured.append(CapturedArgument(
+                    form.prefix.name,
+                    node.prefix))
+
+            parts = zip(form_parts, node_parts)
+
+            for (form_name, form_arg), (node_name, node_value) in parts:
+                if form_name.content != node_name.content:
+                    return None
+
+                captured.append(CapturedArgument(form_arg.name, node_value))
+
+            return CapturedExpression(self.value, captured)
+
         form = self.form
+
+        if isinstance(node, KeywordValueExpression):
+            node = node.children[0]
 
         if isinstance(form, PrimitiveForm) and \
            isinstance(node, PrimitiveExpression):
@@ -85,6 +117,10 @@ class Binding:
         if isinstance(form, UnaryForm) and \
            isinstance(node, UnaryExpression):
             return captures_unary(form, node)
+
+        if isinstance(form, KeywordForm) and \
+           isinstance(node, KeywordExpression):
+            return captures_keyword(form, node)
 
 
 class Scope:
@@ -109,10 +145,13 @@ class Scope:
             An instance of `CapturedExpression`.
         """
 
+        def parent_capture():
+            return self.parent.capture(node) if self.parent is not None else None
+
         captures = (x.capture(node) for x in self.bindings)
         captures = (x for x in captures if x)
 
-        return next(captures, None)
+        return next(captures, None) or parent_capture()
 
     def bind(self, form: Node, value: Node):
         """Binds the specified value node to the specified form.

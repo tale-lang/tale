@@ -1,6 +1,12 @@
-from typing import Sequence, Optional
+from typing import Any, Iterable, Optional, Sequence, Tuple
+from itertools import zip_longest
 
 from tree_format import format_tree
+
+
+def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
+    args = [iter(iterable)] * by
+    return zip_longest(*args)
 
 
 class Node:
@@ -39,9 +45,6 @@ class Assignment(Statement):
         `x` is a value (the `value` property of the node).
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def form(self) -> 'Form':
         return self.children[0]
@@ -76,9 +79,6 @@ class UnaryExpression(Expression):
     An unary expression consist of two parts: an argument and the identifier.
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def argument(self) -> 'Node':
         return self.children[0]
@@ -86,6 +86,62 @@ class UnaryExpression(Expression):
     @property
     def identifier(self) -> str:
         return self.children[1].content
+
+
+class KeywordPrefixExpression(Expression):
+    """A prefix of a keyword expression.
+
+    Usually, a keyword expression consists of sequence of pairs where each pair
+    represents an identifier and a value.
+    For example, the `add: 1 to: list` expression consists of two pairs:
+    `(add, 1)` and `(to, 1)`.
+
+    However, sometimes the first node of a keyword expression is an argument node.
+    For example, the `1 added_to: list` expression consists of `1` and a pair
+    `(added_to, list)`. Here the `1` expression is a prefix.
+    """
+
+
+class KeywordNameExpression(Expression):
+    """A name of the keyword expression part.
+
+    For example, the `add: 1 to: list` expression consists of two names:
+    `add` and `to`.
+    """
+
+
+class KeywordValueExpression(Expression):
+    """A value of the keyword expression part.
+
+    For example, the `add: 1 to: list` expression consists of two values:
+    `1` and `list`.
+    """
+
+
+class KeywordExpression(Expression):
+    """A keyword expression.
+
+    Unlike unary expression, a keyword expression consists of pairs
+    of arguments and identifiers.
+
+    For example, the following is a keyword expression:
+        add: 1 to: list
+    """
+
+    @property
+    def prefix(self) -> KeywordPrefixExpression:
+        if isinstance(self.children[0], KeywordPrefixExpression):
+            return self.children[0]
+
+    @property
+    def parts(self) -> Iterable[Tuple[KeywordNameExpression, KeywordValueExpression]]:
+        def is_not_prefix_and_colon(x: Node):
+            return x is not self.prefix and x.content != ':'
+
+        children = filter(is_not_prefix_and_colon, self.children)
+        children = group(children, by=2)
+
+        return children
 
 
 class Form(Node):
@@ -108,30 +164,6 @@ class PrimitiveForm(Form):
     """
 
 
-class UnaryForm(Form):
-    """An unary form.
-
-    An unary form consists of an argument and an identifier.
-
-    For example, a following is an unary form:
-        (x) squared
-    where:
-        `(x)` is a variable argument of a form;
-        `squared` is a simple identifier.
-    """
-
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
-    @property
-    def argument(self) -> 'Argument':
-        return self.children[0]
-
-    @property
-    def identifier(self) -> str:
-        return self.children[1].content
-
-
 class Argument(Node):
     """An argument node.
 
@@ -142,9 +174,64 @@ class Argument(Node):
     `(x)` is an argument with name `x`.
     """
 
-    def __init__(self, content: str, children = None):
-        super().__init__(content, children)
-
     @property
     def name(self) -> str:
         return self.children[1].content
+
+
+class UnaryForm(Form):
+    """An unary form.
+
+    An unary form consists of an argument and an identifier.
+
+    For example, the following is an unary form:
+        (x) squared
+    where:
+        `(x)` is a variable argument of a form;
+        `squared` is a simple identifier.
+    """
+
+    @property
+    def argument(self) -> Argument:
+        return self.children[0]
+
+    @property
+    def identifier(self) -> str:
+        return self.children[1].content
+
+
+class KeywordForm(Form):
+    """A keyword form.
+
+    A keyword form consists of arguments and identifiers.
+    Unlike unary form, arguments and identifiers could be placed anywhere.
+    The only rule here is that an argument couldn't be followed by an argument,
+    or an identifier couldn't be followed by an identifier.
+
+    For example, the following is a keyword form:
+        just: (x)
+    where:
+        `just` is an identifier;
+        `(x)` is an argument.
+
+    Consider a more complex example:
+        add: (x) to: (y)
+    where:
+        `add` and `to` are identifiers;
+        `(x)` and `(y)` are arguments.
+    """
+
+    @property
+    def prefix(self) -> KeywordPrefixExpression:
+        if isinstance(self.children[0], Argument):
+            return self.children[0]
+
+    @property
+    def parts(self) -> Iterable[Tuple[Node, Node]]:
+        def is_not_prefix_and_colon(x: Node):
+            return x is not self.prefix and x.content != ':'
+
+        children = filter(is_not_prefix_and_colon, self.children)
+        children = group(children, by=2)
+
+        return children
