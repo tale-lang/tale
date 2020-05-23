@@ -1,7 +1,7 @@
 from tale.core import execute
 
 
-def test_simple_unary_form():
+def test_simple_keyword_form():
     # Arrange.
     program = """
 just: (x) = x
@@ -15,7 +15,7 @@ just: 1
     assert out == '1'
 
 
-def test_unary_form_with_two_parts_first_arg():
+def test_keyword_form_with_two_parts_first_arg():
     # Arrange.
     program = """
 add: (x) to: (y) = x
@@ -29,7 +29,7 @@ add: 1 to: 2
     assert out == '1'
 
 
-def test_unary_form_with_two_parts_second_arg():
+def test_keyword_form_with_two_parts_second_arg():
     # Arrange.
     program = """
 add: (x) to: (y) = y
@@ -43,7 +43,7 @@ add: 1 to: 2
     assert out == '2'
 
 
-def test_unary_form_with_prefix_first_arg():
+def test_keyword_form_with_prefix_first_arg():
     # Arrange.
     program = """
 (x) just: (y) = x
@@ -57,7 +57,7 @@ def test_unary_form_with_prefix_first_arg():
     assert out == '1'
 
 
-def test_unary_form_with_prefix_second_arg():
+def test_keyword_form_with_prefix_second_arg():
     # Arrange.
     program = """
 (x) just: (y) = y
