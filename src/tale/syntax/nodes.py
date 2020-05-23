@@ -117,6 +117,9 @@ class KeywordExpression(Expression):
 
     Unlike unary expression, a keyword expression consists of pairs
     of arguments and identifiers.
+
+    For example, the following is a keyword expression:
+        add: 1 to: list
     """
 
     @property
