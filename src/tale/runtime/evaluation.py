@@ -10,6 +10,18 @@ class Binding:
         self.form = form
         self.value = value
 
+    def captures(self, expression: str) -> bool:
+        """Checks whether the form of the binding could capture an expression.
+
+        Args:
+            expression: A string that represents a piece of code.
+
+        Returns:
+            `True` if `expression` could be catured by `form`, otherwise `False`.
+        """
+
+        return self.form.content == expression
+
 
 class Scope:
     """A scope of the program execution.
@@ -23,6 +35,20 @@ class Scope:
     def __init__(self, parent: Optional['Scope'] = None):
         self.parent = parent
         self.bindings = []
+
+    def binding(self, expression: str):
+        """Finds a binding that could capture an expression.
+
+        Args:
+            node: An expression to capture.
+
+        Returns:
+            An instance of `Binding`.
+        """
+
+        for binding in self.bindings:
+            if binding.captures(expression):
+                return binding
 
     def bind(self, form: Node, value: Node):
         """Binds the specified value node to the specified form.
@@ -53,7 +79,12 @@ class Scope:
             self.bind(x.form, x.value)
 
         def resolve_expression(x: Expression):
-            return x.content
+            binding = self.binding(x.content)
+
+            if binding is None:
+                return x.content
+            else:
+                return resolve_expression(binding.value)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
