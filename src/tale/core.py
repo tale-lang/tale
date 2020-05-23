@@ -31,3 +31,5 @@ def execute(code: str) -> Any:
     print('Output:')
     print(output or '<empty>')
     print('--------------------------------------------------------------')
+
+    return output
