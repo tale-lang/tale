@@ -1,6 +1,12 @@
-from typing import Iterable, Optional, Sequence, Tuple
+from typing import Any, Iterable, Optional, Sequence, Tuple
+from itertools import zip_longest
 
 from tree_format import format_tree
+
+
+def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
+    args = [iter(iterable)] * by
+    return zip_longest(*args)
 
 
 class Node:
@@ -129,13 +135,13 @@ class KeywordExpression(Expression):
 
     @property
     def parts(self) -> Iterable[Tuple[KeywordNameExpression, KeywordValueExpression]]:
-        name = None
+        def is_not_prefix_and_colon(x: Node):
+            return x is not self.prefix and x.content != ':'
 
-        for x in self.children:
-            if isinstance(x, KeywordNameExpression):
-                name = x
-            if isinstance(x, KeywordValueExpression):
-                yield (name, x)
+        children = filter(is_not_prefix_and_colon, self.children)
+        children = group(children, by=2)
+
+        return children
 
 
 class Form(Node):
@@ -222,14 +228,10 @@ class KeywordForm(Form):
 
     @property
     def parts(self) -> Iterable[Tuple[Node, Node]]:
-        name = None
-        children = self.children
+        def is_not_prefix_and_colon(x: Node):
+            return x is not self.prefix and x.content != ':'
 
-        for x in children:
-            if x is self.prefix:
-                continue
+        children = filter(is_not_prefix_and_colon, self.children)
+        children = group(children, by=2)
 
-            if isinstance(x, Argument):
-                yield (name, x)
-            elif x.content != ':':
-                name = x
+        return children

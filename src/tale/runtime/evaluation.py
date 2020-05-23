@@ -80,7 +80,7 @@ class Binding:
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
             node_parts = list(node.parts)
-
+            
             if len(form_parts) != len(node_parts):
                 return None
 
