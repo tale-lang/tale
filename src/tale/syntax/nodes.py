@@ -85,7 +85,7 @@ class UnaryExpression(Expression):
 class KeywordPrefixExpression(Expression):
     """A prefix of a keyword expression.
 
-    Usually, a keyword expression consist of sequence of pairs where each pair
+    Usually, a keyword expression consists of sequence of pairs where each pair
     represents an identifier and a value.
     For example, the `add: 1 to: list` expression consists of two pairs:
     `(add, 1)` and `(to, 1)`.
