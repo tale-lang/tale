@@ -19,14 +19,19 @@ class Node:
         self.children = children or []
 
     def __str__(self):
-        def name(node):
-            if type(node) == Node:
-                return ' "' + node.content + '"'
-            return ''
+        def name(x) -> str:
+            if isinstance(x, Token):
+                return ' "' + x.content + '"'
+            else:
+                return ''
 
         return format_tree(self,
                            format_node=lambda x: f'{type(x).__name__}{name(x)}',
                            get_children=lambda x: x.children)
+
+
+class Token(Node):
+    """A plain text node."""
 
 
 class Program(Node):

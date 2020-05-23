@@ -8,15 +8,19 @@ from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Argument, Assignment, Expression,
-                               KeywordExpression, KeywordForm,
-                               KeywordName, KeywordPrefix,
-                               KeywordValue, Node,
+                               KeywordExpression, KeywordForm, KeywordName,
+                               KeywordPrefix, KeywordValue, Node,
                                PrimitiveExpression, PrimitiveForm, Program,
-                               Statement, UnaryExpression, UnaryForm)
+                               Statement, Token, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
 class Antlr4DebugNode:
+    """An ANTLR4 syntax node that is used for debugging purposes.
+
+    Needed to check the raw syntax tree created by ANTLR4.
+    """
+
     def __init__(self, node):
         def content(x):
             result = x.getText()
@@ -116,11 +120,11 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=Argument)
 
             if (x.getText() == 'indent'):
-                return Node('<INDENT>')
+                return Token('<INDENT>')
             if (x.getText() == 'dedent'):
-                return Node('<DEDENT>')
+                return Token('<DEDENT>')
             if (x.getText() == 'newLine'):
-                return Node('<NL>')
+                return Token('<NL>')
 
             return new_(x, as_=Node)
 
