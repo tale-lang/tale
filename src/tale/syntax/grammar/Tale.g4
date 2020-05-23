@@ -1,10 +1,40 @@
 grammar Tale;
 
-program: NEWLINE* (statement NEWLINE*)*;
+tokens { INDENT, DEDENT }
+
+@lexer::header{
+from antlr_denter.DenterHelper import DenterHelper
+from .TaleParser import TaleParser
+}
+
+@lexer::members {
+class MyCoolDenter(DenterHelper):
+    def __init__(self, lexer, nl_token, indent_token, dedent_token, ignore_eof):
+        super().__init__(nl_token, indent_token, dedent_token, ignore_eof)
+        self.lexer: TaleLexer = lexer
+
+    def pull_token(self):
+        return super(TaleLexer, self.lexer).nextToken()
+
+denter = None
+
+def nextToken(self):
+    if not self.denter:
+        self.denter = self.MyCoolDenter(self, self.NEWLINE, TaleParser.INDENT, TaleParser.DEDENT, False)
+
+    return self.denter.next_token()
+}
+
+
+program: (NEWLINE | statement)*;
 statement: assignment | expression;
 
 
-assignment: assignmentForm '=' (expression | expressionInBrackets);
+assignment: simpleAssignment
+          | compoundAssignment;
+
+simpleAssignment: assignmentForm '=' (expression | expressionInBrackets);
+compoundAssignment: assignmentForm '=' INDENT (NEWLINE | statement)+ DEDENT;
 
 assignmentForm: unaryForm
               | unaryOperatorForm
@@ -74,4 +104,4 @@ OPERATOR: '-'
         | '/';
 
 WS: [ \t]+ -> skip;
-NEWLINE : [\r\n];
+NEWLINE: ('\r'? '\n' ' '*);

@@ -5,7 +5,6 @@ import subprocess
 
 import click
 
-from tale.core import execute
 
 def rebuild_grammar():
     def build(grammar: str):
@@ -27,6 +26,8 @@ def cli(program, rebuild):
 
     if rebuild:
         rebuild_grammar()
+
+    from tale.core import execute
 
     code = program.read()
     execute(code)

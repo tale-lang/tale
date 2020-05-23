@@ -41,3 +41,20 @@ def test_not_matched_expression():
 
     # Assert.
     assert out == '1jusx'
+
+
+def test_unary_form_span_on_multiple_lines():
+    # Arrange.
+    program = """
+(x) just =
+    y = x
+    y
+
+1 just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '1'
