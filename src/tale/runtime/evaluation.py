@@ -94,15 +94,13 @@ class Binding:
                     form.prefix.name,
                     node.prefix))
 
-            parts = iter(node_parts)
+            parts = zip(form_parts, node_parts)
 
-            for name, arg in form_parts:
-                node_name, node_arg = next(parts)
-
-                if name.content != node_name.content:
+            for (form_name, form_arg), (node_name, node_arg) in parts:
+                if form_name.content != node_name.content:
                     return None
 
-                captured.append(CapturedArgument(arg.name, node_arg))
+                captured.append(CapturedArgument(form_arg.name, node_arg))
 
             return CapturedExpression(self.value, captured)
 
