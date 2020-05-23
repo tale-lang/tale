@@ -229,10 +229,7 @@ class KeywordForm(Form):
             children = children[1:]
 
         for x in children:
-            if x.content == ':':
-                continue
-
             if isinstance(x, Argument):
                 yield (name, x)
-            else:
+            elif x.content != ':':
                 name = x
