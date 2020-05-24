@@ -13,7 +13,7 @@ def test_first_argument():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_second_argument():
@@ -28,4 +28,4 @@ def test_second_argument():
     out = execute(program)
 
     # Assert.
-    assert out == '2'
+    assert out == 2

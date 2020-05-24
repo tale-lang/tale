@@ -28,7 +28,7 @@ just: 1
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_integer_pattern_matching_common_branch():
