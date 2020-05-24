@@ -31,22 +31,22 @@ class Node:
 
 
 class Token(Node):
-    """A plain text node."""
+    """A plain text."""
 
 
 class Program(Node):
-    """A main program node."""
+    """A main program."""
 
 
 class Statement(Node):
-    """A statement node.
+    """A statement.
 
     Statement is either an expression or an assignment.
     """
 
 
 class Assignment(Statement):
-    """An assignment node.
+    """An assignment.
 
     The following is an example of the assignment:
         y = x
@@ -65,7 +65,7 @@ class Assignment(Statement):
 
 
 class AssignmentBody(Node):
-    """An assignment body node.
+    """An assignment body.
 
     Can be either a simple expression:
         x = 1
@@ -77,7 +77,7 @@ class AssignmentBody(Node):
 
 
 class Expression(Statement):
-    """An expression node.
+    """An expression.
 
     Represents a value that could be captured by form.
 
@@ -132,16 +132,16 @@ class KeywordName(Node):
     """
 
 
-class KeywordValue(Expression):
-    """A value of the keyword expression part.
+class KeywordArgument(Expression):
+    """An argument of the keyword expression.
 
-    For example, the `add: 1 to: list` expression consists of two values:
+    For example, the `add: 1 to: list` expression consists of two arguments:
     `1` and `list`.
     """
 
 
 class KeywordExpression(Expression):
-    """A keyword expression node.
+    """A keyword expression.
 
     Unlike unary expression, a keyword expression consists of pairs
     of arguments and identifiers.
@@ -156,7 +156,7 @@ class KeywordExpression(Expression):
             return self.children[0]
 
     @property
-    def parts(self) -> Iterable[Tuple[KeywordName, KeywordValue]]:
+    def parts(self) -> Iterable[Tuple[KeywordName, KeywordArgument]]:
         def is_not_prefix_and_colon(x: Node):
             return x is not self.prefix and x.content != ':'
 
@@ -167,7 +167,7 @@ class KeywordExpression(Expression):
 
 
 class BinaryExpression(Expression):
-    """A binary expression node.
+    """A binary expression.
 
     Consists of two arguments and an operator.
 
@@ -180,7 +180,7 @@ class BinaryExpression(Expression):
     """
 
     @property
-    def first_arg(self) -> Expression:
+    def first_argument(self) -> Expression:
         return self.children[0]
 
     @property
@@ -188,7 +188,7 @@ class BinaryExpression(Expression):
         return self.children[1]
 
     @property
-    def second_arg(self) -> Expression:
+    def second_argument(self) -> Expression:
         return self.children[2]
 
 
@@ -212,44 +212,37 @@ class PrimitiveForm(Form):
     """
 
 
-class Argument(Node):
-    """An argument node.
+class Parameter(Node):
+    """A parameter.
 
-    An argument is either a simple argument or a pattern matching argument.
+    An parameter is either simple or a pattern matching one.
 
     For example, in the following form:
         (x) squared = x * x
-    `(x)` is a simple argument.
+    `(x)` is a simple parameter.
 
     On the other hand, in similar assignment:
         1 squared = 1
-    `1` is a pattern matching argument.
+    `1` is a pattern matching parameter.
     """
 
 
-class SimpleArgument(Argument):
-    """A simple argument node.
-
-    Arguments are variable parts of forms.
-
-    For example, in the following form:
-        (x) squared
-    `(x)` is an argument with name `x`.
-    """
+class SimpleParameter(Parameter):
+    """A simple parameter."""
 
     @property
     def name(self) -> str:
         return self.children[1].content
 
 
-class PatternMatchingArgument(Argument):
-    """A pattern matching argument.
+class PatternMatchingParameter(Parameter):
+    """A pattern matching parameter.
 
     Represents a plain value.
 
     For example, in the following form:
         2 squared = 4
-    `2` is a pattern matching argument.
+    `2` is a pattern matching parameter.
     """
 
 
@@ -266,7 +259,7 @@ class UnaryForm(Form):
     """
 
     @property
-    def argument(self) -> SimpleArgument:
+    def parameter(self) -> Parameter:
         return self.children[0]
 
     @property
@@ -277,27 +270,27 @@ class UnaryForm(Form):
 class KeywordForm(Form):
     """A keyword form.
 
-    A keyword form consists of arguments and identifiers.
-    Unlike unary form, arguments and identifiers could be placed anywhere.
-    The only rule here is that an argument couldn't be followed by an argument,
+    A keyword form consists of parameters and identifiers.
+    Unlike unary form, parameters and identifiers could be placed anywhere.
+    The only rule here is that an parameter couldn't be followed by an parameter,
     or an identifier couldn't be followed by an identifier.
 
     For example, the following is a keyword form:
         just: (x)
     where:
         `just` is an identifier;
-        `(x)` is an argument.
+        `(x)` is an parameter.
 
     Consider a more complex example:
         add: (x) to: (y)
     where:
         `add` and `to` are identifiers;
-        `(x)` and `(y)` are arguments.
+        `(x)` and `(y)` are parameters.
     """
 
     @property
     def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], SimpleArgument):
+        if isinstance(self.children[0], SimpleParameter):
             return self.children[0]
 
     @property
@@ -314,18 +307,18 @@ class KeywordForm(Form):
 class BinaryForm(Form):
     """A binary form.
 
-    A binary form consists of two arguments that are separated by some special
+    A binary form consists of two parameters that are separated by some special
     character.
     For example, the following is a binary form:
         (x) + (y)
     where:
-        `(x)` is a first argument;
+        `(x)` is a first parameter;
         `+` is an operator;
-        `(y)` is a second argument.
+        `(y)` is a second parameter.
     """
 
     @property
-    def first_param(self) -> Argument:
+    def first_parameter(self) -> Parameter:
         return self.children[0]
 
     @property
@@ -333,5 +326,5 @@ class BinaryForm(Form):
         return self.children[1]
 
     @property
-    def second_param(self) -> Argument:
+    def second_parameter(self) -> Parameter:
         return self.children[2]

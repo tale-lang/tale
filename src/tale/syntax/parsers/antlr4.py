@@ -10,9 +10,9 @@ from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                BinaryForm, Expression, KeywordExpression,
                                KeywordForm, KeywordName, KeywordPrefix,
-                               KeywordValue, Node, PatternMatchingArgument,
+                               KeywordArgument, Node, PatternMatchingParameter,
                                PrimitiveExpression, PrimitiveForm, Program,
-                               SimpleArgument, Statement, Token,
+                               SimpleParameter, Statement, Token,
                                UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
@@ -130,7 +130,7 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=KeywordName)
 
             if isinstance(x, TaleParser.KeywordValueContext):
-                return new_(x, as_=KeywordValue)
+                return new_(x, as_=KeywordArgument)
 
             if isinstance(x, TaleParser.BinaryContext):
                 return new_(x, as_=BinaryExpression)
@@ -139,10 +139,10 @@ class Antlr4Parser(Parser):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.SimpleParameterContext):
-                    return new_(x, as_=SimpleArgument)
+                    return new_(x, as_=SimpleParameter)
 
                 if isinstance(x, TaleParser.PatternMatchingParameterContext):
-                    return new_(x, as_=PatternMatchingArgument)
+                    return new_(x, as_=PatternMatchingParameter)
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')

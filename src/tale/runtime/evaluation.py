@@ -1,10 +1,10 @@
 from typing import Any, Iterable, Optional, Tuple
 
-from tale.syntax.nodes import (Argument, Assignment, BinaryExpression,
+from tale.syntax.nodes import (Parameter, Assignment, BinaryExpression,
                                BinaryForm, Expression, Form, KeywordExpression,
-                               KeywordForm, KeywordValue, Node,
-                               PatternMatchingArgument, PrimitiveExpression,
-                               PrimitiveForm, SimpleArgument, Statement,
+                               KeywordForm, KeywordArgument, Node,
+                               PatternMatchingParameter, PrimitiveExpression,
+                               PrimitiveForm, SimpleParameter, Statement,
                                UnaryExpression, UnaryForm)
 
 
@@ -69,12 +69,12 @@ class Binding:
             form of the binding, otherwise `None`.
         """
 
-        def captures_argument(parameter: Argument, argument: Node) -> Tuple[bool, Optional[CapturedArgument]]:
-            if isinstance(parameter, PatternMatchingArgument):
+        def captures_argument(parameter: Parameter, argument: Node) -> Tuple[bool, Optional[CapturedArgument]]:
+            if isinstance(parameter, PatternMatchingParameter):
                 if parameter.content == argument.content:
                     return (True, None)
 
-            if isinstance(parameter, SimpleArgument):
+            if isinstance(parameter, SimpleParameter):
                 return (True, CapturedArgument(parameter.name, argument))
 
             return (False, None)
@@ -85,7 +85,7 @@ class Binding:
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
-                captured, arg = captures_argument(form.argument, node.argument)
+                captured, arg = captures_argument(form.parameter, node.argument)
 
                 if captured:
                     return CapturedExpression(self.value, [arg] if arg else [])
@@ -127,9 +127,10 @@ class Binding:
 
             args = []
 
-            captured1, arg1 = captures_argument(form.first_param, node.first_arg)
-            captured2, arg2 = captures_argument(form.second_param, node.second_arg)
-
+            captured1, arg1 = captures_argument(form.first_parameter,
+                                                node.first_argument)
+            captured2, arg2 = captures_argument(form.second_parameter,
+                                                node.second_argument)
             if not captured1 or not captured2:
                 return None
 
@@ -142,7 +143,7 @@ class Binding:
 
         form = self.form
 
-        if isinstance(node, KeywordValue):
+        if isinstance(node, KeywordArgument):
             node = node.children[0]
 
         if isinstance(form, PrimitiveForm) and \
