@@ -47,8 +47,25 @@ class CapturedExpression:
     """
 
     def __init__(self, node: Node, arguments: Iterable[CapturedArgument] = None):
-        self.node = node
-        self.arguments = arguments or []
+        self._node = node
+        self._arguments = arguments or []
+
+    def resolve(self, scope: 'Scope') -> Any:
+        """Resolves current expression in the new scope.
+
+        Args:
+            scope: A parent scope that needs to resolve the expression.
+
+        Returns:
+            Resolved expression.
+        """
+
+        scope = Scope(parent=scope)
+
+        for arg in self._arguments:
+            scope.bind(PrimitiveForm(arg.name), arg.value)
+
+        return scope.resolve(self._node)
 
 
 class Binding:
@@ -69,7 +86,7 @@ class Binding:
             form of the binding, otherwise `None`.
         """
 
-        def captures_argument(parameter: Parameter, argument: Node) -> Tuple[bool, Optional[CapturedArgument]]:
+        def captures_argument(parameter: Parameter, argument: Node):
             if isinstance(parameter, PatternMatchingParameter):
                 if parameter.content == argument.content:
                     return (True, None)
@@ -223,17 +240,9 @@ class Scope:
 
         def resolve_expression(x: Expression):
             print('Resolving: ' + x.content)
-            captured = self.capture(x)
+            captured: CapturedExpression = self.capture(x)
 
-            if captured is None:
-                return x.content
-            else:
-                scope = Scope(parent=self)
-
-                for arg in captured.arguments:
-                    scope.bind(PrimitiveForm(arg.name), arg.value)
-
-                return scope.resolve(captured.node)
+            return x.content if not captured else captured.resolve(scope=self)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
