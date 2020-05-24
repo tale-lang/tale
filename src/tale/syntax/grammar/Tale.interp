@@ -36,11 +36,11 @@ unaryOperatorForm
 binaryForm
 keywordForm
 simpleForm
-argument
-simpleArgument
-patternMatchingArgument
-argumentName
-argumentType
+parameter
+simpleParameter
+patternMatchingParameter
+parameterName
+parameterType
 assignmentBody
 simpleAssignmentBody
 compoundAssignmentBody

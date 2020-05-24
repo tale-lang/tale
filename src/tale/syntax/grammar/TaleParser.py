@@ -134,11 +134,11 @@ class TaleParser ( Parser ):
     RULE_binaryForm = 6
     RULE_keywordForm = 7
     RULE_simpleForm = 8
-    RULE_argument = 9
-    RULE_simpleArgument = 10
-    RULE_patternMatchingArgument = 11
-    RULE_argumentName = 12
-    RULE_argumentType = 13
+    RULE_parameter = 9
+    RULE_simpleParameter = 10
+    RULE_patternMatchingParameter = 11
+    RULE_parameterName = 12
+    RULE_parameterType = 13
     RULE_assignmentBody = 14
     RULE_simpleAssignmentBody = 15
     RULE_compoundAssignmentBody = 16
@@ -157,8 +157,8 @@ class TaleParser ( Parser ):
 
     ruleNames =  [ "program", "statement", "assignment", "assignmentForm", 
                    "unaryForm", "unaryOperatorForm", "binaryForm", "keywordForm", 
-                   "simpleForm", "argument", "simpleArgument", "patternMatchingArgument", 
-                   "argumentName", "argumentType", "assignmentBody", "simpleAssignmentBody", 
+                   "simpleForm", "parameter", "simpleParameter", "patternMatchingParameter", 
+                   "parameterName", "parameterType", "assignmentBody", "simpleAssignmentBody", 
                    "compoundAssignmentBody", "expression", "expressionInBrackets", 
                    "expressionInBracketsWithOperator", "unary", "binary", 
                    "binaryOperand", "keyword", "keywordPrefix", "keywordName", 
@@ -458,8 +458,8 @@ class TaleParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def argument(self):
-            return self.getTypedRuleContext(TaleParser.ArgumentContext,0)
+        def parameter(self):
+            return self.getTypedRuleContext(TaleParser.ParameterContext,0)
 
 
         def IDENTIFIER(self):
@@ -486,7 +486,7 @@ class TaleParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 80
-            self.argument()
+            self.parameter()
             self.state = 81
             self.match(TaleParser.IDENTIFIER)
         except RecognitionException as re:
@@ -507,8 +507,8 @@ class TaleParser ( Parser ):
         def OPERATOR(self):
             return self.getToken(TaleParser.OPERATOR, 0)
 
-        def argument(self):
-            return self.getTypedRuleContext(TaleParser.ArgumentContext,0)
+        def parameter(self):
+            return self.getTypedRuleContext(TaleParser.ParameterContext,0)
 
 
         def getRuleIndex(self):
@@ -534,7 +534,7 @@ class TaleParser ( Parser ):
             self.state = 83
             self.match(TaleParser.OPERATOR)
             self.state = 84
-            self.argument()
+            self.parameter()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -550,11 +550,11 @@ class TaleParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def argument(self, i:int=None):
+        def parameter(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(TaleParser.ArgumentContext)
+                return self.getTypedRuleContexts(TaleParser.ParameterContext)
             else:
-                return self.getTypedRuleContext(TaleParser.ArgumentContext,i)
+                return self.getTypedRuleContext(TaleParser.ParameterContext,i)
 
 
         def OPERATOR(self):
@@ -581,11 +581,11 @@ class TaleParser ( Parser ):
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 86
-            self.argument()
+            self.parameter()
             self.state = 87
             self.match(TaleParser.OPERATOR)
             self.state = 88
-            self.argument()
+            self.parameter()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -601,11 +601,11 @@ class TaleParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def argument(self, i:int=None):
+        def parameter(self, i:int=None):
             if i is None:
-                return self.getTypedRuleContexts(TaleParser.ArgumentContext)
+                return self.getTypedRuleContexts(TaleParser.ParameterContext)
             else:
-                return self.getTypedRuleContext(TaleParser.ArgumentContext,i)
+                return self.getTypedRuleContext(TaleParser.ParameterContext,i)
 
 
         def IDENTIFIER(self, i:int=None):
@@ -640,7 +640,7 @@ class TaleParser ( Parser ):
             la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
             if la_ == 1:
                 self.state = 90
-                self.argument()
+                self.parameter()
 
 
             self.state = 96 
@@ -652,7 +652,7 @@ class TaleParser ( Parser ):
                 self.state = 94
                 self.match(TaleParser.T__1)
                 self.state = 95
-                self.argument()
+                self.parameter()
                 self.state = 98 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
@@ -708,38 +708,38 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class ArgumentContext(ParserRuleContext):
+    class ParameterContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def simpleArgument(self):
-            return self.getTypedRuleContext(TaleParser.SimpleArgumentContext,0)
+        def simpleParameter(self):
+            return self.getTypedRuleContext(TaleParser.SimpleParameterContext,0)
 
 
-        def patternMatchingArgument(self):
-            return self.getTypedRuleContext(TaleParser.PatternMatchingArgumentContext,0)
+        def patternMatchingParameter(self):
+            return self.getTypedRuleContext(TaleParser.PatternMatchingParameterContext,0)
 
 
         def getRuleIndex(self):
-            return TaleParser.RULE_argument
+            return TaleParser.RULE_parameter
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArgument" ):
-                listener.enterArgument(self)
+            if hasattr( listener, "enterParameter" ):
+                listener.enterParameter(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArgument" ):
-                listener.exitArgument(self)
+            if hasattr( listener, "exitParameter" ):
+                listener.exitParameter(self)
 
 
 
 
-    def argument(self):
+    def parameter(self):
 
-        localctx = TaleParser.ArgumentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_argument)
+        localctx = TaleParser.ParameterContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 18, self.RULE_parameter)
         try:
             self.state = 104
             self._errHandler.sync(self)
@@ -747,12 +747,12 @@ class TaleParser ( Parser ):
             if token in [TaleParser.T__2]:
                 self.enterOuterAlt(localctx, 1)
                 self.state = 102
-                self.simpleArgument()
+                self.simpleParameter()
                 pass
             elif token in [TaleParser.IDENTIFIER, TaleParser.NUMBER]:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 103
-                self.patternMatchingArgument()
+                self.patternMatchingParameter()
                 pass
             else:
                 raise NoViableAltException(self)
@@ -766,45 +766,45 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class SimpleArgumentContext(ParserRuleContext):
+    class SimpleParameterContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def argumentName(self):
-            return self.getTypedRuleContext(TaleParser.ArgumentNameContext,0)
+        def parameterName(self):
+            return self.getTypedRuleContext(TaleParser.ParameterNameContext,0)
 
 
-        def argumentType(self):
-            return self.getTypedRuleContext(TaleParser.ArgumentTypeContext,0)
+        def parameterType(self):
+            return self.getTypedRuleContext(TaleParser.ParameterTypeContext,0)
 
 
         def getRuleIndex(self):
-            return TaleParser.RULE_simpleArgument
+            return TaleParser.RULE_simpleParameter
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterSimpleArgument" ):
-                listener.enterSimpleArgument(self)
+            if hasattr( listener, "enterSimpleParameter" ):
+                listener.enterSimpleParameter(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitSimpleArgument" ):
-                listener.exitSimpleArgument(self)
+            if hasattr( listener, "exitSimpleParameter" ):
+                listener.exitSimpleParameter(self)
 
 
 
 
-    def simpleArgument(self):
+    def simpleParameter(self):
 
-        localctx = TaleParser.SimpleArgumentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_simpleArgument)
+        localctx = TaleParser.SimpleParameterContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 20, self.RULE_simpleParameter)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 106
             self.match(TaleParser.T__2)
             self.state = 107
-            self.argumentName()
+            self.parameterName()
             self.state = 110
             self._errHandler.sync(self)
             _la = self._input.LA(1)
@@ -812,7 +812,7 @@ class TaleParser ( Parser ):
                 self.state = 108
                 self.match(TaleParser.T__1)
                 self.state = 109
-                self.argumentType()
+                self.parameterType()
 
 
             self.state = 112
@@ -826,7 +826,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class PatternMatchingArgumentContext(ParserRuleContext):
+    class PatternMatchingParameterContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -839,23 +839,23 @@ class TaleParser ( Parser ):
             return self.getToken(TaleParser.NUMBER, 0)
 
         def getRuleIndex(self):
-            return TaleParser.RULE_patternMatchingArgument
+            return TaleParser.RULE_patternMatchingParameter
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterPatternMatchingArgument" ):
-                listener.enterPatternMatchingArgument(self)
+            if hasattr( listener, "enterPatternMatchingParameter" ):
+                listener.enterPatternMatchingParameter(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitPatternMatchingArgument" ):
-                listener.exitPatternMatchingArgument(self)
+            if hasattr( listener, "exitPatternMatchingParameter" ):
+                listener.exitPatternMatchingParameter(self)
 
 
 
 
-    def patternMatchingArgument(self):
+    def patternMatchingParameter(self):
 
-        localctx = TaleParser.PatternMatchingArgumentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_patternMatchingArgument)
+        localctx = TaleParser.PatternMatchingParameterContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 22, self.RULE_patternMatchingParameter)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
@@ -875,7 +875,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class ArgumentNameContext(ParserRuleContext):
+    class ParameterNameContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -885,23 +885,23 @@ class TaleParser ( Parser ):
             return self.getToken(TaleParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
-            return TaleParser.RULE_argumentName
+            return TaleParser.RULE_parameterName
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArgumentName" ):
-                listener.enterArgumentName(self)
+            if hasattr( listener, "enterParameterName" ):
+                listener.enterParameterName(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArgumentName" ):
-                listener.exitArgumentName(self)
+            if hasattr( listener, "exitParameterName" ):
+                listener.exitParameterName(self)
 
 
 
 
-    def argumentName(self):
+    def parameterName(self):
 
-        localctx = TaleParser.ArgumentNameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 24, self.RULE_argumentName)
+        localctx = TaleParser.ParameterNameContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 24, self.RULE_parameterName)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 116
@@ -915,7 +915,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class ArgumentTypeContext(ParserRuleContext):
+    class ParameterTypeContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -925,23 +925,23 @@ class TaleParser ( Parser ):
             return self.getToken(TaleParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
-            return TaleParser.RULE_argumentType
+            return TaleParser.RULE_parameterType
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterArgumentType" ):
-                listener.enterArgumentType(self)
+            if hasattr( listener, "enterParameterType" ):
+                listener.enterParameterType(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitArgumentType" ):
-                listener.exitArgumentType(self)
+            if hasattr( listener, "exitParameterType" ):
+                listener.exitParameterType(self)
 
 
 
 
-    def argumentType(self):
+    def parameterType(self):
 
-        localctx = TaleParser.ArgumentTypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 26, self.RULE_argumentType)
+        localctx = TaleParser.ParameterTypeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 26, self.RULE_parameterType)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 118

@@ -135,13 +135,13 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.BinaryContext):
                 return new_(x, as_=BinaryExpression)
 
-            if isinstance(x, TaleParser.ArgumentContext):
+            if isinstance(x, TaleParser.ParameterContext):
                 x = next(x.getChildren())
 
-                if isinstance(x, TaleParser.SimpleArgumentContext):
+                if isinstance(x, TaleParser.SimpleParameterContext):
                     return new_(x, as_=SimpleArgument)
 
-                if isinstance(x, TaleParser.PatternMatchingArgumentContext):
+                if isinstance(x, TaleParser.PatternMatchingParameterContext):
                     return new_(x, as_=PatternMatchingArgument)
 
             if (x.getText() == 'indent'):
