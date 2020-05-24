@@ -74,9 +74,19 @@ class Binding:
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
-                return CapturedExpression(
-                        self.value,
-                        [CapturedArgument(form.argument.name, node.argument)])
+                captured = []
+
+                # Pattern matching arguments should be checked by value.
+                if isinstance(form.argument, PatternMatchingArgument):
+                    if form.argument.content != node.argument.content:
+                        return None
+
+                # Simple arguments should be captured.
+                if isinstance(form.argument, Argument):
+                    captured.append(CapturedArgument(form.argument.name,
+                                                     node.argument))
+
+                return CapturedExpression(self.value, captured)
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
@@ -100,10 +110,12 @@ class Binding:
                 if form_name.content != node_name.content:
                     return None
 
+                # Pattern matching arguments should be checked by value.
                 if isinstance(form_arg, PatternMatchingArgument):
                     if form_arg.content != node_value.content:
                         return None
 
+                # Simple arguments should be captured.
                 if isinstance(form_arg, Argument):
                     captured.append(CapturedArgument(form_arg.name, node_value))
 

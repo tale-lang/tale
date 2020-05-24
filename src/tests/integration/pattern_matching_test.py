@@ -98,3 +98,37 @@ just: b
 
     # Assert.
     assert out == 'c'
+
+
+def test_unary_form_common_branch():
+    # Arrange.
+    program = """
+a just = b
+b just = c
+(x) just = x
+
+c just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'c'
+
+
+def test_unary_form_specific_branch():
+    # Arrange.
+    program = """
+a just = b
+b just = c
+(x) just = x
+
+a just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'b'
