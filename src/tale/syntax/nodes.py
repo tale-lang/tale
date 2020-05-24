@@ -141,7 +141,7 @@ class KeywordValue(Expression):
 
 
 class KeywordExpression(Expression):
-    """A keyword expression.
+    """A keyword expression node.
 
     Unlike unary expression, a keyword expression consists of pairs
     of arguments and identifiers.
@@ -164,6 +164,28 @@ class KeywordExpression(Expression):
         children = group(children, by=2)
 
         return children
+
+
+class BinaryExpression(Expression):
+    """A binary expression node.
+
+    Consists of two arguments and an operator.
+
+    For example, the following is an example of binary expression:
+        1 + 1
+    where:
+        `1` is a first argument;
+        `+` is an operator;
+        `2` is a second argument.
+    """
+
+    @property
+    def first_argument(self) -> Expression:
+        ...
+
+    @property
+    def second_argument(self) -> Expression:
+        ...
 
 
 class Form(Node):
