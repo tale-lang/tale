@@ -22,6 +22,7 @@ class TaleObject:
         self.py_instance = py_instance
         self.name = name
 
+
 TaleNone = TaleObject(None, None)
 
 TaleType = TaleObject(type(TaleObject), None)
