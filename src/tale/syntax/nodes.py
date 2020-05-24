@@ -297,3 +297,11 @@ class BinaryForm(Form):
         `+` is an operator;
         `(y)` is a second argument.
     """
+
+    @property
+    def first_argument(self) -> Argument:
+        return self.children[0]
+
+    @property
+    def second_argument(self) -> Argument:
+        return self.children[2]
