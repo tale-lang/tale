@@ -1,9 +1,9 @@
 from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
-                               KeywordForm, KeywordValue, Node,
-                               PrimitiveExpression, PrimitiveForm, Statement,
-                               UnaryExpression, UnaryForm)
+from tale.syntax.nodes import (Argument, Assignment, Expression, Form,
+                               KeywordExpression, KeywordForm, KeywordValue,
+                               Node, PrimitiveExpression, PrimitiveForm,
+                               Statement, UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -80,20 +80,18 @@ class Binding:
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
             node_parts = list(node.parts)
-            
+
             if len(form_parts) != len(node_parts):
                 return None
 
             captured = []
 
-            if form.prefix is not None and node.prefix is None:
-                return None
-            if form.prefix is None and node.prefix is not None:
-                return None
             if form.prefix is not None and node.prefix is not None:
                 captured.append(CapturedArgument(
                     form.prefix.name,
                     node.prefix))
+            elif form.prefix is not None or node.prefix is not None:
+                return None
 
             parts = zip(form_parts, node_parts)
 
@@ -101,7 +99,8 @@ class Binding:
                 if form_name.content != node_name.content:
                     return None
 
-                captured.append(CapturedArgument(form_arg.name, node_value))
+                if isinstance(form_arg, Argument):
+                    captured.append(CapturedArgument(form_arg.name, node_value))
 
             return CapturedExpression(self.value, captured)
 

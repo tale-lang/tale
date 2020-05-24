@@ -1,3 +1,3 @@
 just: (x) = x
 just: b = c
-just: a
+just: b
