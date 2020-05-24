@@ -132,3 +132,35 @@ a just
 
     # Assert.
     assert out == 'b'
+
+
+def test_binary_form_common_branch():
+    # Arrange.
+    program = """
+1 + 1 = 2
+(x) + (y) = x
+
+1 + 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '1'
+
+
+def test_binary_form_specific_branch():
+    # Arrange.
+    program = """
+1 + 1 = 2
+(x) + (y) = x
+
+1 + 1
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == '2'

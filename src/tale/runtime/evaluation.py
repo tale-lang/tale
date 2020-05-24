@@ -1,9 +1,10 @@
-from typing import Any, Iterable, Optional
+from typing import Any, Iterable, Optional, Tuple
 
-from tale.syntax.nodes import (Argument, Assignment, Expression, Form,
-                               KeywordExpression, KeywordForm, KeywordValue,
-                               Node, PatternMatchingArgument,
-                               PrimitiveExpression, PrimitiveForm, Statement,
+from tale.syntax.nodes import (Parameter, Assignment, BinaryExpression,
+                               BinaryForm, Expression, Form, KeywordExpression,
+                               KeywordForm, KeywordArgument, Node,
+                               PatternMatchingParameter, PrimitiveExpression,
+                               PrimitiveForm, SimpleParameter, Statement,
                                UnaryExpression, UnaryForm)
 
 
@@ -68,25 +69,26 @@ class Binding:
             form of the binding, otherwise `None`.
         """
 
+        def captures_argument(parameter: Parameter, argument: Node) -> Tuple[bool, Optional[CapturedArgument]]:
+            if isinstance(parameter, PatternMatchingParameter):
+                if parameter.content == argument.content:
+                    return (True, None)
+
+            if isinstance(parameter, SimpleParameter):
+                return (True, CapturedArgument(parameter.name, argument))
+
+            return (False, None)
+
         def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
             if form.content == node.content:
                 return CapturedExpression(self.value)
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
-                captured = []
+                captured, arg = captures_argument(form.parameter, node.argument)
 
-                # Pattern matching arguments should be checked by value.
-                if isinstance(form.argument, PatternMatchingArgument):
-                    if form.argument.content != node.argument.content:
-                        return None
-
-                # Simple arguments should be captured.
-                if isinstance(form.argument, Argument):
-                    captured.append(CapturedArgument(form.argument.name,
-                                                     node.argument))
-
-                return CapturedExpression(self.value, captured)
+                if captured:
+                    return CapturedExpression(self.value, [arg] if arg else [])
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
@@ -95,10 +97,10 @@ class Binding:
             if len(form_parts) != len(node_parts):
                 return None
 
-            captured = []
+            args = []
 
             if form.prefix is not None and node.prefix is not None:
-                captured.append(CapturedArgument(
+                args.append(CapturedArgument(
                     form.prefix.name,
                     node.prefix))
             elif form.prefix is not None or node.prefix is not None:
@@ -110,20 +112,38 @@ class Binding:
                 if form_name.content != node_name.content:
                     return None
 
-                # Pattern matching arguments should be checked by value.
-                if isinstance(form_arg, PatternMatchingArgument):
-                    if form_arg.content != node_value.content:
-                        return None
+                captured, arg = captures_argument(form_arg, node_value)
 
-                # Simple arguments should be captured.
-                if isinstance(form_arg, Argument):
-                    captured.append(CapturedArgument(form_arg.name, node_value))
+                if not captured:
+                    return None
+                if arg:
+                    args.append(arg)
 
-            return CapturedExpression(self.value, captured)
+            return CapturedExpression(self.value, args)
+
+        def captures_binary(form: BinaryForm, node: BinaryExpression):
+            if form.operator.content != node.operator.content:
+                return None
+
+            args = []
+
+            captured1, arg1 = captures_argument(form.first_parameter,
+                                                node.first_argument)
+            captured2, arg2 = captures_argument(form.second_parameter,
+                                                node.second_argument)
+            if not captured1 or not captured2:
+                return None
+
+            if arg1:
+                args.append(arg1)
+            if arg2:
+                args.append(arg2)
+
+            return CapturedExpression(self.value, args)
 
         form = self.form
 
-        if isinstance(node, KeywordValue):
+        if isinstance(node, KeywordArgument):
             node = node.children[0]
 
         if isinstance(form, PrimitiveForm) and \
@@ -137,6 +157,10 @@ class Binding:
         if isinstance(form, KeywordForm) and \
            isinstance(node, KeywordExpression):
             return captures_keyword(form, node)
+
+        if isinstance(form, BinaryForm) and \
+           isinstance(node, BinaryExpression):
+            return captures_binary(form, node)
 
 
 class Scope:

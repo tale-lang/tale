@@ -7,11 +7,12 @@ from tree_format import format_tree
 from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
-from tale.syntax.nodes import (Argument, Assignment, AssignmentBody,
-                               Expression, KeywordExpression, KeywordForm,
-                               KeywordName, KeywordPrefix, KeywordValue, Node,
-                               PatternMatchingArgument, PrimitiveExpression,
-                               PrimitiveForm, Program, Statement, Token,
+from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
+                               BinaryForm, Expression, KeywordExpression,
+                               KeywordForm, KeywordName, KeywordPrefix,
+                               KeywordArgument, Node, PatternMatchingParameter,
+                               PrimitiveExpression, PrimitiveForm, Program,
+                               SimpleParameter, Statement, Token,
                                UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
@@ -96,15 +97,23 @@ class Antlr4Parser(Parser):
                 if isinstance(x, TaleParser.KeywordFormContext):
                     return new_(x, as_=KeywordForm)
 
+                if isinstance(x, TaleParser.BinaryFormContext):
+                    return new_(x, as_=BinaryForm)
+
             if isinstance(x, TaleParser.ExpressionContext):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.PrimitiveContext):
                     return new_(x, as_=PrimitiveExpression)
+
                 if isinstance(x, TaleParser.UnaryContext):
                     return new_(x, as_=UnaryExpression)
+
                 if isinstance(x, TaleParser.KeywordContext):
                     return new_(x, as_=KeywordExpression)
+
+                if isinstance(x, TaleParser.BinaryContext):
+                    return new_(x, as_=BinaryExpression)
 
                 return new_(x, as_=Expression)
 
@@ -121,16 +130,19 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=KeywordName)
 
             if isinstance(x, TaleParser.KeywordValueContext):
-                return new_(x, as_=KeywordValue)
+                return new_(x, as_=KeywordArgument)
 
-            if isinstance(x, TaleParser.ArgumentContext):
+            if isinstance(x, TaleParser.BinaryContext):
+                return new_(x, as_=BinaryExpression)
+
+            if isinstance(x, TaleParser.ParameterContext):
                 x = next(x.getChildren())
 
-                if isinstance(x, TaleParser.SimpleArgumentContext):
-                    return new_(x, as_=Argument)
+                if isinstance(x, TaleParser.SimpleParameterContext):
+                    return new_(x, as_=SimpleParameter)
 
-                if isinstance(x, TaleParser.PatternMatchingArgumentContext):
-                    return new_(x, as_=PatternMatchingArgument)
+                if isinstance(x, TaleParser.PatternMatchingParameterContext):
+                    return new_(x, as_=PatternMatchingParameter)
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')

@@ -37,20 +37,20 @@ assignmentForm: unaryForm
               | keywordForm
               | simpleForm;
 
-unaryForm: argument IDENTIFIER;
-unaryOperatorForm: OPERATOR argument;
-binaryForm: argument OPERATOR argument;
-keywordForm: argument? (IDENTIFIER ':' argument)+;
+unaryForm: parameter IDENTIFIER;
+unaryOperatorForm: OPERATOR parameter;
+binaryForm: parameter OPERATOR parameter;
+keywordForm: parameter? (IDENTIFIER ':' parameter)+;
 simpleForm: IDENTIFIER;
 
-argument: simpleArgument
-        | patternMatchingArgument;
+parameter: simpleParameter
+         | patternMatchingParameter;
 
-simpleArgument: '(' argumentName (':' argumentType)? ')';
-patternMatchingArgument: IDENTIFIER
-                       | NUMBER;
-argumentName: IDENTIFIER;
-argumentType: IDENTIFIER;
+simpleParameter: '(' parameterName (':' parameterType)? ')';
+patternMatchingParameter: IDENTIFIER
+                        | NUMBER;
+parameterName: IDENTIFIER;
+parameterType: IDENTIFIER;
 
 assignmentBody: simpleAssignmentBody
               | compoundAssignmentBody;

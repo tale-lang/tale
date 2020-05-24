@@ -89,48 +89,48 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#argument.
-    def enterArgument(self, ctx:TaleParser.ArgumentContext):
+    # Enter a parse tree produced by TaleParser#parameter.
+    def enterParameter(self, ctx:TaleParser.ParameterContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#argument.
-    def exitArgument(self, ctx:TaleParser.ArgumentContext):
-        pass
-
-
-    # Enter a parse tree produced by TaleParser#simpleArgument.
-    def enterSimpleArgument(self, ctx:TaleParser.SimpleArgumentContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#simpleArgument.
-    def exitSimpleArgument(self, ctx:TaleParser.SimpleArgumentContext):
+    # Exit a parse tree produced by TaleParser#parameter.
+    def exitParameter(self, ctx:TaleParser.ParameterContext):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#patternMatchingArgument.
-    def enterPatternMatchingArgument(self, ctx:TaleParser.PatternMatchingArgumentContext):
+    # Enter a parse tree produced by TaleParser#simpleParameter.
+    def enterSimpleParameter(self, ctx:TaleParser.SimpleParameterContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#patternMatchingArgument.
-    def exitPatternMatchingArgument(self, ctx:TaleParser.PatternMatchingArgumentContext):
-        pass
-
-
-    # Enter a parse tree produced by TaleParser#argumentName.
-    def enterArgumentName(self, ctx:TaleParser.ArgumentNameContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#argumentName.
-    def exitArgumentName(self, ctx:TaleParser.ArgumentNameContext):
+    # Exit a parse tree produced by TaleParser#simpleParameter.
+    def exitSimpleParameter(self, ctx:TaleParser.SimpleParameterContext):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#argumentType.
-    def enterArgumentType(self, ctx:TaleParser.ArgumentTypeContext):
+    # Enter a parse tree produced by TaleParser#patternMatchingParameter.
+    def enterPatternMatchingParameter(self, ctx:TaleParser.PatternMatchingParameterContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#argumentType.
-    def exitArgumentType(self, ctx:TaleParser.ArgumentTypeContext):
+    # Exit a parse tree produced by TaleParser#patternMatchingParameter.
+    def exitPatternMatchingParameter(self, ctx:TaleParser.PatternMatchingParameterContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#parameterName.
+    def enterParameterName(self, ctx:TaleParser.ParameterNameContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#parameterName.
+    def exitParameterName(self, ctx:TaleParser.ParameterNameContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#parameterType.
+    def enterParameterType(self, ctx:TaleParser.ParameterTypeContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#parameterType.
+    def exitParameterType(self, ctx:TaleParser.ParameterTypeContext):
         pass
 
 
