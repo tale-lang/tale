@@ -7,7 +7,7 @@ from tree_format import format_tree
 from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
-from tale.syntax.nodes import (Argument, Assignment, AssignmentBody,
+from tale.syntax.nodes import (SimpleArgument, Assignment, AssignmentBody,
                                Expression, KeywordExpression, KeywordForm,
                                KeywordName, KeywordPrefix, KeywordValue, Node,
                                PatternMatchingArgument, PrimitiveExpression,
@@ -127,7 +127,7 @@ class Antlr4Parser(Parser):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.SimpleArgumentContext):
-                    return new_(x, as_=Argument)
+                    return new_(x, as_=SimpleArgument)
 
                 if isinstance(x, TaleParser.PatternMatchingArgumentContext):
                     return new_(x, as_=PatternMatchingArgument)

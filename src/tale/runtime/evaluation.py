@@ -1,6 +1,6 @@
 from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import (Argument, Assignment, Expression, Form,
+from tale.syntax.nodes import (SimpleArgument, Assignment, Expression, Form,
                                KeywordExpression, KeywordForm, KeywordValue,
                                Node, PatternMatchingArgument,
                                PrimitiveExpression, PrimitiveForm, Statement,
@@ -82,7 +82,7 @@ class Binding:
                         return None
 
                 # Simple arguments should be captured.
-                if isinstance(form.argument, Argument):
+                if isinstance(form.argument, SimpleArgument):
                     captured.append(CapturedArgument(form.argument.name,
                                                      node.argument))
 
@@ -116,7 +116,7 @@ class Binding:
                         return None
 
                 # Simple arguments should be captured.
-                if isinstance(form_arg, Argument):
+                if isinstance(form_arg, SimpleArgument):
                     captured.append(CapturedArgument(form_arg.name, node_value))
 
             return CapturedExpression(self.value, captured)

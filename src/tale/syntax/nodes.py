@@ -189,6 +189,21 @@ class PrimitiveForm(Form):
 class Argument(Node):
     """An argument node.
 
+    An argument is either a simple argument or a pattern matching argument.
+
+    For example, in the following form:
+        (x) squared = x * x
+    `(x)` is a simple argument.
+
+    On the other hand, in similar assignment:
+        1 squared = 1
+    `1` is a pattern matching argument.
+    """
+
+
+class SimpleArgument(Argument):
+    """A simple argument node.
+
     Arguments are variable parts of forms.
 
     For example, in the following form:
@@ -201,7 +216,7 @@ class Argument(Node):
         return self.children[1].content
 
 
-class PatternMatchingArgument(Node):
+class PatternMatchingArgument(Argument):
     """A pattern matching argument.
 
     Represents a plain value.
@@ -225,7 +240,7 @@ class UnaryForm(Form):
     """
 
     @property
-    def argument(self) -> Argument:
+    def argument(self) -> SimpleArgument:
         return self.children[0]
 
     @property
@@ -256,7 +271,7 @@ class KeywordForm(Form):
 
     @property
     def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], Argument):
+        if isinstance(self.children[0], SimpleArgument):
             return self.children[0]
 
     @property
