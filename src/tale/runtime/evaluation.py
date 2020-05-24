@@ -298,7 +298,6 @@ class Scope:
             value: A value that is bound to the form.
         """
 
-
         if isinstance(form, PrimitiveForm) and \
            isinstance(value.children[0], PrimitiveExpression):
             form.assign_type(type_(value.children[0]))
