@@ -7,6 +7,7 @@ NUMBER=6
 OPERATOR=7
 WS=8
 NEWLINE=9
+SKIP_=10
 '='=1
 ':'=2
 '('=3

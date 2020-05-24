@@ -106,3 +106,7 @@ OPERATOR: '-'
 
 WS: [ \t]+ -> skip;
 NEWLINE: ('\r'? '\n' ' '*);
+
+fragment COMMENT: '--' ~[\r\n\f]*;
+
+SKIP_: (WS | COMMENT) -> skip;
