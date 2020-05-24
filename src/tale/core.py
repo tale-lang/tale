@@ -22,14 +22,14 @@ def execute(code: str) -> Any:
 
     print('--------------------------------------------------------------')
     print('ANTLR4 Output:')
-    tree = Antlr4Parser().ast(code)
+    tree: Node = Antlr4Parser().ast(code)
     print('--------------------------------------------------------------')
     print('Syntax tree:')
     print(str(tree).rstrip())
     print('--------------------------------------------------------------')
-    output = evaluate(tree)
+    output: TaleObject = evaluate(tree)
     print('Output:')
-    print(output or '<empty>')
+    print(output.py_instance or '<empty>')
     print('--------------------------------------------------------------')
 
-    return output
+    return output.py_instance

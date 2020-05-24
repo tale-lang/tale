@@ -211,16 +211,6 @@ class PrimitiveForm(Form):
     Primitive form captures only plain values.
     """
 
-    def __init__(self, content, children=None):
-        super().__init__(content, children=children)
-
-        self.type_ = 'Undefined'
-
-    def assign_type(self, type_: str):
-        """Assigns a type to the form."""
-
-        self.type_ = type_
-
 
 class Parameter(Node):
     """A parameter.

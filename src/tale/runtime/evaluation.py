@@ -1,32 +1,12 @@
 from typing import Any, Iterable, Optional, Tuple
 
+from tale.runtime.objects import NoneObject, TaleObject
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, SimpleParameter, Statement,
                                UnaryExpression, UnaryForm)
-
-
-def type_(x: Node):
-    """Returns a type of the node.
-
-    Pretty straightforward function just for temporary purposes.
-    """
-
-    def is_int(x):
-        try:
-            int(x)
-            return True
-        except:
-            return False
-
-    value = x.content
-
-    if is_int(value):
-        return 'Int'
-    else:
-        return 'Undefined'
 
 
 class CapturedArgument:
@@ -148,10 +128,6 @@ class Binding:
                     return (True, None)
 
             if isinstance(parameter, SimpleParameter):
-                if parameter.type_ is not None:
-                    if parameter.type_.content != type_(argument):
-                        return (False, None)
-
                 return (True, CapturedArgument(parameter.name, argument))
 
             return (False, None)
@@ -298,10 +274,6 @@ class Scope:
             value: A value that is bound to the form.
         """
 
-        if isinstance(form, PrimitiveForm) and \
-           isinstance(value.children[0], PrimitiveExpression):
-            form.assign_type(type_(value.children[0]))
-
         self.bindings.append(Binding(form, value))
 
     def resolve(self, node: Node) -> Any:
@@ -326,7 +298,10 @@ class Scope:
             print('Resolving: ' + x.content)
             captured = self.capture(x)
 
-            return x.content if not captured else captured.resolve(scope=self)
+            if captured:
+                return captured.resolve(scope=self)
+            else:
+                return TaleObject(None, x.content)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
@@ -347,9 +322,9 @@ class Scope:
             if isinstance(x, Expression):
                 result = resolve_expression(x)
 
-        return result
+        return result or NoneObject
 
-def evaluate(node: Node) -> Any:
+def evaluate(node: Node) -> TaleObject:
     """Evaluates the syntax tree node and produces the output.
 
     Args:
@@ -359,20 +334,6 @@ def evaluate(node: Node) -> Any:
         A an output of the program.
     """
 
-    def type_binding() -> PredefinedBinding:
-        def handle(x: CapturedExpression, scope: Scope) -> Any:
-            arg = x.arguments[0]
-            captured = scope.capture(arg.value)
-
-            return captured.form.type_
-
-        form = UnaryForm('', children=[
-            SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
-            Node('type')])
-
-        return PredefinedBinding(form, handle)
-
     scope = Scope()
-    scope.bindings.append(type_binding())
 
     return scope.resolve(node)
