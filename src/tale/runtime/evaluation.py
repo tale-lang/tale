@@ -48,8 +48,8 @@ class CapturedNode(CapturedExpression):
         (x) squared = x * x
 
     Attributes:
-        node: A node that rerepsents a value of the form captured the initial
-            expression.
+        form: A node that represents a form that captured the expression.
+        node: A node that rerepsents a value of the form captured the expression.
             For example, `1 squared` could be captured by `(x) squared = x * x`
             form, and the `node` would represent `x * x`.
         arguments: A sequence of arguments that were captured with the
@@ -60,7 +60,8 @@ class CapturedNode(CapturedExpression):
             `value` equal to node that represents `1`.
     """
 
-    def __init__(self, node: Node, arguments: Iterable[CapturedArgument] = None):
+    def __init__(self, form: Form, node: Node, arguments: Iterable[CapturedArgument] = None):
+        self.form = form
         self.node = node
         self.arguments = arguments or []
 
@@ -132,14 +133,14 @@ class Binding:
 
         def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
             if form.content == node.content:
-                return CapturedNode(self.value)
+                return CapturedNode(self.form, self.value)
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
                 captured, arg = captures_argument(form.parameter, node.argument)
 
                 if captured:
-                    return CapturedNode(self.value, [arg] if arg else [])
+                    return CapturedNode(self.form, self.value, [arg] if arg else [])
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
@@ -170,7 +171,7 @@ class Binding:
                 if arg:
                     args.append(arg)
 
-            return CapturedNode(self.value, args)
+            return CapturedNode(self.form, self.value, args)
 
         def captures_binary(form: BinaryForm, node: BinaryExpression):
             if form.operator.content != node.operator.content:
@@ -190,7 +191,7 @@ class Binding:
             if arg2:
                 args.append(arg2)
 
-            return CapturedNode(self.value, args)
+            return CapturedNode(self.form, self.value, args)
 
         form = self.form
 
@@ -272,6 +273,25 @@ class Scope:
             value: A value that is bound to the form.
         """
 
+        def type(x: Node):
+            def is_int(x):
+                try:
+                    int(x)
+                    return True
+                except:
+                    return False
+
+            value = x.content
+
+            if is_int(value):
+                return 'Int'
+            else:
+                return 'Undefined'
+
+        if isinstance(form, PrimitiveForm) and \
+           isinstance(value.children[0], PrimitiveExpression):
+            form.assign_type(type(value.children[0]))
+
         self.bindings.append(Binding(form, value))
 
     def resolve(self, node: Node) -> Any:
@@ -331,20 +351,10 @@ def evaluate(node: Node) -> Any:
 
     def type_binding() -> PredefinedBinding:
         def handle(x: CapturedExpression, scope: Scope) -> Any:
-            def is_int(x):
-                try:
-                    int(x)
-                    return True
-                except:
-                    return False
-
             arg = x.arguments[0]
-            arg_value = scope.resolve(arg.value)
+            captured = scope.capture(arg.value)
 
-            if is_int(arg_value):
-                return 'Int'
-            else:
-                return 'Undefined'
+            return captured.form.type_
 
         form = UnaryForm('', children=[
             SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
