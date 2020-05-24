@@ -94,11 +94,12 @@ class CapturedConst(CapturedExpression):
         value: A constant value.
     """
 
-    def __init__(self, value):
-        self._value = value
+    def __init__(self, instance, valueFunc):
+        self._instance = instance
+        self._valueFunc = valueFunc
 
     def resolve(self, scope: 'Scope') -> Any:
-        return self._value
+        return self._valueFunc(self._instance, scope)
 
 
 class Binding:
@@ -230,7 +231,7 @@ class PredefinedBinding:
         captured = self._binding.capture(node)
 
         if captured is not None:
-            return CapturedConst(self._handle(captured))
+            return CapturedConst(captured, self._handle)
 
 
 class Scope:
@@ -329,8 +330,21 @@ def evaluate(node: Node) -> Any:
     """
 
     def type_binding() -> PredefinedBinding:
-        def handle(x: CapturedExpression) -> Any:
-            return '1'
+        def handle(x: CapturedExpression, scope: Scope) -> Any:
+            def is_int(x):
+                try:
+                    int(x)
+                    return True
+                except:
+                    return False
+
+            arg = x.arguments[0]
+            arg_value = scope.resolve(arg.value)
+
+            if is_int(arg_value):
+                return 'Int'
+            else:
+                return 'Undefined'
 
         form = UnaryForm('', children=[
             SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
