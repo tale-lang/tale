@@ -201,7 +201,7 @@ class Scope:
             value: A value that is bound to the form.
         """
 
-        self.bindings.append(Binding(form ,value))
+        self.bindings.append(Binding(form, value))
 
     def resolve(self, node: Node) -> Any:
         """Processes a syntax node.
