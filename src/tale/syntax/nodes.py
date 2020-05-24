@@ -268,3 +268,17 @@ class KeywordForm(Form):
         children = group(children, by=2)
 
         return children
+
+
+class BinaryForm(Form):
+    """A binary form.
+
+    A binary form consists of two arguments that are separated by some special
+    character.
+    For example, the following is a binary form:
+        (x) + (y)
+    where:
+        `(x)` is a first argument;
+        `+` is an operator;
+        `(y)` is a second argument.
+    """
