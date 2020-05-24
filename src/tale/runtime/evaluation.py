@@ -2,8 +2,9 @@ from typing import Any, Iterable, Optional
 
 from tale.syntax.nodes import (Argument, Assignment, Expression, Form,
                                KeywordExpression, KeywordForm, KeywordValue,
-                               Node, PrimitiveExpression, PrimitiveForm,
-                               Statement, UnaryExpression, UnaryForm)
+                               Node, PatternMatchingArgument,
+                               PrimitiveExpression, PrimitiveForm, Statement,
+                               UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -98,6 +99,10 @@ class Binding:
             for (form_name, form_arg), (node_name, node_value) in parts:
                 if form_name.content != node_name.content:
                     return None
+
+                if isinstance(form_arg, PatternMatchingArgument):
+                    if form_arg.content != node_value.content:
+                        return None
 
                 if isinstance(form_arg, Argument):
                     captured.append(CapturedArgument(form_arg.name, node_value))
