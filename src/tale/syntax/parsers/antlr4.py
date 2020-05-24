@@ -1,4 +1,6 @@
+import io
 import os
+from contextlib import redirect_stderr
 from typing import Any, Iterable
 
 import antlr4
@@ -8,9 +10,9 @@ from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
-                               BinaryForm, Expression, KeywordExpression,
-                               KeywordForm, KeywordName, KeywordPrefix,
-                               KeywordArgument, Node, PatternMatchingParameter,
+                               BinaryForm, Expression, KeywordArgument,
+                               KeywordExpression, KeywordForm, KeywordName,
+                               KeywordPrefix, Node, PatternMatchingParameter,
                                PrimitiveExpression, PrimitiveForm, Program,
                                SimpleParameter, Statement, Token,
                                UnaryExpression, UnaryForm)
@@ -158,12 +160,20 @@ class Antlr4Parser(Parser):
 
             return new_(x, as_=Node)
 
-        parser = pipe(
-                antlr4.InputStream,
-                TaleLexer,
-                antlr4.CommonTokenStream,
-                TaleParser)
-        program = parser(code).program()
+        err = io.StringIO()
+
+        with redirect_stderr(err):
+            parser = pipe(
+                    antlr4.InputStream,
+                    TaleLexer,
+                    antlr4.CommonTokenStream,
+                    TaleParser)
+            program = parser(code).program()
+
+        err = err.getvalue()
+
+        if len(err) > 0:
+            raise Exception(err)
 
         print(Antlr4DebugNode(program))
 
