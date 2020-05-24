@@ -1,7 +1,8 @@
 from typing import Any, Iterable, Optional
 
-from tale.syntax.nodes import (Assignment, Expression, Form, KeywordExpression,
-                               KeywordForm, KeywordValue, Node,
+from tale.syntax.nodes import (Argument, Assignment, Expression, Form,
+                               KeywordExpression, KeywordForm, KeywordValue,
+                               Node, PatternMatchingArgument,
                                PrimitiveExpression, PrimitiveForm, Statement,
                                UnaryExpression, UnaryForm)
 
@@ -73,27 +74,35 @@ class Binding:
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
-                return CapturedExpression(
-                        self.value,
-                        [CapturedArgument(form.argument.name, node.argument)])
+                captured = []
+
+                # Pattern matching arguments should be checked by value.
+                if isinstance(form.argument, PatternMatchingArgument):
+                    if form.argument.content != node.argument.content:
+                        return None
+
+                # Simple arguments should be captured.
+                if isinstance(form.argument, Argument):
+                    captured.append(CapturedArgument(form.argument.name,
+                                                     node.argument))
+
+                return CapturedExpression(self.value, captured)
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
             node_parts = list(node.parts)
-            
+
             if len(form_parts) != len(node_parts):
                 return None
 
             captured = []
 
-            if form.prefix is not None and node.prefix is None:
-                return None
-            if form.prefix is None and node.prefix is not None:
-                return None
             if form.prefix is not None and node.prefix is not None:
                 captured.append(CapturedArgument(
                     form.prefix.name,
                     node.prefix))
+            elif form.prefix is not None or node.prefix is not None:
+                return None
 
             parts = zip(form_parts, node_parts)
 
@@ -101,7 +110,14 @@ class Binding:
                 if form_name.content != node_name.content:
                     return None
 
-                captured.append(CapturedArgument(form_arg.name, node_value))
+                # Pattern matching arguments should be checked by value.
+                if isinstance(form_arg, PatternMatchingArgument):
+                    if form_arg.content != node_value.content:
+                        return None
+
+                # Simple arguments should be captured.
+                if isinstance(form_arg, Argument):
+                    captured.append(CapturedArgument(form_arg.name, node_value))
 
             return CapturedExpression(self.value, captured)
 

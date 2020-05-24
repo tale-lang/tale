@@ -201,6 +201,17 @@ class Argument(Node):
         return self.children[1].content
 
 
+class PatternMatchingArgument(Node):
+    """A pattern matching argument.
+
+    Represents a plain value.
+
+    For example, in the following form:
+        2 squared = 4
+    `2` is a pattern matching argument.
+    """
+
+
 class UnaryForm(Form):
     """An unary form.
 

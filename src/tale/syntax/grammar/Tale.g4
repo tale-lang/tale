@@ -43,7 +43,12 @@ binaryForm: argument OPERATOR argument;
 keywordForm: argument? (IDENTIFIER ':' argument)+;
 simpleForm: IDENTIFIER;
 
-argument: '(' argumentName (':' argumentType)? ')';
+argument: simpleArgument
+        | patternMatchingArgument;
+
+simpleArgument: '(' argumentName (':' argumentType)? ')';
+patternMatchingArgument: IDENTIFIER
+                       | NUMBER;
 argumentName: IDENTIFIER;
 argumentType: IDENTIFIER;
 

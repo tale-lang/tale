@@ -76,7 +76,7 @@ class TaleLexer(Lexer):
         self._predicates = None
 
 
-    class MyCoolDenter(DenterHelper):
+    class TaleDenter(DenterHelper):
         def __init__(self, lexer, nl_token, indent_token, dedent_token, ignore_eof):
             super().__init__(nl_token, indent_token, dedent_token, ignore_eof)
             self.lexer: TaleLexer = lexer
@@ -88,7 +88,7 @@ class TaleLexer(Lexer):
 
     def nextToken(self):
         if not self.denter:
-            self.denter = self.MyCoolDenter(self, self.NEWLINE, TaleParser.INDENT, TaleParser.DEDENT, False)
+            self.denter = self.TaleDenter(self, self.NEWLINE, TaleParser.INDENT, TaleParser.DEDENT, False)
 
         return self.denter.next_token()
 
