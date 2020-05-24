@@ -114,16 +114,31 @@ class Binding:
 
                 captured, arg = captures_argument(form_arg, node_value)
 
-                if captured:
-                    if arg:
-                        args.append(arg)
-                else:
+                if not captured:
                     return None
+                if arg:
+                    args.append(arg)
 
             return CapturedExpression(self.value, args)
 
         def captures_binary(form: BinaryForm, node: BinaryExpression):
-            ...
+            if form.operator.content != node.operator.content:
+                return None
+
+            args = []
+
+            captured1, arg1 = captures_argument(form.first_param, node.first_arg)
+            captured2, arg2 = captures_argument(form.second_param, node.second_arg)
+
+            if not captured1 or not captured2:
+                return None
+
+            if arg1:
+                args.append(arg1)
+            if arg2:
+                args.append(arg2)
+
+            return CapturedExpression(self.value, args)
 
         form = self.form
 

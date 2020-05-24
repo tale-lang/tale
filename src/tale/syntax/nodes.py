@@ -180,12 +180,16 @@ class BinaryExpression(Expression):
     """
 
     @property
-    def first_argument(self) -> Expression:
-        ...
+    def first_arg(self) -> Expression:
+        return self.children[0]
 
     @property
-    def second_argument(self) -> Expression:
-        ...
+    def operator(self) -> Node:
+        return self.children[1]
+
+    @property
+    def second_arg(self) -> Expression:
+        return self.children[2]
 
 
 class Form(Node):
@@ -321,9 +325,13 @@ class BinaryForm(Form):
     """
 
     @property
-    def first_argument(self) -> Argument:
+    def first_param(self) -> Argument:
         return self.children[0]
 
     @property
-    def second_argument(self) -> Argument:
+    def operator(self) -> Node:
+        return self.children[1]
+
+    @property
+    def second_param(self) -> Argument:
         return self.children[2]
