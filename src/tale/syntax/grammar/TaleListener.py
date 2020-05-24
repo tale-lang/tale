@@ -98,6 +98,24 @@ class TaleListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TaleParser#simpleArgument.
+    def enterSimpleArgument(self, ctx:TaleParser.SimpleArgumentContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#simpleArgument.
+    def exitSimpleArgument(self, ctx:TaleParser.SimpleArgumentContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#patternMatchingArgument.
+    def enterPatternMatchingArgument(self, ctx:TaleParser.PatternMatchingArgumentContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#patternMatchingArgument.
+    def exitPatternMatchingArgument(self, ctx:TaleParser.PatternMatchingArgumentContext):
+        pass
+
+
     # Enter a parse tree produced by TaleParser#argumentName.
     def enterArgumentName(self, ctx:TaleParser.ArgumentNameContext):
         pass
