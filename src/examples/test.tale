@@ -1,5 +1,1 @@
--- Test
-
-just: (x) = x
-just: b = c
-just: b
+just: (x: Int) = 1

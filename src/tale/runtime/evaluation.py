@@ -8,6 +8,27 @@ from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                UnaryExpression, UnaryForm)
 
 
+def type_(x: Node):
+    """Returns a type of the node.
+
+    Pretty straightforward function just for temporary purposes.
+    """
+
+    def is_int(x):
+        try:
+            int(x)
+            return True
+        except:
+            return False
+
+    value = x.content
+
+    if is_int(value):
+        return 'Int'
+    else:
+        return 'Undefined'
+
+
 class CapturedArgument:
     """An argument that were captured with an expression.
 
@@ -127,6 +148,10 @@ class Binding:
                     return (True, None)
 
             if isinstance(parameter, SimpleParameter):
+                if parameter.type_ is not None:
+                    if parameter.type_.content != type_(argument):
+                        return (False, None)
+
                 return (True, CapturedArgument(parameter.name, argument))
 
             return (False, None)
@@ -273,24 +298,10 @@ class Scope:
             value: A value that is bound to the form.
         """
 
-        def type(x: Node):
-            def is_int(x):
-                try:
-                    int(x)
-                    return True
-                except:
-                    return False
-
-            value = x.content
-
-            if is_int(value):
-                return 'Int'
-            else:
-                return 'Undefined'
 
         if isinstance(form, PrimitiveForm) and \
            isinstance(value.children[0], PrimitiveExpression):
-            form.assign_type(type(value.children[0]))
+            form.assign_type(type_(value.children[0]))
 
         self.bindings.append(Binding(form, value))
 
@@ -314,7 +325,7 @@ class Scope:
 
         def resolve_expression(x: Expression):
             print('Resolving: ' + x.content)
-            captured: CapturedExpression = self.capture(x)
+            captured = self.capture(x)
 
             return x.content if not captured else captured.resolve(scope=self)
 
