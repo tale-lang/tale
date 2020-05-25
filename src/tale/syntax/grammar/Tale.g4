@@ -96,6 +96,7 @@ primitive: primitiveWithOperator
 primitiveWithOperator: OPERATOR IDENTIFIER
                      | OPERATOR NUMBER;
 
+intLiteral: NUMBER;
 
 IDENTIFIER: [a-zA-Z]+;
 NUMBER: [0-9]+;

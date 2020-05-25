@@ -34,6 +34,13 @@ class Token(Node):
     """A plain text."""
 
 
+class IntLiteral(Node):
+    """An integer literal.
+
+    Represents a positive integer number.
+    """
+
+
 class Program(Node):
     """A main program."""
 
