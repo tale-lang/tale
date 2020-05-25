@@ -398,9 +398,21 @@ def evaluate(node: Node) -> TaleObject:
 
         return PredefinedBinding(binary('+'), type)
 
+    def binary_minus() -> PredefinedBinding:
+        def type(x: CapturedExpression):
+            a, b = x.arguments
+
+            if a.value.type is TaleInt and a.value.type is TaleInt:
+                result = a.value.py_instance - b.value.py_instance
+
+                return TaleObject(TaleInt, result)
+
+        return PredefinedBinding(binary('-'), type)
+
     prelude = Scope()
     prelude.bindings.append(unary_type())
     prelude.bindings.append(binary_plus())
+    prelude.bindings.append(binary_minus())
 
     scope = Scope(parent=prelude)
 

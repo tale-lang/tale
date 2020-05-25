@@ -84,3 +84,17 @@ just: 1 squared
 
     # Assert.
     assert out == 1
+
+
+def test_keyword_form_has_less_priority_than_binary():
+    # Arrange.
+    program = """
+just: (x) = x
+just: 1 + 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 3

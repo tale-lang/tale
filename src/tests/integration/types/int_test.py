@@ -58,3 +58,16 @@ def test_plus_operator():
 
     # Assert.
     assert out == 3
+
+
+def test_minus_operator():
+    # Arrange.
+    program = """
+2 - 1
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 1
