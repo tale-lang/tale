@@ -90,7 +90,7 @@ keywordValue: unary
             | expressionInBracketsWithOperator
             | expressionInBrackets;
 
-primitive: primitiveValue (',' primitiveValue)*;
+primitive: primitiveValue (',' primitiveValue)*?;
 primitiveValue: primitiveWithOperator
          | IDENTIFIER
          | literal;
@@ -109,7 +109,7 @@ OPERATOR: '-'
         | '+'
         | '*'
         | '/';
-STRING: '"' (.*)? '"';
+STRING: '"' (.)*? '"';
 
 WS: [ \t]+ -> skip;
 NEWLINE: ('\r'? '\n' ' '*);
