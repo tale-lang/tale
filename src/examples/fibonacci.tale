@@ -1,0 +1,10 @@
+fibonacci: 1 = 0
+fibonacci: 2 = 1
+fibonacci: (n) =
+    a = fibonacci: n - 1
+    b = fibonacci: n - 2
+    a + b
+
+-- Put any number here.
+x = fibonacci: 10
+x
