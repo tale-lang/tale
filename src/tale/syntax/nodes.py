@@ -34,6 +34,13 @@ class Token(Node):
     """A plain text."""
 
 
+class IntLiteral(Node):
+    """An integer literal.
+
+    Represents a positive integer number.
+    """
+
+
 class Program(Node):
     """A main program."""
 
@@ -110,20 +117,6 @@ class UnaryExpression(Expression):
         return self.children[1].content
 
 
-class KeywordPrefix(Expression):
-    """A prefix of a keyword expression.
-
-    Usually, a keyword expression consists of sequence of pairs where each pair
-    represents an identifier and a value.
-    For example, the `add: 1 to: list` expression consists of two pairs:
-    `(add, 1)` and `(to, 1)`.
-
-    However, sometimes the first node of a keyword expression is an argument node.
-    For example, the `1 added_to: list` expression consists of `1` and a pair
-    `(added_to, list)`. Here the `1` expression is a prefix.
-    """
-
-
 class KeywordName(Node):
     """A name of the keyword expression part.
 
@@ -137,6 +130,20 @@ class KeywordArgument(Expression):
 
     For example, the `add: 1 to: list` expression consists of two arguments:
     `1` and `list`.
+    """
+
+
+class KeywordPrefix(KeywordArgument):
+    """A prefix of a keyword expression.
+
+    Usually, a keyword expression consists of sequence of pairs where each pair
+    represents an identifier and a value.
+    For example, the `add: 1 to: list` expression consists of two pairs:
+    `(add, 1)` and `(to, 1)`.
+
+    However, sometimes the first node of a keyword expression is an argument node.
+    For example, the `1 added_to: list` expression consists of `1` and a pair
+    `(added_to, list)`. Here the `1` expression is a prefix.
     """
 
 

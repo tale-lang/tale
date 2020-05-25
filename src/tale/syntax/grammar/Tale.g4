@@ -48,7 +48,7 @@ parameter: simpleParameter
 
 simpleParameter: '(' parameterName (':' parameterType)? ')';
 patternMatchingParameter: IDENTIFIER
-                        | NUMBER;
+                        | intLiteral;
 parameterName: IDENTIFIER;
 parameterType: IDENTIFIER;
 
@@ -92,10 +92,11 @@ keywordValue: unary
 
 primitive: primitiveWithOperator
          | IDENTIFIER
-         | NUMBER;
+         | intLiteral;
 primitiveWithOperator: OPERATOR IDENTIFIER
-                     | OPERATOR NUMBER;
+                     | OPERATOR intLiteral;
 
+intLiteral: NUMBER;
 
 IDENTIFIER: [a-zA-Z]+;
 NUMBER: [0-9]+;

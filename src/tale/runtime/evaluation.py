@@ -1,8 +1,8 @@
 from typing import Any, Iterable, Optional, Tuple
 
-from tale.runtime.objects import TaleInt, TaleNone, TaleObject
+from tale.runtime.objects import TaleInt, TaleNone, TaleObject, TaleType
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
-                               Expression, Form, KeywordArgument,
+                               Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, SimpleParameter, Statement,
@@ -134,6 +134,8 @@ class Binding:
             if isinstance(parameter, SimpleParameter):
                 if parameter.type_ is not None:
                     if argument.type is None:
+                        return fail()
+                    if parameter.type_.content != argument.type.name.py_instance:
                         return fail()
 
                 return ok_captured()
@@ -319,15 +321,17 @@ class Scope:
 
         def resolve_expression(x: Expression):
             print('Resolving: ' + x.content)
+
+            if isinstance(x, PrimitiveExpression):
+                if isinstance(x.children[0], IntLiteral):
+                    return TaleObject(TaleInt, int(x.content))
+
             captured = self.capture(x)
 
             if captured:
                 return captured.resolve(scope=self)
             else:
-                if x.content.isnumeric():
-                    return TaleObject(TaleInt, int(x.content))
-
-                return TaleObject(None, x.content)
+                return TaleObject(TaleType, x.content)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
@@ -336,6 +340,9 @@ class Scope:
                 return resolve_assignment(x)
             if isinstance(x, Expression):
                 return resolve_expression(x)
+
+        if isinstance(node, KeywordArgument):
+            node = node.children[0]
 
         if isinstance(node, Expression):
             return resolve_expression(node)

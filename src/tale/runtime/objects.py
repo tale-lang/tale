@@ -23,9 +23,10 @@ class TaleObject:
         self.name = name
 
 
-TaleNone = TaleObject(None, None)
-
-TaleType = TaleObject(type(TaleObject), None)
+TaleType = TaleObject(None, None)
 TaleType.type = TaleType
+TaleType.name = TaleObject(TaleType, 'Type')
+
+TaleNone = TaleObject(None, None, TaleObject(TaleType, 'None'))
 
 TaleInt = TaleObject(TaleType, int, TaleObject(TaleType, 'Int'))

@@ -10,12 +10,12 @@ from tale.common import pipe
 from tale.syntax.grammar.TaleLexer import TaleLexer
 from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
-                               BinaryForm, Expression, KeywordArgument,
-                               KeywordExpression, KeywordForm, KeywordName,
-                               KeywordPrefix, Node, PatternMatchingParameter,
-                               PrimitiveExpression, PrimitiveForm, Program,
-                               SimpleParameter, Statement, Token,
-                               UnaryExpression, UnaryForm)
+                               BinaryForm, Expression, IntLiteral,
+                               KeywordArgument, KeywordExpression, KeywordForm,
+                               KeywordName, KeywordPrefix, Node,
+                               PatternMatchingParameter, PrimitiveExpression,
+                               PrimitiveForm, Program, SimpleParameter,
+                               Statement, Token, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -145,6 +145,9 @@ class Antlr4Parser(Parser):
 
                 if isinstance(x, TaleParser.PatternMatchingParameterContext):
                     return new_(x, as_=PatternMatchingParameter)
+
+            if isinstance(x, TaleParser.IntLiteralContext):
+                return new_(x, as_=IntLiteral)
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')
