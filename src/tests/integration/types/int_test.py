@@ -1,7 +1,7 @@
 from tale.core import execute
 
 
-def test_integer_type():
+def test_type():
     # Arrange.
     program = """
 x = 1
@@ -15,21 +15,7 @@ x type
     assert out == 'Int'
 
 
-def test_integer_type():
-    # Arrange.
-    program = """
-x = "a"
-x type
-"""
-
-    # Act.
-    out = execute(program)
-
-    # Assert.
-    assert out == 'String'
-
-
-def test_integer_pattern_matching_integer_branch():
+def test_pattern_matching_integer_branch():
     # Arrange.
     program = """
 just: (x: Int) = x
@@ -45,7 +31,7 @@ just: 1
     assert out == 1
 
 
-def test_integer_pattern_matching_common_branch():
+def test_pattern_matching_common_branch():
     # Arrange.
     program = """
 just: (x: Int) = x
