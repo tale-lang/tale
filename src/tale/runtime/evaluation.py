@@ -2,7 +2,7 @@ from typing import Any, Iterable, Optional, Tuple
 
 from tale.runtime.objects import TaleInt, TaleNone, TaleObject
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
-                               Expression, Form, KeywordArgument,
+                               Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, SimpleParameter, Statement,
@@ -319,14 +319,16 @@ class Scope:
 
         def resolve_expression(x: Expression):
             print('Resolving: ' + x.content)
+
+            if isinstance(x, PrimitiveExpression):
+                if isinstance(x.children[0], IntLiteral):
+                    return TaleObject(TaleInt, int(x.content))
+
             captured = self.capture(x)
 
             if captured:
                 return captured.resolve(scope=self)
             else:
-                if x.content.isnumeric():
-                    return TaleObject(TaleInt, int(x.content))
-
                 return TaleObject(None, x.content)
 
         def resolve_statement(x: Statement):
@@ -336,6 +338,9 @@ class Scope:
                 return resolve_assignment(x)
             if isinstance(x, Expression):
                 return resolve_expression(x)
+
+        if isinstance(node, KeywordArgument):
+            node = node.children[0]
 
         if isinstance(node, Expression):
             return resolve_expression(node)
