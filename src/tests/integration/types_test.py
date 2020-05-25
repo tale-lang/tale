@@ -15,6 +15,20 @@ x type
     assert out == 'Int'
 
 
+def test_integer_type():
+    # Arrange.
+    program = """
+x = "a"
+x type
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'String'
+
+
 def test_integer_pattern_matching_integer_branch():
     # Arrange.
     program = """
