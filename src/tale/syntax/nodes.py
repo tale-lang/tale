@@ -305,7 +305,7 @@ class KeywordForm(Form):
 
     @property
     def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], SimpleParameter):
+        if isinstance(self.children[0], Parameter):
             return self.children[0]
 
     @property

@@ -164,3 +164,33 @@ a + b
 
     # Assert.
     assert out == 'c'
+
+
+def test_pattern_matching_without_common_branch():
+    # Arrange.
+    program = """
+a + b = c
+a + c = d
+
+a + c
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'd'
+
+
+def test_pattern_matching_of_keyword_form_with_prefix():
+    # Arrange.
+    program = """
+1 plus: 2 = 3
+1 plus: 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 3

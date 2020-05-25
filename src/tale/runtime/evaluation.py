@@ -166,7 +166,11 @@ class Binding:
 
             if form.prefix is not None and node.prefix is not None:
                 prefix = scope.resolve(node.prefix)
-                args.append(CapturedArgument(form.prefix.name, prefix))
+                if isinstance(form.prefix, PatternMatchingParameter):
+                    if form.prefix.content != str(prefix.py_instance):
+                        return None
+                else:
+                    args.append(CapturedArgument(form.prefix.name, prefix))
             elif form.prefix is not None or node.prefix is not None:
                 return None
 
