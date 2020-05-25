@@ -378,7 +378,7 @@ def evaluate(node: Node) -> TaleObject:
 
     def binary(operator: str):
         return BinaryForm(operator, children=[
-            SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
+            SimpleParameter('', children=[Node('('), Node('x'), Node(':')]),
             Node(operator, [Node(operator)]),
             SimpleParameter('', children=[Node('('), Node('y'), Node(')')])])
 
@@ -394,7 +394,9 @@ def evaluate(node: Node) -> TaleObject:
             a, b = x.arguments
 
             if a.value.type is TaleInt and a.value.type is TaleInt:
-                return a.value.py_instance + b.value.py_instance
+                result = a.value.py_instance + b.value.py_instance
+
+                return TaleObject(TaleInt, result)
 
         return PredefinedBinding(binary('+'), type)
 

@@ -45,3 +45,16 @@ just: a
 
     # Assert.
     assert out == 'Error'
+
+
+def test_plus_operator():
+    # Arrange.
+    program = """
+1 + 2
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 3
