@@ -166,9 +166,7 @@ class Binding:
 
             if form.prefix is not None and node.prefix is not None:
                 prefix = scope.resolve(node.prefix)
-                args.append(CapturedArgument(
-                    form.prefix.name,
-                    prefix))
+                args.append(CapturedArgument(form.prefix.name, prefix))
             elif form.prefix is not None or node.prefix is not None:
                 return None
 
