@@ -1,0 +1,28 @@
+if: True  then: (y) else: (z) = y
+if: False then: (y) else: (z) = z
+
+Rock vs: Rock         = Draw
+Rock vs: Scissors     = Win
+Rock vs: Paper        = Lose
+
+Paper vs: Paper       = Draw
+Paper vs: Scissors    = Lose
+Paper vs: Rock        = Win
+
+Scissors vs: Scissors = Draw
+Scissors vs: Paper    = Win
+Scissors vs: Rock     = Lose
+
+rock asWeapon       = Rock
+paper asWeapon      = Paper
+scissors asWeapon   = Scissors
+
+1 asWeapon          = Rock
+2 asWeapon          = Paper
+3 asWeapon          = Scissors
+
+-- TODO: Finish the implementation.
+
+a = 1 asWeapon
+b = 2 asWeapon
+a vs: b
