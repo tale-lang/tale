@@ -29,3 +29,19 @@ def test_second_argument():
 
     # Assert.
     assert out == 2
+
+
+def test_binary_form_as_result():
+    # Arrange.
+    program = """
+x = 1
+y = 2
+
+x + y
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'x+y'
