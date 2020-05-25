@@ -29,7 +29,7 @@ def execute(code: str) -> Any:
     print('--------------------------------------------------------------')
     output: TaleObject = evaluate(tree)
     print('Output:')
-    print(output.py_instance or '<empty>')
+    print(output.py_instance if output.py_instance is not None else '<empty>')
     print('--------------------------------------------------------------')
 
     return output.py_instance
