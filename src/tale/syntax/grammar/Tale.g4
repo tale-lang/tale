@@ -58,9 +58,9 @@ assignmentBody: simpleAssignmentBody
 simpleAssignmentBody: expression | expressionInBrackets;
 compoundAssignmentBody: INDENT statement+ DEDENT;
 
-expression: unary
-          | binary
-          | keyword
+expression: unary NEWLINE
+          | binary NEWLINE
+          | keyword NEWLINE
           | primitive NEWLINE;
 expressionInBrackets: '(' expression ')';
 expressionInBracketsWithOperator: OPERATOR expressionInBrackets;

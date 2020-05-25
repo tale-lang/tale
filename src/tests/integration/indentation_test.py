@@ -51,3 +51,18 @@ x
 
     # Assert.
     assert out is None
+
+
+def test_one_indentation_level_with_complex_return():
+    # Arrange.
+    program = """
+x =
+    a + b
+x
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'a+b'
