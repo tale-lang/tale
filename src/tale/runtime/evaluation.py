@@ -1,12 +1,13 @@
 from typing import Any, Iterable, Optional, Tuple
 
-from tale.runtime.objects import TaleInt, TaleNone, TaleObject, TaleType
+from tale.runtime.objects import (TaleInt, TaleNone, TaleObject, TaleString,
+                                  TaleType)
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, SimpleParameter, Statement,
-                               UnaryExpression, UnaryForm)
+                               StringLiteral, UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -325,6 +326,9 @@ class Scope:
             if isinstance(x, PrimitiveExpression):
                 if isinstance(x.children[0], IntLiteral):
                     return TaleObject(TaleInt, int(x.content))
+
+                if isinstance(x.children[0], StringLiteral):
+                    return TaleObject(TaleString, x.content)
 
             captured = self.capture(x)
 

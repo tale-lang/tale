@@ -269,12 +269,30 @@ class TaleListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TaleParser#literal.
+    def enterLiteral(self, ctx:TaleParser.LiteralContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#literal.
+    def exitLiteral(self, ctx:TaleParser.LiteralContext):
+        pass
+
+
     # Enter a parse tree produced by TaleParser#intLiteral.
     def enterIntLiteral(self, ctx:TaleParser.IntLiteralContext):
         pass
 
     # Exit a parse tree produced by TaleParser#intLiteral.
     def exitIntLiteral(self, ctx:TaleParser.IntLiteralContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#stringLiteral.
+    def enterStringLiteral(self, ctx:TaleParser.StringLiteralContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#stringLiteral.
+    def exitStringLiteral(self, ctx:TaleParser.StringLiteralContext):
         pass
 
 

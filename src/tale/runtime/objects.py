@@ -25,8 +25,11 @@ class TaleObject:
 
 TaleType = TaleObject(None, None)
 TaleType.type = TaleType
-TaleType.name = TaleObject(TaleType, 'Type')
 
-TaleNone = TaleObject(None, None, TaleObject(TaleType, 'None'))
+TaleString = TaleObject(TaleType, str)
+TaleString.name = TaleObject(TaleString, 'String')
 
-TaleInt = TaleObject(TaleType, int, TaleObject(TaleType, 'Int'))
+TaleType.name = TaleObject(TaleString, 'Type')
+
+TaleNone = TaleObject(None, None, TaleObject(TaleString, 'None'))
+TaleInt = TaleObject(TaleType, int, TaleObject(TaleString, 'Int'))
