@@ -260,6 +260,15 @@ class TaleListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TaleParser#primitiveValue.
+    def enterPrimitiveValue(self, ctx:TaleParser.PrimitiveValueContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#primitiveValue.
+    def exitPrimitiveValue(self, ctx:TaleParser.PrimitiveValueContext):
+        pass
+
+
     # Enter a parse tree produced by TaleParser#primitiveWithOperator.
     def enterPrimitiveWithOperator(self, ctx:TaleParser.PrimitiveWithOperatorContext):
         pass

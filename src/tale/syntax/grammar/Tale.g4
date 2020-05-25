@@ -90,7 +90,8 @@ keywordValue: unary
             | expressionInBracketsWithOperator
             | expressionInBrackets;
 
-primitive: primitiveWithOperator
+primitive: primitiveValue (',' primitiveValue)*;
+primitiveValue: primitiveWithOperator
          | IDENTIFIER
          | literal;
 primitiveWithOperator: OPERATOR IDENTIFIER

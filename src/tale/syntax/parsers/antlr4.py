@@ -107,6 +107,7 @@ class Antlr4Parser(Parser):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.PrimitiveContext):
+                    x = next(x.getChildren())
                     return new_(x, as_=PrimitiveExpression)
 
                 if isinstance(x, TaleParser.UnaryContext):
@@ -121,6 +122,7 @@ class Antlr4Parser(Parser):
                 return new_(x, as_=Expression)
 
             if isinstance(x, TaleParser.PrimitiveContext):
+                x = next(x.getChildren())
                 return new_(x, as_=PrimitiveExpression)
 
             if isinstance(x, TaleParser.UnaryContext):
