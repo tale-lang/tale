@@ -57,7 +57,7 @@ def test_one_indentation_level_with_complex_return():
     # Arrange.
     program = """
 x =
-    a + b
+    just: 1
 x
 """
 
@@ -65,4 +65,4 @@ x
     out = execute(program)
 
     # Assert.
-    assert out == 'a+b'
+    assert out == 'just:1'

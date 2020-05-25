@@ -274,7 +274,7 @@ class Scope:
         self.parent = parent
         self.bindings = []
 
-    def capture(self, node: Node) -> CapturedExpression:
+    def capture(self, node: Node, scope: 'Scope') -> CapturedExpression:
         """Finds a binding that could capture an expression, and captures it.
 
         Args:
@@ -285,9 +285,9 @@ class Scope:
         """
 
         def parent_capture():
-            return self.parent.capture(node) if self.parent is not None else None
+            return self.parent.capture(node, scope) if self.parent is not None else None
 
-        captures = (x.capture(node, self) for x in self.bindings)
+        captures = (x.capture(node, scope) for x in self.bindings)
         captures = (x for x in captures if x)
 
         return next(captures, None) or parent_capture()
@@ -330,7 +330,7 @@ class Scope:
                 if isinstance(x.children[0], StringLiteral):
                     return TaleObject(TaleString, x.content)
 
-            captured = self.capture(x)
+            captured = self.capture(x, self)
 
             if captured:
                 return captured.resolve(scope=self)
@@ -376,14 +376,32 @@ def evaluate(node: Node) -> TaleObject:
             SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
             Node(name, [Node(name)])])
 
-    def type_binding() -> PredefinedBinding:
+    def binary(operator: str):
+        return BinaryForm(operator, children=[
+            SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
+            Node(operator, [Node(operator)]),
+            SimpleParameter('', children=[Node('('), Node('y'), Node(')')])])
+
+    def unary_type() -> PredefinedBinding:
         def type(x: CapturedExpression):
             arg = x.arguments[0]
             return arg.value.type.name
 
         return PredefinedBinding(unary('type'), type)
 
-    scope = Scope()
-    scope.bindings.append(type_binding())
+    def binary_plus() -> PredefinedBinding:
+        def type(x: CapturedExpression):
+            a, b = x.arguments
+
+            if a.value.type is TaleInt and a.value.type is TaleInt:
+                return a.value.py_instance + b.value.py_instance
+
+        return PredefinedBinding(binary('+'), type)
+
+    prelude = Scope()
+    prelude.bindings.append(unary_type())
+    prelude.bindings.append(binary_plus())
+
+    scope = Scope(parent=prelude)
 
     return scope.resolve(node)

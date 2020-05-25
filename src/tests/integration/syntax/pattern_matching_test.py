@@ -137,30 +137,30 @@ a just
 def test_binary_form_common_branch():
     # Arrange.
     program = """
-1 + 1 = 2
+a + b = c
 (x) + (y) = x
 
-1 + 2
+a + c
 """
 
     # Act.
     out = execute(program)
 
     # Assert.
-    assert out == 1
+    assert out == 'a'
 
 
 def test_binary_form_specific_branch():
     # Arrange.
     program = """
-1 + 1 = 2
+a + b = c
 (x) + (y) = x
 
-1 + 1
+a + b
 """
 
     # Act.
     out = execute(program)
 
     # Assert.
-    assert out == 2
+    assert out == 'c'
