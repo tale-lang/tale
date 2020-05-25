@@ -15,7 +15,8 @@ from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                KeywordName, KeywordPrefix, Node,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, Program, SimpleParameter,
-                               Statement, Token, UnaryExpression, UnaryForm)
+                               Statement, StringLiteral, Token,
+                               UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -146,8 +147,14 @@ class Antlr4Parser(Parser):
                 if isinstance(x, TaleParser.PatternMatchingParameterContext):
                     return new_(x, as_=PatternMatchingParameter)
 
-            if isinstance(x, TaleParser.IntLiteralContext):
-                return new_(x, as_=IntLiteral)
+            if isinstance(x, TaleParser.LiteralContext):
+                x = next(x.getChildren())
+
+                if isinstance(x, TaleParser.IntLiteralContext):
+                    return new_(x, as_=IntLiteral)
+
+                if isinstance(x, TaleParser.StringLiteralContext):
+                    return new_(x, as_=StringLiteral)
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')

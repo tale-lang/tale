@@ -41,6 +41,10 @@ class IntLiteral(Node):
     """
 
 
+class StringLiteral(Node):
+    """A string literal."""
+
+
 class Program(Node):
     """A main program."""
 
