@@ -100,7 +100,7 @@ literal: intLiteral
        | stringLiteral;
 
 intLiteral: NUMBER;
-stringLiteral: '"' .*? '"';
+stringLiteral: STRING;
 
 IDENTIFIER: [a-zA-Z]+;
 NUMBER: [0-9]+;
@@ -108,6 +108,7 @@ OPERATOR: '-'
         | '+'
         | '*'
         | '/';
+STRING: '"' (.*)? '"';
 
 WS: [ \t]+ -> skip;
 NEWLINE: ('\r'? '\n' ' '*);

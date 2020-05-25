@@ -374,6 +374,11 @@ def evaluate(node: Node) -> TaleObject:
             SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
             Node(name, [Node(name)])])
 
+    def simple_keyword(name: str):
+        return KeywordForm(name, children=[
+            Node(name, [Node(name)]),
+            SimpleParameter('', children=[Node('('), Node('x'), Node(')')])])
+
     def binary(operator: str):
         return BinaryForm(operator, children=[
             SimpleParameter('', children=[Node('('), Node('x'), Node(':')]),
@@ -381,14 +386,14 @@ def evaluate(node: Node) -> TaleObject:
             SimpleParameter('', children=[Node('('), Node('y'), Node(')')])])
 
     def unary_type() -> PredefinedBinding:
-        def type(x: CapturedExpression):
+        def execute(x: CapturedExpression):
             arg = x.arguments[0]
             return arg.value.type.name
 
-        return PredefinedBinding(unary('type'), type)
+        return PredefinedBinding(unary('type'), execute)
 
     def binary_plus() -> PredefinedBinding:
-        def type(x: CapturedExpression):
+        def execute(x: CapturedExpression):
             a, b = x.arguments
 
             if a.value.type is TaleInt and a.value.type is TaleInt:
@@ -396,10 +401,10 @@ def evaluate(node: Node) -> TaleObject:
 
                 return TaleObject(TaleInt, result)
 
-        return PredefinedBinding(binary('+'), type)
+        return PredefinedBinding(binary('+'), execute)
 
     def binary_minus() -> PredefinedBinding:
-        def type(x: CapturedExpression):
+        def execute(x: CapturedExpression):
             a, b = x.arguments
 
             if a.value.type is TaleInt and a.value.type is TaleInt:
@@ -407,12 +412,20 @@ def evaluate(node: Node) -> TaleObject:
 
                 return TaleObject(TaleInt, result)
 
-        return PredefinedBinding(binary('-'), type)
+        return PredefinedBinding(binary('-'), execute)
+
+    def print_() -> PredefinedBinding:
+        def execute(x: CapturedExpression):
+            arg = x.arguments[0]
+            print(arg.value.py_instance)
+
+        return PredefinedBinding(simple_keyword('print'), execute)
 
     prelude = Scope()
     prelude.bindings.append(unary_type())
     prelude.bindings.append(binary_plus())
     prelude.bindings.append(binary_minus())
+    prelude.bindings.append(print_())
 
     scope = Scope(parent=prelude)
 
