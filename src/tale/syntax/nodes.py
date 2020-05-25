@@ -226,6 +226,10 @@ class Parameter(Node):
     `1` is a pattern matching parameter.
     """
 
+    @property
+    def type_(self) -> str:
+        return self.children[3] if len(self.children) > 3 else None
+
 
 class SimpleParameter(Parameter):
     """A simple parameter."""

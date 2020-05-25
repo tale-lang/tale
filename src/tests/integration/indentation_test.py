@@ -15,7 +15,7 @@ x
     out = execute(program)
 
     # Assert.
-    assert out == '3'
+    assert out == 3
 
 
 def test_double_indentation_level():
@@ -34,7 +34,7 @@ x
     out = execute(program)
 
     # Assert.
-    assert out == '3'
+    assert out == 3
 
 
 def test_wrong_indentation():

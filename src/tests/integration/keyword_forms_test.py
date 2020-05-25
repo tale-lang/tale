@@ -12,7 +12,7 @@ just: 2
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_simple_keyword_form_returns_arg():
@@ -26,7 +26,7 @@ just: 1
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_keyword_form_with_two_parts_first_arg():
@@ -40,7 +40,7 @@ add: 1 to: 2
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_keyword_form_with_two_parts_second_arg():
@@ -54,7 +54,7 @@ add: 1 to: 2
     out = execute(program)
 
     # Assert.
-    assert out == '2'
+    assert out == 2
 
 
 def test_keyword_form_with_prefix_first_arg():
@@ -68,7 +68,7 @@ def test_keyword_form_with_prefix_first_arg():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_keyword_form_combined_with_unary_form():
@@ -83,4 +83,4 @@ just: 1 squared
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1

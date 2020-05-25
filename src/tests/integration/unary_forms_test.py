@@ -12,7 +12,7 @@ def test_simple_assignment():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_not_matched_expression():
@@ -43,7 +43,7 @@ def test_unary_form_span_on_multiple_lines():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_same_unary_form_called_many_times():
@@ -57,7 +57,7 @@ def test_same_unary_form_called_many_times():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_two_unary_forms_composed():
@@ -73,4 +73,4 @@ def test_two_unary_forms_composed():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1

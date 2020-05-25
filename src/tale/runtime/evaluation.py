@@ -1,8 +1,9 @@
 from typing import Any, Iterable, Optional, Tuple
 
-from tale.syntax.nodes import (Parameter, Assignment, BinaryExpression,
-                               BinaryForm, Expression, Form, KeywordExpression,
-                               KeywordForm, KeywordArgument, Node,
+from tale.runtime.objects import TaleInt, TaleNone, TaleObject
+from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
+                               Expression, Form, KeywordArgument,
+                               KeywordExpression, KeywordForm, Node, Parameter,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveForm, SimpleParameter, Statement,
                                UnaryExpression, UnaryForm)
@@ -14,16 +15,30 @@ class CapturedArgument:
     Consider looking at the `CapturedExpression` comment for more detailed docs.
 
     Attributes:
-        name: A name of the argument.
-        value: A node that represents an actual value of the argument.
+        name: A name of the parameter that captured the argument.
+        value: A TaleObject that represents a value of the argument.
     """
 
-    def __init__(self, name: str, value: Node):
+    def __init__(self, name: str, value: TaleObject):
         self.name = name
         self.value = value
 
 
 class CapturedExpression:
+    """An expression that was captured by a form."""
+
+    def resolve(self, scope: 'Scope') -> Any:
+        """Resolves captured expression into value.
+
+        Args:
+            scope: A parent scope that needs to resolve the expression.
+
+        Returns:
+            Resolved expression.
+        """
+
+
+class CapturedNode(CapturedExpression):
     """An expression that was captured by a form.
 
     Represents captured node and arguments.
@@ -34,8 +49,8 @@ class CapturedExpression:
         (x) squared = x * x
 
     Attributes:
-        node: A node that rerepsents a value of the form captured the initial
-            expression.
+        form: A node that represents a form that captured the expression.
+        node: A node that rerepsents a value of the form captured the expression.
             For example, `1 squared` could be captured by `(x) squared = x * x`
             form, and the `node` would represent `x * x`.
         arguments: A sequence of arguments that were captured with the
@@ -46,9 +61,44 @@ class CapturedExpression:
             `value` equal to node that represents `1`.
     """
 
-    def __init__(self, node: Node, arguments: Iterable[CapturedArgument] = None):
+    def __init__(self, form: Form, node: Node, arguments: Iterable[CapturedArgument] = None):
+        self.form = form
         self.node = node
         self.arguments = arguments or []
+
+    def resolve(self, scope: 'Scope') -> Any:
+        """Resolves current expression in the new scope.
+
+        Args:
+            scope: A parent scope that needs to resolve the expression.
+
+        Returns:
+            Resolved expression.
+        """
+
+        scope = Scope(parent=scope)
+
+        for arg in self.arguments:
+            scope.bindings.append(ConstBinding(PrimitiveForm(arg.name), arg.value))
+
+        return scope.resolve(self.node)
+
+
+class CapturedConst(CapturedExpression):
+    """A captured expression that represents an already resolved value.
+
+    Unlike default `CapturedNode`, implements `resolve` that returns
+    a predefined value.
+
+    Attributes:
+        value: A constant value.
+    """
+
+    def __init__(self, instance):
+        self._instance = instance
+
+    def resolve(self, scope: 'Scope') -> TaleObject:
+        return self._instance
 
 
 class Binding:
@@ -58,7 +108,7 @@ class Binding:
         self.form = form
         self.value = value
 
-    def capture(self, node: Node) -> CapturedExpression:
+    def capture(self, node: Node, scope: 'Scope') -> CapturedExpression:
         """Captures an expression if it's possible.
 
         Args:
@@ -69,26 +119,38 @@ class Binding:
             form of the binding, otherwise `None`.
         """
 
-        def captures_argument(parameter: Parameter, argument: Node) -> Tuple[bool, Optional[CapturedArgument]]:
-            if isinstance(parameter, PatternMatchingParameter):
-                if parameter.content == argument.content:
-                    return (True, None)
-
-            if isinstance(parameter, SimpleParameter):
+        def captures_argument(parameter: Parameter, argument: TaleObject):
+            def fail():
+                return (False, None)
+            def ok():
+                return (True, None)
+            def ok_captured():
                 return (True, CapturedArgument(parameter.name, argument))
 
-            return (False, None)
+            if isinstance(parameter, PatternMatchingParameter):
+                if parameter.content == str(argument.py_instance):
+                    return ok()
+
+            if isinstance(parameter, SimpleParameter):
+                if parameter.type_ is not None:
+                    if argument.type is None:
+                        return fail()
+
+                return ok_captured()
+
+            return fail()
 
         def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
             if form.content == node.content:
-                return CapturedExpression(self.value)
+                return CapturedNode(self.form, self.value)
 
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
-                captured, arg = captures_argument(form.parameter, node.argument)
+                arg = scope.resolve(node.argument)
+                captured, arg = captures_argument(form.parameter, arg)
 
                 if captured:
-                    return CapturedExpression(self.value, [arg] if arg else [])
+                    return CapturedNode(self.form, self.value, [arg] if arg else [])
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
@@ -100,9 +162,10 @@ class Binding:
             args = []
 
             if form.prefix is not None and node.prefix is not None:
+                prefix = scope.resolve(node.prefix)
                 args.append(CapturedArgument(
                     form.prefix.name,
-                    node.prefix))
+                    prefix))
             elif form.prefix is not None or node.prefix is not None:
                 return None
 
@@ -112,6 +175,7 @@ class Binding:
                 if form_name.content != node_name.content:
                     return None
 
+                node_value = scope.resolve(node_value)
                 captured, arg = captures_argument(form_arg, node_value)
 
                 if not captured:
@@ -119,7 +183,7 @@ class Binding:
                 if arg:
                     args.append(arg)
 
-            return CapturedExpression(self.value, args)
+            return CapturedNode(self.form, self.value, args)
 
         def captures_binary(form: BinaryForm, node: BinaryExpression):
             if form.operator.content != node.operator.content:
@@ -127,10 +191,14 @@ class Binding:
 
             args = []
 
+            first_argument = scope.resolve(node.first_argument)
+            second_argument = scope.resolve(node.second_argument)
+
             captured1, arg1 = captures_argument(form.first_parameter,
-                                                node.first_argument)
+                                                first_argument)
             captured2, arg2 = captures_argument(form.second_parameter,
-                                                node.second_argument)
+                                                second_argument)
+
             if not captured1 or not captured2:
                 return None
 
@@ -139,7 +207,7 @@ class Binding:
             if arg2:
                 args.append(arg2)
 
-            return CapturedExpression(self.value, args)
+            return CapturedNode(self.form, self.value, args)
 
         form = self.form
 
@@ -161,6 +229,34 @@ class Binding:
         if isinstance(form, BinaryForm) and \
            isinstance(node, BinaryExpression):
             return captures_binary(form, node)
+
+
+class ConstBinding:
+    """A binding with the constant value."""
+
+    def __init__(self, form: Form, value: TaleObject):
+        self.binding = Binding(form, Node(''))
+        self.value = value
+
+    def capture(self, node: Node, scope: 'Scope') -> CapturedExpression:
+        captured = self.binding.capture(node, scope)
+
+        if captured:
+            return CapturedConst(self.value)
+
+
+class PredefinedBinding:
+    """A binding that is predefined as a part of the Tale's prelude."""
+
+    def __init__(self, form: Form, func):
+        self.binding = Binding(form, Node(''))
+        self.func = func
+
+    def capture(self, node: Node, scope: 'Scope') -> CapturedExpression:
+        captured = self.binding.capture(node, scope)
+
+        if captured:
+            return CapturedConst(self.func(captured))
 
 
 class Scope:
@@ -188,7 +284,7 @@ class Scope:
         def parent_capture():
             return self.parent.capture(node) if self.parent is not None else None
 
-        captures = (x.capture(node) for x in self.bindings)
+        captures = (x.capture(node, self) for x in self.bindings)
         captures = (x for x in captures if x)
 
         return next(captures, None) or parent_capture()
@@ -201,7 +297,7 @@ class Scope:
             value: A value that is bound to the form.
         """
 
-        self.bindings.append(Binding(form ,value))
+        self.bindings.append(Binding(form, value))
 
     def resolve(self, node: Node) -> Any:
         """Processes a syntax node.
@@ -225,15 +321,13 @@ class Scope:
             print('Resolving: ' + x.content)
             captured = self.capture(x)
 
-            if captured is None:
-                return x.content
+            if captured:
+                return captured.resolve(scope=self)
             else:
-                scope = Scope(parent=self)
+                if x.content.isnumeric():
+                    return TaleObject(TaleInt, int(x.content))
 
-                for arg in captured.arguments:
-                    scope.bind(PrimitiveForm(arg.name), arg.value)
-
-                return scope.resolve(captured.node)
+                return TaleObject(None, x.content)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
@@ -254,9 +348,9 @@ class Scope:
             if isinstance(x, Expression):
                 result = resolve_expression(x)
 
-        return result
+        return result or TaleNone
 
-def evaluate(node: Node) -> Any:
+def evaluate(node: Node) -> TaleObject:
     """Evaluates the syntax tree node and produces the output.
 
     Args:
@@ -266,4 +360,19 @@ def evaluate(node: Node) -> Any:
         A an output of the program.
     """
 
-    return Scope().resolve(node)
+    def unary(name: str):
+        return UnaryForm(name, children=[
+            SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
+            Node(name, [Node(name)])])
+
+    def type_binding() -> PredefinedBinding:
+        def type(x: CapturedExpression):
+            arg = x.arguments[0]
+            return arg.value.type.name
+
+        return PredefinedBinding(unary('type'), type)
+
+    scope = Scope()
+    scope.bindings.append(type_binding())
+
+    return scope.resolve(node)

@@ -147,7 +147,7 @@ def test_binary_form_common_branch():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_binary_form_specific_branch():
@@ -163,4 +163,4 @@ def test_binary_form_specific_branch():
     out = execute(program)
 
     # Assert.
-    assert out == '2'
+    assert out == 2

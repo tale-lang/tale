@@ -170,11 +170,11 @@ class Antlr4Parser(Parser):
                     TaleParser)
             program = parser(code).program()
 
+        print(Antlr4DebugNode(program))
+
         err = err.getvalue()
 
         if len(err) > 0:
             raise Exception(err)
-
-        print(Antlr4DebugNode(program))
 
         return node(program)

@@ -4,7 +4,7 @@ from tale.core import execute
 def test_simple_assignment():
     # Arrange.
     program = """
-x = y
+x = 1
 x
 """
 
@@ -12,4 +12,4 @@ x
     out = execute(program)
 
     # Assert.
-    assert out == 'y'
+    assert out == 1

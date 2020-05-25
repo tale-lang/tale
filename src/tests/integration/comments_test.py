@@ -14,7 +14,7 @@ def test_one_comment():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_two_comments():
@@ -29,7 +29,7 @@ def test_two_comments():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_comments_after_code():
@@ -44,7 +44,7 @@ def test_comments_after_code():
     out = execute(program)
 
     # Assert.
-    assert out == '1'
+    assert out == 1
 
 
 def test_invalid_comment():
