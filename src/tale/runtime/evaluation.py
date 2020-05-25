@@ -1,6 +1,6 @@
 from typing import Any, Iterable, Optional, Tuple
 
-from tale.runtime.objects import TaleInt, TaleNone, TaleObject
+from tale.runtime.objects import TaleInt, TaleNone, TaleObject, TaleType
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
@@ -134,6 +134,8 @@ class Binding:
             if isinstance(parameter, SimpleParameter):
                 if parameter.type_ is not None:
                     if argument.type is None:
+                        return fail()
+                    if parameter.type_.content != argument.type.name.py_instance:
                         return fail()
 
                 return ok_captured()
@@ -329,7 +331,7 @@ class Scope:
             if captured:
                 return captured.resolve(scope=self)
             else:
-                return TaleObject(None, x.content)
+                return TaleObject(TaleType, x.content)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
