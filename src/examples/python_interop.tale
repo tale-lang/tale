@@ -1,0 +1,3 @@
+random: (x) to: (y) = py: "import random; result = random.randint", x, y
+
+random: 1 to: 10
