@@ -105,6 +105,19 @@ class PrimitiveExpression(Expression):
     Primitive expression is just a plain value.
     """
 
+    @property
+    def items(self) -> Iterable['PrimitiveExpressionItem']:
+        return (x for x in self.children if isinstance(x, PrimitiveExpressionItem))
+
+
+class PrimitiveExpressionItem(Node):
+    """An item of the primitive expression.
+
+    For example, the following expression:
+        just: 1, 2
+    Contains `1, 2` as primitive expression with two items: `1` and `2`.
+    """
+
 
 class UnaryExpression(Expression):
     """An unary expression.
@@ -223,6 +236,14 @@ class PrimitiveForm(Form):
     """
 
 
+class Parameters(Node):
+    """A collection of parameters."""
+
+    @property
+    def all(self) -> Iterable['Parameter']:
+        return (x for x in self.children if isinstance(x, Parameter))
+
+
 class Parameter(Node):
     """A parameter.
 
@@ -305,7 +326,7 @@ class KeywordForm(Form):
 
     @property
     def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], Parameter):
+        if isinstance(self.children[0], Parameters):
             return self.children[0]
 
     @property

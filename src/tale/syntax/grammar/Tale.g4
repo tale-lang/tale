@@ -37,12 +37,13 @@ assignmentForm: unaryForm
               | keywordForm
               | simpleForm;
 
-unaryForm: parameter IDENTIFIER;
-unaryOperatorForm: OPERATOR parameter;
-binaryForm: parameter OPERATOR parameter;
-keywordForm: parameter? (IDENTIFIER ':' parameter)+;
+unaryForm: parameters IDENTIFIER;
+unaryOperatorForm: OPERATOR parameters;
+binaryForm: parameters OPERATOR parameters;
+keywordForm: parameters? (IDENTIFIER ':' parameters)+;
 simpleForm: IDENTIFIER;
 
+parameters: parameter (',' parameter)*;
 parameter: simpleParameter
          | patternMatchingParameter;
 
@@ -90,7 +91,8 @@ keywordValue: unary
             | expressionInBracketsWithOperator
             | expressionInBrackets;
 
-primitive: primitiveWithOperator
+primitive: primitiveItem (',' primitiveItem)*?;
+primitiveItem: primitiveWithOperator
          | IDENTIFIER
          | literal;
 primitiveWithOperator: OPERATOR IDENTIFIER
@@ -108,7 +110,7 @@ OPERATOR: '-'
         | '+'
         | '*'
         | '/';
-STRING: '"' (.*)? '"';
+STRING: '"' (.)*? '"';
 
 WS: [ \t]+ -> skip;
 NEWLINE: ('\r'? '\n' ' '*);

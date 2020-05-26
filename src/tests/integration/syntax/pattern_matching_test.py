@@ -194,3 +194,52 @@ def test_pattern_matching_of_keyword_form_with_prefix():
 
     # Assert.
     assert out == 3
+
+
+def test_pattern_matching_with_tuple_argument_common_branch():
+    # Arrange.
+    program = """
+1, 2 just = 3
+(x), (y) just = x
+
+1, 1 just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 1
+
+
+def test_pattern_matching_with_tuple_argument_specific_branch():
+    # Arrange.
+    program = """
+1, 2 just = 3
+(x), (y) just = x
+
+1, 2 just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 3
+
+
+def test_pattern_matching_with_half_of_tuple_argument():
+    # Arrange.
+    program = """
+1, 2 just = 3
+(x), 2 just = 4
+(x),(y) just = x
+
+2, 2 just
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 4

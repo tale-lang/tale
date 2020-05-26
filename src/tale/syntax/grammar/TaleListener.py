@@ -89,6 +89,15 @@ class TaleListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by TaleParser#parameters.
+    def enterParameters(self, ctx:TaleParser.ParametersContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#parameters.
+    def exitParameters(self, ctx:TaleParser.ParametersContext):
+        pass
+
+
     # Enter a parse tree produced by TaleParser#parameter.
     def enterParameter(self, ctx:TaleParser.ParameterContext):
         pass
@@ -257,6 +266,15 @@ class TaleListener(ParseTreeListener):
 
     # Exit a parse tree produced by TaleParser#primitive.
     def exitPrimitive(self, ctx:TaleParser.PrimitiveContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#primitiveItem.
+    def enterPrimitiveItem(self, ctx:TaleParser.PrimitiveItemContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#primitiveItem.
+    def exitPrimitiveItem(self, ctx:TaleParser.PrimitiveItemContext):
         pass
 
 

@@ -12,11 +12,11 @@ from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                BinaryForm, Expression, IntLiteral,
                                KeywordArgument, KeywordExpression, KeywordForm,
-                               KeywordName, KeywordPrefix, Node,
+                               KeywordName, KeywordPrefix, Node, Parameters,
                                PatternMatchingParameter, PrimitiveExpression,
-                               PrimitiveForm, Program, SimpleParameter,
-                               Statement, StringLiteral, Token,
-                               UnaryExpression, UnaryForm)
+                               PrimitiveExpressionItem, PrimitiveForm, Program,
+                               SimpleParameter, Statement, StringLiteral,
+                               Token, UnaryExpression, UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -67,23 +67,23 @@ class Antlr4Parser(Parser):
                 return list(map(node, x.getChildren()))
 
         def node(x):
-            def new_(node: Any, as_: type) -> Node:
+            def new(node: Any, as_: type) -> Node:
                 return as_(content(node), children(node))
 
-            def new_child(node: Any, as_: type) -> Node:
-                return new_(next(node.getChildren()), as_)
+            def newchild(node: Any, as_: type) -> Node:
+                return new(next(node.getChildren()), as_)
 
             if isinstance(x, TaleParser.ProgramContext):
-                return new_(x, as_=Program)
+                return new(x, as_=Program)
 
             if isinstance(x, TaleParser.StatementContext):
-                return new_(x, as_=Statement)
+                return new(x, as_=Statement)
 
             if isinstance(x, TaleParser.AssignmentContext):
-                return new_(x, as_=Assignment)
+                return new(x, as_=Assignment)
 
             if isinstance(x, TaleParser.AssignmentBodyContext):
-                return new_child(x, as_=AssignmentBody)
+                return newchild(x, as_=AssignmentBody)
             
             if isinstance(x, TaleParser.SimpleAssignmentBodyContext):
                 return node(next(x.getChildren()))
@@ -92,69 +92,75 @@ class Antlr4Parser(Parser):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.SimpleFormContext):
-                    return new_(x, as_=PrimitiveForm)
+                    return new(x, as_=PrimitiveForm)
 
                 if isinstance(x, TaleParser.UnaryFormContext):
-                    return new_(x, as_=UnaryForm)
+                    return new(x, as_=UnaryForm)
 
                 if isinstance(x, TaleParser.KeywordFormContext):
-                    return new_(x, as_=KeywordForm)
+                    return new(x, as_=KeywordForm)
 
                 if isinstance(x, TaleParser.BinaryFormContext):
-                    return new_(x, as_=BinaryForm)
+                    return new(x, as_=BinaryForm)
 
             if isinstance(x, TaleParser.ExpressionContext):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.PrimitiveContext):
-                    return new_(x, as_=PrimitiveExpression)
+                    return new(x, as_=PrimitiveExpression)
 
                 if isinstance(x, TaleParser.UnaryContext):
-                    return new_(x, as_=UnaryExpression)
+                    return new(x, as_=UnaryExpression)
 
                 if isinstance(x, TaleParser.KeywordContext):
-                    return new_(x, as_=KeywordExpression)
+                    return new(x, as_=KeywordExpression)
 
                 if isinstance(x, TaleParser.BinaryContext):
-                    return new_(x, as_=BinaryExpression)
+                    return new(x, as_=BinaryExpression)
 
-                return new_(x, as_=Expression)
+                return new(x, as_=Expression)
 
             if isinstance(x, TaleParser.PrimitiveContext):
-                return new_(x, as_=PrimitiveExpression)
+                return new(x, as_=PrimitiveExpression)
+
+            if isinstance(x, TaleParser.PrimitiveItemContext):
+                return new(x, as_=PrimitiveExpressionItem)
 
             if isinstance(x, TaleParser.UnaryContext):
-                return new_(x, as_=UnaryExpression)
+                return new(x, as_=UnaryExpression)
 
             if isinstance(x, TaleParser.KeywordPrefixContext):
-                return new_(x, as_=KeywordPrefix)
+                return new(x, as_=KeywordPrefix)
 
             if isinstance(x, TaleParser.KeywordNameContext):
-                return new_(x, as_=KeywordName)
+                return new(x, as_=KeywordName)
 
             if isinstance(x, TaleParser.KeywordValueContext):
-                return new_(x, as_=KeywordArgument)
+                return new(x, as_=KeywordArgument)
 
             if isinstance(x, TaleParser.BinaryContext):
-                return new_(x, as_=BinaryExpression)
+                return new(x, as_=BinaryExpression)
+
+            if isinstance(x, TaleParser.ParametersContext):
+                return new(x, as_=Parameters)
 
             if isinstance(x, TaleParser.ParameterContext):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.SimpleParameterContext):
-                    return new_(x, as_=SimpleParameter)
+                    return new(x, as_=SimpleParameter)
 
                 if isinstance(x, TaleParser.PatternMatchingParameterContext):
-                    return new_(x, as_=PatternMatchingParameter)
+                    return new(x, as_=PatternMatchingParameter)
 
             if isinstance(x, TaleParser.LiteralContext):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.IntLiteralContext):
-                    return new_(x, as_=IntLiteral)
+                    return new(x, as_=IntLiteral)
 
                 if isinstance(x, TaleParser.StringLiteralContext):
-                    return new_(x, as_=StringLiteral)
+                    return new(x, as_=StringLiteral)
 
             if (x.getText() == 'indent'):
                 return Token('<INDENT>')
@@ -166,9 +172,9 @@ class Antlr4Parser(Parser):
                 return Token('<NL>')
 
             if isinstance(x, antlr4.TerminalNode):
-                return new_(x, as_=Token)
+                return new(x, as_=Token)
 
-            return new_(x, as_=Node)
+            return new(x, as_=Node)
 
         err = io.StringIO()
 
