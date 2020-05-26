@@ -105,6 +105,10 @@ class PrimitiveExpression(Expression):
     Primitive expression is just a plain value.
     """
 
+    @property
+    def items(self) -> Iterable['PrimitiveExpressionItem']:
+        return (x for x in self.children if isinstance(x, PrimitiveExpressionItem))
+
 
 class PrimitiveExpressionItem(Expression):
     """An item of the primitive expression.
@@ -322,7 +326,7 @@ class KeywordForm(Form):
 
     @property
     def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], Parameter):
+        if isinstance(self.children[0], Parameters):
             return self.children[0]
 
     @property

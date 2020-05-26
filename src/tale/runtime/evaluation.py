@@ -147,11 +147,17 @@ class Binding:
         def captures_arguments(parameters: Parameters, argument: TaleObject):
             all = list(parameters.all)
 
-            if len(all) == 1 and argument.type is not TaleTuple:
+            if len(all) == 1:
+                if argument.type is TaleTuple:
+                    return None
+
                 captured, arg = captures_argument(all[0], argument)
 
                 if captured:
                     return [arg] if arg is not None else []
+            else:
+                if argument.type is not TaleTuple:
+                    return None
 
         def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
             if form.content == node.content:
@@ -176,11 +182,12 @@ class Binding:
 
             if form.prefix is not None and node.prefix is not None:
                 prefix = scope.resolve(node.prefix)
-                if isinstance(form.prefix, PatternMatchingParameter):
-                    if form.prefix.content != str(prefix.py_instance):
-                        return None
+                captured_args = captures_arguments(form.prefix, prefix)
+
+                if captured_args is None:
+                    return None
                 else:
-                    args.append(CapturedArgument(form.prefix.name, prefix))
+                    args = args + captured_args
             elif form.prefix is not None or node.prefix is not None:
                 return None
 
@@ -330,21 +337,32 @@ class Scope:
             self.bind(x.form, x.value)
 
         def resolve_expression(x: Expression):
-            print('Resolving: ' + x.content)
-
-            if isinstance(x, PrimitiveExpression):
+            def resolved(x: Node) -> TaleObject:
                 if isinstance(x.children[0], IntLiteral):
                     return TaleObject(TaleInt, int(x.content))
 
                 if isinstance(x.children[0], StringLiteral):
                     return TaleObject(TaleString, x.content)
 
-            captured = self.capture(x, self)
+            def captured(x: Node) -> TaleObject:
+                captured = self.capture(x, self)
 
-            if captured:
-                return captured.resolve(scope=self)
-            else:
-                return TaleObject(TaleType, x.content)
+                if captured:
+                    return captured.resolve(scope=self)
+                else:
+                    return TaleObject(TaleType, x.content)
+
+            print('Resolving: ' + x.content)
+
+            if isinstance(x, PrimitiveExpression):
+                items = list(x.items)
+
+                if len(items) == 1:
+                    return resolved(items[0]) or captured(x)
+                else:
+                    ...
+
+            return captured(x)
 
         def resolve_statement(x: Statement):
             x = x.children[0]
