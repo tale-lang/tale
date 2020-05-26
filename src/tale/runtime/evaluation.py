@@ -6,9 +6,9 @@ from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
                                Parameters, PatternMatchingParameter,
-                               PrimitiveExpression, PrimitiveForm,
-                               SimpleParameter, Statement, StringLiteral,
-                               UnaryExpression, UnaryForm)
+                               PrimitiveExpression, PrimitiveExpressionItem,
+                               PrimitiveForm, SimpleParameter, Statement,
+                               StringLiteral, UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -155,11 +155,31 @@ class Binding:
 
                 if captured:
                     return [arg] if arg is not None else []
+                else:
+                    return None
             else:
                 if argument.type is not TaleTuple:
                     return None
 
-        def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
+                items = argument.items
+
+                if len(all) != len(items):
+                    return None
+
+                args = []
+
+                for parameter, item in zip(all, items):
+                    captured, arg = captures_argument(parameter, item)
+
+                    if captured:
+                        if arg:
+                            args.append(arg)
+                    else:
+                        return None
+
+                return args
+
+        def captures_simple(form: PrimitiveForm, node: Node):
             if form.content == node.content:
                 return CapturedNode(self.form, self.value)
 
@@ -234,7 +254,8 @@ class Binding:
             node = node.children[0]
 
         if isinstance(form, PrimitiveForm) and \
-           isinstance(node, PrimitiveExpression):
+          (isinstance(node, PrimitiveExpression) or
+           isinstance(node, PrimitiveExpressionItem)):
             return captures_simple(form, node)
 
         if isinstance(form, UnaryForm) and \
@@ -352,15 +373,22 @@ class Scope:
                 else:
                     return TaleObject(TaleType, x.content)
 
+            def value(x: Node) -> TaleObject:
+                return resolved(x) or captured(x)
+
             print('Resolving: ' + x.content)
 
             if isinstance(x, PrimitiveExpression):
-                items = list(x.items)
+                items = map(value, x.items)
+                items = list(items)
 
                 if len(items) == 1:
-                    return resolved(items[0]) or captured(x)
+                    return items[0]
                 else:
-                    ...
+                    result = TaleObject(TaleTuple, None)
+                    result.items = items
+                    
+                    return result
 
             return captured(x)
 
@@ -376,6 +404,8 @@ class Scope:
             node = node.children[0]
 
         if isinstance(node, Expression):
+            return resolve_expression(node)
+        if isinstance(node, PrimitiveExpressionItem):
             return resolve_expression(node)
 
         result = None

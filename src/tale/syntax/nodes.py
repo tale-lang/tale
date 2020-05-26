@@ -110,7 +110,7 @@ class PrimitiveExpression(Expression):
         return (x for x in self.children if isinstance(x, PrimitiveExpressionItem))
 
 
-class PrimitiveExpressionItem(Expression):
+class PrimitiveExpressionItem(Node):
     """An item of the primitive expression.
 
     For example, the following expression:
