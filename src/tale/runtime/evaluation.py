@@ -299,6 +299,53 @@ class PredefinedBinding:
             return CapturedConst(self.func(captured))
 
 
+class PyBinding:
+    """A binding that is used to capture native Python calls."""
+
+    def capture(self, node: Node, scope: 'Scope') -> CapturedExpression:
+        if not isinstance(node, KeywordExpression):
+            return None
+
+        if node.prefix is not None:
+            return None
+
+        parts = list(node.parts)
+
+        if len(parts) != 1:
+            return None
+
+        name, value = parts[0]
+        
+        if name.content != 'py':
+            return None
+
+        value = scope.resolve(value)
+
+        if value.type is not TaleTuple:
+            return None
+
+        items = value.items
+
+        if items[0].type is not TaleString:
+            return None
+
+        code = items[0].py_instance.strip('"')
+        args = map(lambda x: str(x.py_instance), items[1:])
+        args = ', '.join(args)
+        code = code + '(' + args + ')'
+
+        locals_ = {}
+        exec(code, {}, locals_)
+
+        result = locals_['result']
+
+        if isinstance(result, int):
+            return CapturedConst(TaleObject(TaleInt, result))
+
+        if isinstance(result, str):
+            return CapturedConst(TaleObject(TaleString, result))
+
+
 class Scope:
     """A scope of the program execution.
 
@@ -489,11 +536,13 @@ def evaluate(node: Node) -> TaleObject:
 
         return PredefinedBinding(simple_keyword('print'), execute)
 
+
     prelude = Scope()
     prelude.bindings.append(unary_type())
     prelude.bindings.append(binary_plus())
     prelude.bindings.append(binary_minus())
     prelude.bindings.append(print_())
+    prelude.bindings.append(PyBinding())
 
     scope = Scope(parent=prelude)
 
