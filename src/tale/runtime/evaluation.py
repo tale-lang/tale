@@ -1,13 +1,14 @@
 from typing import Any, Iterable, Optional, Tuple
 
 from tale.runtime.objects import (TaleInt, TaleNone, TaleObject, TaleString,
-                                  TaleType)
+                                  TaleTuple, TaleType)
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
-                               PatternMatchingParameter, PrimitiveExpression,
-                               PrimitiveForm, SimpleParameter, Statement,
-                               StringLiteral, UnaryExpression, UnaryForm)
+                               Parameters, PatternMatchingParameter,
+                               PrimitiveExpression, PrimitiveForm,
+                               SimpleParameter, Statement, StringLiteral,
+                               UnaryExpression, UnaryForm)
 
 
 class CapturedArgument:
@@ -143,6 +144,15 @@ class Binding:
 
             return fail()
 
+        def captures_arguments(parameters: Parameters, argument: TaleObject):
+            all = list(parameters.all)
+
+            if len(all) == 1 and argument.type is not TaleTuple:
+                captured, arg = captures_argument(all[0], argument)
+
+                if captured:
+                    return [arg] if arg is not None else []
+
         def captures_simple(form: PrimitiveForm, node: PrimitiveExpression):
             if form.content == node.content:
                 return CapturedNode(self.form, self.value)
@@ -150,10 +160,10 @@ class Binding:
         def captures_unary(form: UnaryForm, node: UnaryExpression):
             if form.identifier == node.identifier:
                 arg = scope.resolve(node.argument)
-                captured, arg = captures_argument(form.parameter, arg)
+                args = captures_arguments(form.parameter, arg)
 
-                if captured:
-                    return CapturedNode(self.form, self.value, [arg] if arg else [])
+                if args is not None:
+                    return CapturedNode(self.form, self.value, args) 
 
         def captures_keyword(form: KeywordForm, node: KeywordExpression):
             form_parts = list(form.parts)
@@ -181,12 +191,12 @@ class Binding:
                     return None
 
                 node_value = scope.resolve(node_value)
-                captured, arg = captures_argument(form_arg, node_value)
+                captured_args = captures_arguments(form_arg, node_value)
 
-                if not captured:
+                if captured_args is not None:
+                    args = args + captured_args
+                else:
                     return None
-                if arg:
-                    args.append(arg)
 
             return CapturedNode(self.form, self.value, args)
 
@@ -199,18 +209,15 @@ class Binding:
             first_argument = scope.resolve(node.first_argument)
             second_argument = scope.resolve(node.second_argument)
 
-            captured1, arg1 = captures_argument(form.first_parameter,
+            captured_args1 = captures_arguments(form.first_parameter,
                                                 first_argument)
-            captured2, arg2 = captures_argument(form.second_parameter,
+            captured_args2 = captures_arguments(form.second_parameter,
                                                 second_argument)
 
-            if not captured1 or not captured2:
+            if captured_args1 is None or captured_args2 is None:
                 return None
 
-            if arg1:
-                args.append(arg1)
-            if arg2:
-                args.append(arg2)
+            args = captured_args1 + captured_args2
 
             return CapturedNode(self.form, self.value, args)
 
@@ -373,21 +380,30 @@ def evaluate(node: Node) -> TaleObject:
         A an output of the program.
     """
 
+    def identifier(name) -> Node:
+        return Node(name, [Node(name)])
+
+    def simple(name: str) -> SimpleParameter:
+        return SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
+
+    def parameters(children) -> Parameters:
+        return Parameters('', children)
+
     def unary(name: str):
         return UnaryForm(name, children=[
-            SimpleParameter('', children=[Node('('), Node('x'), Node(')')]),
-            Node(name, [Node(name)])])
+            parameters(simple('x')),
+            identifier(name)])
 
     def simple_keyword(name: str):
         return KeywordForm(name, children=[
-            Node(name, [Node(name)]),
-            SimpleParameter('', children=[Node('('), Node('x'), Node(')')])])
+            identifier(name),
+            parameters(simple('x'))])
 
     def binary(operator: str):
         return BinaryForm(operator, children=[
-            SimpleParameter('', children=[Node('('), Node('x'), Node(':')]),
-            Node(operator, [Node(operator)]),
-            SimpleParameter('', children=[Node('('), Node('y'), Node(')')])])
+            parameters(simple('x')),
+            identifier(operator),
+            parameters(simple('y'))])
 
     def unary_type() -> PredefinedBinding:
         def execute(x: CapturedExpression):

@@ -106,6 +106,15 @@ class PrimitiveExpression(Expression):
     """
 
 
+class PrimitiveExpressionItem(Expression):
+    """An item of the primitive expression.
+
+    For example, the following expression:
+        just: 1, 2
+    Contains `1, 2` as primitive expression with two items: `1` and `2`.
+    """
+
+
 class UnaryExpression(Expression):
     """An unary expression.
 
@@ -221,6 +230,14 @@ class PrimitiveForm(Form):
 
     Primitive form captures only plain values.
     """
+
+
+class Parameters(Node):
+    """A collection of parameters."""
+
+    @property
+    def all(self) -> Iterable['Parameter']:
+        return (x for x in self.children if isinstance(x, Parameter))
 
 
 class Parameter(Node):

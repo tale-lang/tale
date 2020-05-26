@@ -33,3 +33,4 @@ TaleType.name = TaleObject(TaleString, 'Type')
 
 TaleNone = TaleObject(None, None, TaleObject(TaleString, 'None'))
 TaleInt = TaleObject(TaleType, int, TaleObject(TaleString, 'Int'))
+TaleTuple = TaleObject(TaleType, None, TaleObject(TaleString, 'Tuple'))
