@@ -1,4 +1,5 @@
-just: (x), (y) = x
+1, 2 just = 3
+(x), 2 just = 4
+(x), (y) just = x
 
-x = 1
-just: x, 2
+2, 2 just
