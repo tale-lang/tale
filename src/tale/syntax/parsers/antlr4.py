@@ -91,7 +91,7 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.AssignmentFormContext):
                 x = next(x.getChildren())
 
-                if isinstance(x, TaleParser.SimpleFormContext):
+                if isinstance(x, TaleParser.PrimitiveFormContext):
                     return new(x, as_=PrimitiveForm)
 
                 if isinstance(x, TaleParser.UnaryFormContext):

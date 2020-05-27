@@ -154,7 +154,7 @@ class TaleParser ( Parser ):
     RULE_unaryOperatorForm = 5
     RULE_binaryForm = 6
     RULE_keywordForm = 7
-    RULE_simpleForm = 8
+    RULE_primitiveForm = 8
     RULE_parameters = 9
     RULE_parameter = 10
     RULE_simpleParameter = 11
@@ -183,7 +183,7 @@ class TaleParser ( Parser ):
 
     ruleNames =  [ "program", "statement", "assignment", "assignmentForm", 
                    "unaryForm", "unaryOperatorForm", "binaryForm", "keywordForm", 
-                   "simpleForm", "parameters", "parameter", "simpleParameter", 
+                   "primitiveForm", "parameters", "parameter", "simpleParameter", 
                    "patternMatchingParameter", "parameterName", "parameterType", 
                    "assignmentBody", "simpleAssignmentBody", "compoundAssignmentBody", 
                    "expression", "expressionInBrackets", "expressionInBracketsWithOperator", 
@@ -416,8 +416,8 @@ class TaleParser ( Parser ):
             return self.getTypedRuleContext(TaleParser.KeywordFormContext,0)
 
 
-        def simpleForm(self):
-            return self.getTypedRuleContext(TaleParser.SimpleFormContext,0)
+        def primitiveForm(self):
+            return self.getTypedRuleContext(TaleParser.PrimitiveFormContext,0)
 
 
         def getRuleIndex(self):
@@ -469,7 +469,7 @@ class TaleParser ( Parser ):
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
                 self.state = 87
-                self.simpleForm()
+                self.primitiveForm()
                 pass
 
 
@@ -698,7 +698,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class SimpleFormContext(ParserRuleContext):
+    class PrimitiveFormContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -708,23 +708,23 @@ class TaleParser ( Parser ):
             return self.getToken(TaleParser.IDENTIFIER, 0)
 
         def getRuleIndex(self):
-            return TaleParser.RULE_simpleForm
+            return TaleParser.RULE_primitiveForm
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterSimpleForm" ):
-                listener.enterSimpleForm(self)
+            if hasattr( listener, "enterPrimitiveForm" ):
+                listener.enterPrimitiveForm(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitSimpleForm" ):
-                listener.exitSimpleForm(self)
+            if hasattr( listener, "exitPrimitiveForm" ):
+                listener.exitPrimitiveForm(self)
 
 
 
 
-    def simpleForm(self):
+    def primitiveForm(self):
 
-        localctx = TaleParser.SimpleFormContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_simpleForm)
+        localctx = TaleParser.PrimitiveFormContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 16, self.RULE_primitiveForm)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 110

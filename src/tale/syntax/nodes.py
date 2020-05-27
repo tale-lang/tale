@@ -31,7 +31,21 @@ class Node:
 
 
 class Token(Node):
-    """A plain text."""
+    """A plain text.
+
+    For example, in the expression:
+        x = 1
+    `=` is a token.
+    """
+
+
+class Identifier(Node):
+    """An identifier.
+
+    For example, in the expression:
+        x = 1
+    `x` is an identifier.
+    """
 
 
 class IntLiteral(Node):

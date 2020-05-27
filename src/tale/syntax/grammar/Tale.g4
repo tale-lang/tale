@@ -35,13 +35,13 @@ assignmentForm: unaryForm
               | unaryOperatorForm
               | binaryForm
               | keywordForm
-              | simpleForm;
+              | primitiveForm;
 
 unaryForm: parameters IDENTIFIER;
 unaryOperatorForm: OPERATOR parameters;
 binaryForm: parameters OPERATOR parameters;
 keywordForm: parameters? (IDENTIFIER ':' parameters)+;
-simpleForm: IDENTIFIER;
+primitiveForm: IDENTIFIER;
 
 parameters: parameter (',' parameter)*;
 parameter: simpleParameter

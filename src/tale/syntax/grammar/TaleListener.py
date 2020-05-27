@@ -80,12 +80,12 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#simpleForm.
-    def enterSimpleForm(self, ctx:TaleParser.SimpleFormContext):
+    # Enter a parse tree produced by TaleParser#primitiveForm.
+    def enterPrimitiveForm(self, ctx:TaleParser.PrimitiveFormContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#simpleForm.
-    def exitSimpleForm(self, ctx:TaleParser.SimpleFormContext):
+    # Exit a parse tree produced by TaleParser#primitiveForm.
+    def exitPrimitiveForm(self, ctx:TaleParser.PrimitiveFormContext):
         pass
 
 

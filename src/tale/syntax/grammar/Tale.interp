@@ -41,7 +41,7 @@ unaryForm
 unaryOperatorForm
 binaryForm
 keywordForm
-simpleForm
+primitiveForm
 parameters
 parameter
 simpleParameter
