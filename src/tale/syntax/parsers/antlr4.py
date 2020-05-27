@@ -12,7 +12,7 @@ from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                BinaryForm, Expression, IntLiteral,
                                KeywordArgument, KeywordExpression, KeywordForm,
-                               KeywordName, KeywordPrefix, Node, Parameters,
+                               KeywordName, Node, Parameters,
                                PatternMatchingParameter, PrimitiveExpression,
                                PrimitiveExpressionItem, PrimitiveForm, Program,
                                SimpleParameter, Statement, StringLiteral,
@@ -79,7 +79,7 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.AssignmentContext):
                 return new(x, as_=Assignment)
 
-            if isinstance(x, TaleParser.AssignmentFormContext):
+            if isinstance(x, TaleParser.FormContext):
                 x = next(x.getChildren())
 
                 if isinstance(x, TaleParser.PrimitiveFormContext):
@@ -137,13 +137,10 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.BinaryContext):
                 return new(x, as_=BinaryExpression)
 
-            if isinstance(x, TaleParser.KeywordPrefixContext):
-                return new(x, as_=KeywordPrefix)
-
             if isinstance(x, TaleParser.KeywordNameContext):
                 return new(x, as_=KeywordName)
 
-            if isinstance(x, TaleParser.KeywordValueContext):
+            if isinstance(x, TaleParser.KeywordArgumentContext):
                 return new(x, as_=KeywordArgument)
 
             if isinstance(x, TaleParser.PrimitiveContext):

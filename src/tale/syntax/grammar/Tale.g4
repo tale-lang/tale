@@ -29,12 +29,12 @@ def nextToken(self):
 program: (NEWLINE | statement)* EOF;
 statement: assignment | expression;
 
-assignment: assignmentForm '=' assignmentBody;
+assignment: form '=' assignmentBody;
 
-assignmentForm: unaryForm
-              | binaryForm
-              | keywordForm
-              | primitiveForm;
+form: unaryForm
+    | binaryForm
+    | keywordForm
+    | primitiveForm;
 
 unaryForm: parameters IDENTIFIER;
 binaryForm: parameters OPERATOR parameters;
@@ -70,14 +70,11 @@ binary: binary OPERATOR binaryOperand |
 binaryOperand: unary
              | primitive;
 
-keyword: keywordPrefix? (keywordName ':' keywordValue)+;
-keywordPrefix: unary
-             | binary
-             | primitive;
+keyword: keywordArgument? (keywordName ':' keywordArgument)+;
+keywordArgument: unary
+               | binary
+               | primitive;
 keywordName: IDENTIFIER;
-keywordValue: unary
-            | binary
-            | primitive;
 
 primitive: primitiveItem (',' primitiveItem)*?;
 primitiveItem: IDENTIFIER

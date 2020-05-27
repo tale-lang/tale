@@ -35,12 +35,12 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#assignmentForm.
-    def enterAssignmentForm(self, ctx:TaleParser.AssignmentFormContext):
+    # Enter a parse tree produced by TaleParser#form.
+    def enterForm(self, ctx:TaleParser.FormContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#assignmentForm.
-    def exitAssignmentForm(self, ctx:TaleParser.AssignmentFormContext):
+    # Exit a parse tree produced by TaleParser#form.
+    def exitForm(self, ctx:TaleParser.FormContext):
         pass
 
 
@@ -206,12 +206,12 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#keywordPrefix.
-    def enterKeywordPrefix(self, ctx:TaleParser.KeywordPrefixContext):
+    # Enter a parse tree produced by TaleParser#keywordArgument.
+    def enterKeywordArgument(self, ctx:TaleParser.KeywordArgumentContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#keywordPrefix.
-    def exitKeywordPrefix(self, ctx:TaleParser.KeywordPrefixContext):
+    # Exit a parse tree produced by TaleParser#keywordArgument.
+    def exitKeywordArgument(self, ctx:TaleParser.KeywordArgumentContext):
         pass
 
 
@@ -221,15 +221,6 @@ class TaleListener(ParseTreeListener):
 
     # Exit a parse tree produced by TaleParser#keywordName.
     def exitKeywordName(self, ctx:TaleParser.KeywordNameContext):
-        pass
-
-
-    # Enter a parse tree produced by TaleParser#keywordValue.
-    def enterKeywordValue(self, ctx:TaleParser.KeywordValueContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#keywordValue.
-    def exitKeywordValue(self, ctx:TaleParser.KeywordValueContext):
         pass
 
 

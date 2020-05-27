@@ -30,12 +30,14 @@ class Node:
                            get_children=lambda x: x.children)
 
 
-class Token(Node):
-    """A plain text.
+class Program(Node):
+    """A main program."""
 
-    For example, in the expression:
-        x = 1
-    `=` is a token.
+
+class Statement(Node):
+    """A statement.
+
+    Statement is either an expression or an assignment.
     """
 
 
@@ -45,28 +47,6 @@ class Identifier(Node):
     For example, in the expression:
         x = 1
     `x` is an identifier.
-    """
-
-
-class IntLiteral(Node):
-    """An integer literal.
-
-    Represents a positive integer number.
-    """
-
-
-class StringLiteral(Node):
-    """A string literal."""
-
-
-class Program(Node):
-    """A main program."""
-
-
-class Statement(Node):
-    """A statement.
-
-    Statement is either an expression or an assignment.
     """
 
 
@@ -89,147 +69,6 @@ class Assignment(Statement):
         return self.children[2]
 
 
-class AssignmentBody(Node):
-    """An assignment body.
-
-    Can be either a simple expression:
-        x = 1
-    Or a sequence of statements:
-        x =
-            y = 1
-            y
-    """
-
-
-class Expression(Statement):
-    """An expression.
-
-    Represents a value that could be captured by form.
-
-    For example, the following is an expression:
-        1 squared
-    It could be captured by the form:
-        (x) squared
-    """
-
-
-class PrimitiveExpression(Expression):
-    """A primitive expression.
-
-    Primitive expression is just a plain value.
-    """
-
-    @property
-    def items(self) -> Iterable['PrimitiveExpressionItem']:
-        return (x for x in self.children if isinstance(x, PrimitiveExpressionItem))
-
-
-class PrimitiveExpressionItem(Node):
-    """An item of the primitive expression.
-
-    For example, the following expression:
-        just: 1, 2
-    Contains `1, 2` as primitive expression with two items: `1` and `2`.
-    """
-
-
-class UnaryExpression(Expression):
-    """An unary expression.
-
-    An unary expression consist of two parts: an argument and the identifier.
-    """
-
-    @property
-    def argument(self) -> 'Node':
-        return self.children[0]
-
-    @property
-    def identifier(self) -> str:
-        return self.children[1].content
-
-
-class KeywordName(Node):
-    """A name of the keyword expression part.
-
-    For example, the `add: 1 to: list` expression consists of two names:
-    `add` and `to`.
-    """
-
-
-class KeywordArgument(Expression):
-    """An argument of the keyword expression.
-
-    For example, the `add: 1 to: list` expression consists of two arguments:
-    `1` and `list`.
-    """
-
-
-class KeywordPrefix(KeywordArgument):
-    """A prefix of a keyword expression.
-
-    Usually, a keyword expression consists of sequence of pairs where each pair
-    represents an identifier and a value.
-    For example, the `add: 1 to: list` expression consists of two pairs:
-    `(add, 1)` and `(to, 1)`.
-
-    However, sometimes the first node of a keyword expression is an argument node.
-    For example, the `1 added_to: list` expression consists of `1` and a pair
-    `(added_to, list)`. Here the `1` expression is a prefix.
-    """
-
-
-class KeywordExpression(Expression):
-    """A keyword expression.
-
-    Unlike unary expression, a keyword expression consists of pairs
-    of arguments and identifiers.
-
-    For example, the following is a keyword expression:
-        add: 1 to: list
-    """
-
-    @property
-    def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], KeywordPrefix):
-            return self.children[0]
-
-    @property
-    def parts(self) -> Iterable[Tuple[KeywordName, KeywordArgument]]:
-        def is_not_prefix_and_colon(x: Node):
-            return x is not self.prefix and x.content != ':'
-
-        children = filter(is_not_prefix_and_colon, self.children)
-        children = group(children, by=2)
-
-        return children
-
-
-class BinaryExpression(Expression):
-    """A binary expression.
-
-    Consists of two arguments and an operator.
-
-    For example, the following is an example of binary expression:
-        1 + 1
-    where:
-        `1` is a first argument;
-        `+` is an operator;
-        `2` is a second argument.
-    """
-
-    @property
-    def first_argument(self) -> Expression:
-        return self.children[0]
-
-    @property
-    def operator(self) -> Node:
-        return self.children[1]
-
-    @property
-    def second_argument(self) -> Expression:
-        return self.children[2]
-
-
 class Form(Node):
     """A form of an expression.
 
@@ -241,6 +80,90 @@ class Form(Node):
     Attributes:
         node: A syntax node that represents the form.
     """
+
+
+class UnaryForm(Form):
+    """An unary form.
+
+    An unary form consists of an argument and an identifier.
+
+    For example, the following is an unary form:
+        (x) squared
+    where:
+        `(x)` is a variable argument of a form;
+        `squared` is a simple identifier.
+    """
+
+    @property
+    def parameter(self) -> 'Parameter':
+        return self.children[0]
+
+    @property
+    def identifier(self) -> str:
+        return self.children[1].content
+
+
+class KeywordForm(Form):
+    """A keyword form.
+
+    A keyword form consists of parameters and identifiers.
+    Unlike unary form, parameters and identifiers could be placed anywhere.
+    The only rule here is that an parameter couldn't be followed by an parameter,
+    or an identifier couldn't be followed by an identifier.
+
+    For example, the following is a keyword form:
+        just: (x)
+    where:
+        `just` is an identifier;
+        `(x)` is an parameter.
+
+    Consider a more complex example:
+        add: (x) to: (y)
+    where:
+        `add` and `to` are identifiers;
+        `(x)` and `(y)` are parameters.
+    """
+
+    @property
+    def prefix(self) -> 'KeywordPrefix':
+        if isinstance(self.children[0], Parameters):
+            return self.children[0]
+
+    @property
+    def parts(self) -> Iterable[Tuple[Node, Node]]:
+        def is_not_prefix_and_colon(x: Node):
+            return x is not self.prefix and x.content != ':'
+
+        children = filter(is_not_prefix_and_colon, self.children)
+        children = group(children, by=2)
+
+        return children
+
+
+class BinaryForm(Form):
+    """A binary form.
+
+    A binary form consists of two parameters that are separated by some special
+    character.
+    For example, the following is a binary form:
+        (x) + (y)
+    where:
+        `(x)` is a first parameter;
+        `+` is an operator;
+        `(y)` is a second parameter.
+    """
+
+    @property
+    def first_parameter(self) -> 'Parameter':
+        return self.children[0]
+
+    @property
+    def operator(self) -> Node:
+        return self.children[1]
+
+    @property
+    def second_parameter(self) -> 'Parameter':
+        return self.children[2]
 
 
 class PrimitiveForm(Form):
@@ -296,20 +219,38 @@ class PatternMatchingParameter(Parameter):
     """
 
 
-class UnaryForm(Form):
-    """An unary form.
+class AssignmentBody(Node):
+    """An assignment body.
 
-    An unary form consists of an argument and an identifier.
+    Can be either a simple expression:
+        x = 1
+    Or a sequence of statements:
+        x =
+            y = 1
+            y
+    """
 
-    For example, the following is an unary form:
+
+class Expression(Statement):
+    """An expression.
+
+    Represents a value that could be captured by form.
+
+    For example, the following is an expression:
+        1 squared
+    It could be captured by the form:
         (x) squared
-    where:
-        `(x)` is a variable argument of a form;
-        `squared` is a simple identifier.
+    """
+
+
+class UnaryExpression(Expression):
+    """An unary expression.
+
+    An unary expression consist of two parts: an argument and the identifier.
     """
 
     @property
-    def parameter(self) -> Parameter:
+    def argument(self) -> 'Node':
         return self.children[0]
 
     @property
@@ -317,34 +258,61 @@ class UnaryForm(Form):
         return self.children[1].content
 
 
-class KeywordForm(Form):
-    """A keyword form.
+class BinaryExpression(Expression):
+    """A binary expression.
 
-    A keyword form consists of parameters and identifiers.
-    Unlike unary form, parameters and identifiers could be placed anywhere.
-    The only rule here is that an parameter couldn't be followed by an parameter,
-    or an identifier couldn't be followed by an identifier.
+    Consists of two arguments and an operator.
 
-    For example, the following is a keyword form:
-        just: (x)
+    For example, the following is an example of binary expression:
+        1 + 1
     where:
-        `just` is an identifier;
-        `(x)` is an parameter.
-
-    Consider a more complex example:
-        add: (x) to: (y)
-    where:
-        `add` and `to` are identifiers;
-        `(x)` and `(y)` are parameters.
+        `1` is a first argument;
+        `+` is an operator;
+        `2` is a second argument.
     """
 
     @property
-    def prefix(self) -> KeywordPrefix:
-        if isinstance(self.children[0], Parameters):
+    def first_argument(self) -> Expression:
+        return self.children[0]
+
+    @property
+    def operator(self) -> Node:
+        return self.children[1]
+
+    @property
+    def second_argument(self) -> Expression:
+        return self.children[2]
+
+
+class KeywordExpression(Expression):
+    """A keyword expression.
+
+    Unlike unary expression, a keyword expression consists of pairs
+    of arguments and identifiers.
+
+    For example, the following is a keyword expression:
+        add: 1 to: list
+    """
+
+    @property
+    def prefix(self) -> 'KeywordPrefix':
+        """Returns a prefix of the keyword expression.
+
+        Usually, a keyword expression consists of sequence of pairs where each pair
+        represents an identifier and a value.
+        For example, the `add: 1 to: list` expression consists of two pairs:
+        `(add, 1)` and `(to, 1)`.
+
+        However, sometimes the first node of a keyword expression is an argument node.
+        For example, the `1 added_to: list` expression consists of `1` and a pair
+        `(added_to, list)`. Here the `1` expression is a prefix.
+        """
+
+        if isinstance(self.children[0], KeywordArgument):
             return self.children[0]
 
     @property
-    def parts(self) -> Iterable[Tuple[Node, Node]]:
+    def parts(self) -> Iterable[Tuple['KeywordName', 'KeywordArgument']]:
         def is_not_prefix_and_colon(x: Node):
             return x is not self.prefix and x.content != ':'
 
@@ -354,27 +322,57 @@ class KeywordForm(Form):
         return children
 
 
-class BinaryForm(Form):
-    """A binary form.
+class KeywordArgument(Expression):
+    """An argument of the keyword expression.
 
-    A binary form consists of two parameters that are separated by some special
-    character.
-    For example, the following is a binary form:
-        (x) + (y)
-    where:
-        `(x)` is a first parameter;
-        `+` is an operator;
-        `(y)` is a second parameter.
+    For example, the `add: 1 to: list` expression consists of two arguments:
+    `1` and `list`.
+    """
+
+
+class KeywordName(Node):
+    """A name of the keyword expression part.
+
+    For example, the `add: 1 to: list` expression consists of two names:
+    `add` and `to`.
+    """
+
+
+class PrimitiveExpression(Expression):
+    """A primitive expression.
+
+    Primitive expression is just a plain value.
     """
 
     @property
-    def first_parameter(self) -> Parameter:
-        return self.children[0]
+    def items(self) -> Iterable['PrimitiveExpressionItem']:
+        return (x for x in self.children if isinstance(x, PrimitiveExpressionItem))
 
-    @property
-    def operator(self) -> Node:
-        return self.children[1]
 
-    @property
-    def second_parameter(self) -> Parameter:
-        return self.children[2]
+class PrimitiveExpressionItem(Node):
+    """An item of the primitive expression.
+
+    For example, the following expression:
+        just: 1, 2
+    Contains `1, 2` as primitive expression with two items: `1` and `2`.
+    """
+
+
+class IntLiteral(Node):
+    """An integer literal.
+
+    Represents a positive integer number.
+    """
+
+
+class StringLiteral(Node):
+    """A string literal."""
+
+
+class Token(Node):
+    """A plain text.
+
+    For example, in the expression:
+        x = 1
+    `=` is a token.
+    """
