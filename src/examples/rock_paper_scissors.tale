@@ -1,3 +1,6 @@
+-- A random integer in range [x, y).
+random: (x) to: (y) = py: "import random; result = random.randint", x, y
+
 if: True  then: (y) else: (z) = y
 if: False then: (y) else: (z) = z
 
@@ -13,16 +16,22 @@ Scissors vs: Scissors = Draw
 Scissors vs: Paper    = Win
 Scissors vs: Rock     = Lose
 
-rock asWeapon       = Rock
-paper asWeapon      = Paper
-scissors asWeapon   = Scissors
-
 1 asWeapon          = Rock
 2 asWeapon          = Paper
 3 asWeapon          = Scissors
 
 -- TODO: Finish the implementation.
 
-a = 1 asWeapon
-b = 2 asWeapon
-a vs: b
+round =
+    player       = random: 1 to: 2
+    playerWeapon = player asWeapon
+
+    ai           = random: 1 to: 2
+    aiWeapon     = ai asWeapon
+
+    print: playerWeapon
+    print: playerWeapon
+
+    playerWeapon vs: aiWeapon
+
+round
