@@ -26,19 +26,17 @@ def nextToken(self):
 }
 
 
-program: (NEWLINE | statement)*;
+program: (NEWLINE | statement)* EOF;
 statement: assignment | expression;
 
 assignment: assignmentForm '=' assignmentBody;
 
 assignmentForm: unaryForm
-              | unaryOperatorForm
               | binaryForm
               | keywordForm
               | primitiveForm;
 
 unaryForm: parameters IDENTIFIER;
-unaryOperatorForm: OPERATOR parameters;
 binaryForm: parameters OPERATOR parameters;
 keywordForm: parameters? (IDENTIFIER ':' parameters)+;
 primitiveForm: IDENTIFIER;
@@ -56,47 +54,34 @@ parameterType: IDENTIFIER;
 assignmentBody: simpleAssignmentBody
               | compoundAssignmentBody;
 
-simpleAssignmentBody: expression | expressionInBrackets;
+simpleAssignmentBody: expression;
 compoundAssignmentBody: INDENT statement+ DEDENT;
 
 expression: unary NEWLINE
           | binary NEWLINE
           | keyword NEWLINE
           | primitive NEWLINE;
-expressionInBrackets: '(' expression ')';
-expressionInBracketsWithOperator: OPERATOR expressionInBrackets;
 
 unary: unary IDENTIFIER
-     | expressionInBracketsWithOperator IDENTIFIER
-     | expressionInBrackets IDENTIFIER
      | primitive IDENTIFIER;
 
 binary: binary OPERATOR binaryOperand |
         binaryOperand OPERATOR binaryOperand;
 binaryOperand: unary
-             | primitive
-             | expressionInBracketsWithOperator
-             | expressionInBrackets;
+             | primitive;
 
 keyword: keywordPrefix? (keywordName ':' keywordValue)+;
 keywordPrefix: unary
              | binary
-             | primitive
-             | expressionInBracketsWithOperator
-             | expressionInBrackets;
+             | primitive;
 keywordName: IDENTIFIER;
 keywordValue: unary
             | binary
-            | primitive
-            | expressionInBracketsWithOperator
-            | expressionInBrackets;
+            | primitive;
 
 primitive: primitiveItem (',' primitiveItem)*?;
-primitiveItem: primitiveWithOperator
-         | IDENTIFIER
-         | literal;
-primitiveWithOperator: OPERATOR IDENTIFIER
-                     | OPERATOR literal;
+primitiveItem: IDENTIFIER
+             | literal;
 
 literal: intLiteral
        | stringLiteral;

@@ -1,3 +1,5 @@
+import pytest
+
 from tale.core import execute
 
 
@@ -46,11 +48,9 @@ x =
 x
 """
 
-    # Act.
-    out = execute(program)
-
-    # Assert.
-    assert out is None
+    # Act & Assert.
+    with pytest.raises(Exception):
+        execute(program)
 
 
 def test_one_indentation_level_with_complex_return():

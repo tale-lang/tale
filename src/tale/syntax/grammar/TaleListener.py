@@ -53,15 +53,6 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#unaryOperatorForm.
-    def enterUnaryOperatorForm(self, ctx:TaleParser.UnaryOperatorFormContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#unaryOperatorForm.
-    def exitUnaryOperatorForm(self, ctx:TaleParser.UnaryOperatorFormContext):
-        pass
-
-
     # Enter a parse tree produced by TaleParser#binaryForm.
     def enterBinaryForm(self, ctx:TaleParser.BinaryFormContext):
         pass
@@ -179,24 +170,6 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#expressionInBrackets.
-    def enterExpressionInBrackets(self, ctx:TaleParser.ExpressionInBracketsContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#expressionInBrackets.
-    def exitExpressionInBrackets(self, ctx:TaleParser.ExpressionInBracketsContext):
-        pass
-
-
-    # Enter a parse tree produced by TaleParser#expressionInBracketsWithOperator.
-    def enterExpressionInBracketsWithOperator(self, ctx:TaleParser.ExpressionInBracketsWithOperatorContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#expressionInBracketsWithOperator.
-    def exitExpressionInBracketsWithOperator(self, ctx:TaleParser.ExpressionInBracketsWithOperatorContext):
-        pass
-
-
     # Enter a parse tree produced by TaleParser#unary.
     def enterUnary(self, ctx:TaleParser.UnaryContext):
         pass
@@ -275,15 +248,6 @@ class TaleListener(ParseTreeListener):
 
     # Exit a parse tree produced by TaleParser#primitiveItem.
     def exitPrimitiveItem(self, ctx:TaleParser.PrimitiveItemContext):
-        pass
-
-
-    # Enter a parse tree produced by TaleParser#primitiveWithOperator.
-    def enterPrimitiveWithOperator(self, ctx:TaleParser.PrimitiveWithOperatorContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#primitiveWithOperator.
-    def exitPrimitiveWithOperator(self, ctx:TaleParser.PrimitiveWithOperatorContext):
         pass
 
 
