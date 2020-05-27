@@ -112,8 +112,7 @@ class CapturedNode(Captured):
             `value` equal to node that represents `1`.
     """
 
-    def __init__(self, form: Form, node: Node, arguments: Iterable['CapturedArgument'] = None):
-        self.form = form
+    def __init__(self, node: Node, arguments: Iterable['CapturedArgument'] = None):
         self.node = node
         self.arguments = arguments or []
 
@@ -325,7 +324,7 @@ class UnaryBinding(Binding):
         arg = self.parameter.capture(value.argument)
 
         if arg is not None:
-            return CapturedNode(self.form, self.value, [arg]) 
+            return CapturedNode(self.value, [arg]) 
 
 
 class BinaryBinding(Binding):
@@ -359,7 +358,7 @@ class BinaryBinding(Binding):
         args.append(first_argument)
         args.append(second_argument)
 
-        return CapturedNode(self.form, self.value, args)
+        return CapturedNode(self.value, args)
 
 
 class KeywordBinding(Binding):
@@ -413,7 +412,7 @@ class KeywordBinding(Binding):
             else:
                 args.append(arg)
 
-        return CapturedNode(self.form, self.value, args)
+        return CapturedNode(self.value, args)
 
 
 class PrimitiveBinding(Binding):
@@ -434,7 +433,7 @@ class PrimitiveBinding(Binding):
         if self.form.content != value.identifier:
             return None
 
-        return CapturedNode(self.form, self.value)
+        return CapturedNode(self.value)
 
 
 class ConstBinding:
