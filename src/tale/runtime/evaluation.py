@@ -190,23 +190,66 @@ class CapturedTuple(CapturedArgument):
 
 
 class BoundParameter(metaclass=ABCMeta):
-    """A parameter that is a part of a bound form."""
+    """A parameter that is part of a binding.
+
+    For example, in the following form:
+        (x) squared = x * x
+    `(x)` is a bound parameter of type `SimpleBoundParameter`.
+
+    On the other hand, one could write:
+        1 squared = x * x
+    Here the `1` is a bound parameter of type `PatternMatchingBoundParameter`.
+    """
 
     @staticmethod
     def of(parameter: Parameter) -> 'BoundParameter':
+        """Creates an instance of `BoundParameter` from syntax `Parameter`.
+
+        Args:
+            parameter: A `Parameter` syntax node.
+
+        Returns:
+            An instance of `Parameter`: either `BoundSimpleParameter`,
+            `BoundPatternMatchingParameter` or `BoundTupleParameter`.
+
+        Raises:
+            ValueError: If the `parameter` does not represent a simple,
+                pattern matching or tuple.
+        """
+
         if isinstance(parameter, SimpleParameter):
-            return SimpleBoundParameter(parameter)
+            return BoundSimpleParameter(parameter)
         if isinstance(parameter, PatternMatchingParameter):
-            return PatternMatchingBoundParameter(parameter)
+            return BoundPatternMatchingParameter(parameter)
         if isinstance(parameter, TupleParameter):
-            return TupleBoundParameter(parameter)
+            return BoundTupleParameter(parameter)
+
+        raise ValueError("Couldn't create a value from {expression}")
 
     @abstractmethod
     def capture(self, argument: TaleObject) -> CapturedArgument:
-        ...
+        """Captures an instance of `TaleObject` as argument.
+
+        Consider following examples of bound parameters:
+            - `(x)`: could match any object.
+            - `(x: Int)`: could match only instances of
+                `TaleInt`.
+            - `1`: could match only instance of `TaleInt`
+                with value `1`.
+        """
 
 
-class SimpleBoundParameter(BoundParameter):
+class BoundSimpleParameter(BoundParameter):
+    """A simple parameter that is part of some binding.
+
+    For example, the following binding:
+        (x) squared = x * x
+    Contains `(x)` as an instance of `BoundSimpleParameter`.
+
+    Attributes:
+        node: A `SimpleParameter` syntax node.
+    """
+
     def __init__(self, node: SimpleParameter):
         self.node = node
 
@@ -220,7 +263,17 @@ class SimpleBoundParameter(BoundParameter):
         return CapturedSingle(self.node.name, argument)
 
 
-class PatternMatchingBoundParameter(BoundParameter):
+class BoundPatternMatchingParameter(BoundParameter):
+    """A pattern matching parameter that is part of some binding.
+
+    For example, the following binding:
+        1 squared = 1
+    Contains `1` as an instance of `BoundPatternMatchingParameter`.
+
+    Attributes:
+        node: A `PatternMatchingParameter` syntax node.
+    """
+
     def __init__(self, node: PatternMatchingParameter):
         self.node = node
 
@@ -231,7 +284,17 @@ class PatternMatchingBoundParameter(BoundParameter):
         return CapturedSingle(None, argument)
 
 
-class TupleBoundParameter(BoundParameter):
+class BoundTupleParameter(BoundParameter):
+    """A tuple parameter that is part of some binding.
+
+    For example, the following binding:
+        first: (x), (y) = x
+    Contains `(x), (y)` as an instance of `BoundTupleParameter`.
+
+    Attributes:
+        node: A `TupleParameter` syntax node.
+    """
+
     def __init__(self, node: TupleParameter):
         self.node = node
 
