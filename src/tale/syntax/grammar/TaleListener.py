@@ -80,21 +80,30 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#parameters.
-    def enterParameters(self, ctx:TaleParser.ParametersContext):
-        pass
-
-    # Exit a parse tree produced by TaleParser#parameters.
-    def exitParameters(self, ctx:TaleParser.ParametersContext):
-        pass
-
-
     # Enter a parse tree produced by TaleParser#parameter.
     def enterParameter(self, ctx:TaleParser.ParameterContext):
         pass
 
     # Exit a parse tree produced by TaleParser#parameter.
     def exitParameter(self, ctx:TaleParser.ParameterContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#tupleParameter.
+    def enterTupleParameter(self, ctx:TaleParser.TupleParameterContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#tupleParameter.
+    def exitTupleParameter(self, ctx:TaleParser.TupleParameterContext):
+        pass
+
+
+    # Enter a parse tree produced by TaleParser#singleParameter.
+    def enterSingleParameter(self, ctx:TaleParser.SingleParameterContext):
+        pass
+
+    # Exit a parse tree produced by TaleParser#singleParameter.
+    def exitSingleParameter(self, ctx:TaleParser.SingleParameterContext):
         pass
 
 

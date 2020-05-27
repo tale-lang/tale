@@ -125,8 +125,8 @@ class KeywordForm(Form):
     """
 
     @property
-    def prefix(self) -> 'KeywordPrefix':
-        if isinstance(self.children[0], Parameters):
+    def prefix(self) -> 'Parameter':
+        if isinstance(self.children[0], Parameter):
             return self.children[0]
 
     @property
@@ -173,26 +173,41 @@ class PrimitiveForm(Form):
     """
 
 
-class Parameters(Node):
-    """A collection of parameters."""
-
-    @property
-    def all(self) -> Iterable['Parameter']:
-        return (x for x in self.children if isinstance(x, Parameter))
-
-
 class Parameter(Node):
     """A parameter.
 
-    An parameter is either simple or a pattern matching one.
+    An parameter is either a single or a tuple one.
+
+    For example, in the following form:
+        (x) squared = x * x
+    `(x)` is a single parameter.
+
+    On the other hand, in the form:
+        first: (x), (y) = x
+    `(x), (y)` is a tuple parameter: it consists of two single ones.
+    """
+
+
+class TupleParameter(Parameter):
+    """A comma separated sequence of sigle parameters."""
+
+    @property
+    def items(self) -> Iterable['Parameter']:
+        return (x for x in self.children if isinstance(x, Parameter))
+
+
+class SingleParameter(Parameter):
+    """A single parameter.
+
+    A single parameter is either a simple or a pattern matching one.
 
     For example, in the following form:
         (x) squared = x * x
     `(x)` is a simple parameter.
 
-    On the other hand, in similar assignment:
-        1 squared = 1
-    `1` is a pattern matching parameter.
+    On the other hand, in the form:
+        2 squared = 4
+    `2` is a pattern matching parameter.
     """
 
     @property
@@ -200,15 +215,30 @@ class Parameter(Node):
         return self.children[3] if len(self.children) > 3 else None
 
 
-class SimpleParameter(Parameter):
-    """A simple parameter."""
+class SimpleParameter(SingleParameter):
+    """A single parameter.
+
+    A single parameter is either a simple or a pattern matching one.
+
+    For example, in the following form:
+        (x) squared = x * x
+    `(x)` is a simple parameter.
+
+    On the other hand, in the form:
+        2 squared = 4
+    `2` is a pattern matching parameter.
+    """
+
+    @property
+    def type_(self) -> str:
+        return self.children[3] if len(self.children) > 3 else None
 
     @property
     def name(self) -> str:
         return self.children[1].content
 
 
-class PatternMatchingParameter(Parameter):
+class PatternMatchingParameter(SingleParameter):
     """A pattern matching parameter.
 
     Represents a plain value.
@@ -295,7 +325,7 @@ class KeywordExpression(Expression):
     """
 
     @property
-    def prefix(self) -> 'KeywordPrefix':
+    def prefix(self) -> 'KeywordArgument':
         """Returns a prefix of the keyword expression.
 
         Usually, a keyword expression consists of sequence of pairs where each pair

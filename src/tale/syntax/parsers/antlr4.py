@@ -12,11 +12,12 @@ from tale.syntax.grammar.TaleParser import TaleParser
 from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                BinaryForm, Expression, IntLiteral,
                                KeywordArgument, KeywordExpression, KeywordForm,
-                               KeywordName, Node, Parameters,
-                               PatternMatchingParameter, PrimitiveExpression,
-                               PrimitiveExpressionItem, PrimitiveForm, Program,
-                               SimpleParameter, Statement, StringLiteral,
-                               Token, UnaryExpression, UnaryForm)
+                               KeywordName, Node, PatternMatchingParameter,
+                               PrimitiveExpression, PrimitiveExpressionItem,
+                               PrimitiveForm, Program, SimpleParameter,
+                               SingleParameter, Statement, StringLiteral,
+                               Token, TupleParameter, UnaryExpression,
+                               UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -94,8 +95,23 @@ class Antlr4Parser(Parser):
                 if isinstance(x, TaleParser.BinaryFormContext):
                     return new(x, as_=BinaryForm)
 
-            if isinstance(x, TaleParser.ParametersContext):
-                return new(x, as_=Parameters)
+            if isinstance(x, TaleParser.ParameterContext):
+                x = next(x.getChildren())
+
+                if isinstance(x, TaleParser.TupleParameterContext):
+                    return new(x, as_=TupleParameter)
+
+                return node(x)
+
+            if isinstance(x, TaleParser.SingleParameterContext):
+                x = next(x.getChildren())
+                return node(x)
+
+            if isinstance(x, TaleParser.SimpleParameterContext):
+                return new(x, as_=SimpleParameter)
+
+            if isinstance(x, TaleParser.PatternMatchingParameterContext):
+                return new(x, as_=PatternMatchingParameter)
 
             if isinstance(x, TaleParser.ParameterContext):
                 x = next(x.getChildren())

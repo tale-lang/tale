@@ -36,18 +36,21 @@ form: unaryForm
     | keywordForm
     | primitiveForm;
 
-unaryForm: parameters IDENTIFIER;
-binaryForm: parameters OPERATOR parameters;
-keywordForm: parameters? (IDENTIFIER ':' parameters)+;
+unaryForm: parameter IDENTIFIER;
+binaryForm: parameter OPERATOR parameter;
+keywordForm: parameter? (IDENTIFIER ':' parameter)+;
 primitiveForm: IDENTIFIER;
 
-parameters: parameter (',' parameter)*;
-parameter: simpleParameter
-         | patternMatchingParameter;
+parameter: singleParameter
+         | tupleParameter;
+
+tupleParameter: singleParameter (',' singleParameter)+;
+singleParameter: simpleParameter
+               | patternMatchingParameter;
 
 simpleParameter: '(' parameterName (':' parameterType)? ')';
-patternMatchingParameter: IDENTIFIER
-                        | literal;
+patternMatchingParameter: IDENTIFIER | literal;
+
 parameterName: IDENTIFIER;
 parameterType: IDENTIFIER;
 
