@@ -35,7 +35,7 @@ class CapturedNode(Captured):
     For example, the following expression:
         1 squared
     Could be captured by the following form:
-        (x) squared = x * x
+        (x) squared
 
     Attributes:
         form: A node that represents a form that captured the expression.
