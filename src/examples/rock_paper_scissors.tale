@@ -4,9 +4,6 @@ random: (x) to: (y) = py: "import random; result = random.randint", x, y
 -- Read from stdin.
 read: (x) = py: "result = input", x
 
-if: True  then: (y) else: (z) = y
-if: False then: (y) else: (z) = z
-
 Rock vs: Rock         = Draw
 Rock vs: Scissors     = Win
 Rock vs: Paper        = Lose
