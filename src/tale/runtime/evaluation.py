@@ -7,10 +7,12 @@ from tale.runtime.objects import (TaleInt, TaleNone, TaleObject, TaleString,
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,
-                               PatternMatchingParameter, PrimitiveExpression,
-                               PrimitiveExpressionItem, PrimitiveForm,
-                               SimpleParameter, Statement, StringLiteral,
-                               TupleParameter, UnaryExpression, UnaryForm)
+                               PatternMatchingParameter,
+                               PrefixOperatorExpression, PrefixOperatorForm,
+                               PrimitiveExpression, PrimitiveExpressionItem,
+                               PrimitiveForm, SimpleParameter, Statement,
+                               StringLiteral, TupleParameter, UnaryExpression,
+                               UnaryForm)
 
 
 class Value(metaclass=ABCMeta):
@@ -28,6 +30,8 @@ class Value(metaclass=ABCMeta):
     def of(expression: Expression, scope: 'Scope') -> 'Value':
         if isinstance(expression, UnaryExpression):
             return UnaryValue(expression, scope)
+        if isinstance(expression, PrefixOperatorExpression):
+            return PrefixOperatorValue(expression, scope)
         if isinstance(expression, BinaryExpression):
             return BinaryValue(expression, scope)
         if isinstance(expression, KeywordExpression):
@@ -41,16 +45,18 @@ class Value(metaclass=ABCMeta):
 
 
 class UnaryValue(Value):
-    """An unary value."""
-
     def __init__(self, expression: UnaryExpression, scope: 'Scope'):
         self.identifier = expression.identifier
         self.argument = scope.resolve(expression.argument)
 
 
-class BinaryValue(Value):
-    """A binary value."""
+class PrefixOperatorValue(Value):
+    def __init__(self, expression: PrefixOperatorExpression, scope: 'Scope'):
+        self.operator = expression.operator
+        self.argument = scope.resolve(expression.argument)
 
+
+class BinaryValue(Value):
     def __init__(self, expression: BinaryExpression, scope: 'Scope'):
         self.operator = expression.operator.content
         self.first_argument = scope.resolve(expression.first_argument)
@@ -58,8 +64,6 @@ class BinaryValue(Value):
 
 
 class KeywordValue(Value):
-    """A keyword value."""
-
     def __init__(self, expression: KeywordExpression, scope: 'Scope'):
         def resolved(x):
             name, value = x
@@ -226,7 +230,7 @@ class BoundParameter(metaclass=ABCMeta):
         if isinstance(parameter, TupleParameter):
             return BoundTupleParameter(parameter)
 
-        raise ValueError(f"Couldn't create a value from {expression}")
+        raise ValueError(f"Couldn't create a value from {parameter}")
 
     @abstractmethod
     def capture(self, argument: TaleObject) -> CapturedArgument:
@@ -345,6 +349,8 @@ class Binding(metaclass=ABCMeta):
 
         if isinstance(form, UnaryForm):
             return UnaryBinding(form, value)
+        if isinstance(form, PrefixOperatorForm):
+            return PrefixOperatorBinding(form, value)
         if isinstance(form, BinaryForm):
             return BinaryBinding(form, value)
         if isinstance(form, KeywordForm):
@@ -384,6 +390,31 @@ class UnaryBinding(Binding):
         if not isinstance(value, UnaryValue):
             return None
         if self.form.identifier != value.identifier:
+            return None
+
+        arg = self.parameter.capture(value.argument)
+
+        if arg is not None:
+            return CapturedNode(self.value, [arg]) 
+
+
+class PrefixOperatorBinding(Binding):
+    """A prefix operator form binding.
+
+    For example, the following statement:
+        -(x) = ...
+    produces a prefix operator binding of prefix operator form `-(x)` to `...`.
+    """
+
+    def __init__(self, form: PrefixOperatorForm, value: Node):
+        self.form = form
+        self.value = value
+        self.parameter = BoundParameter.of(form.parameter)
+
+    def capture(self, value: PrefixOperatorValue) -> Captured:
+        if not isinstance(value, PrefixOperatorValue):
+            return None
+        if self.form.operator != value.operator:
             return None
 
         arg = self.parameter.capture(value.argument)
@@ -669,6 +700,9 @@ class Scope:
                     result.items = items
                     
                     return result
+
+            if isinstance(x, PrimitiveExpressionItem):
+                return value(x)
 
             return captured(x)
 

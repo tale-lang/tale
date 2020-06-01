@@ -103,18 +103,18 @@ class UnaryForm(Form):
         return self.children[1].content
 
 
-class UnaryOperatorForm(Form):
-    """An unary operator form.
+class PrefixOperatorForm(Form):
+    """A prefix operator form.
 
-    An unary operator form consists of operator followed by a parameter.
+    An prefix operator form consists of operator followed by a parameter.
 
-    For example, the following is a unary operator form:
+    For example, the following is a prefix operator form:
         -(x)
     where:
         `-` is an operator;
         `(x)` is a parameter.
 
-    Unary operators have higher precedence than unary forms.
+    Prefix operators have higher precedence than unary forms.
     For example, the following:
         -1 asString
     Is equal to:
@@ -316,6 +316,24 @@ class UnaryExpression(Expression):
     @property
     def identifier(self) -> str:
         return self.children[1].content
+
+
+class PrefixOperatorExpression(Expression):
+    """A prefix operator expression.
+
+    A prefix operator consist of two parts: an operator and the value.
+    """
+
+    @property
+    def operator(self) -> str:
+        return self.children[0].content
+
+    @property
+    def argument(self) -> 'Node':
+        if self.children[1].content == '(':
+            return self.children[2]
+        else:
+            return self.children[1]
 
 
 class BinaryExpression(Expression):

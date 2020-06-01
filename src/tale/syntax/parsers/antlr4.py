@@ -13,11 +13,12 @@ from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                BinaryForm, Expression, IntLiteral,
                                KeywordArgument, KeywordExpression, KeywordForm,
                                KeywordName, Node, PatternMatchingParameter,
+                               PrefixOperatorExpression, PrefixOperatorForm,
                                PrimitiveExpression, PrimitiveExpressionItem,
                                PrimitiveForm, Program, SimpleParameter,
                                SingleParameter, Statement, StringLiteral,
                                Token, TupleParameter, UnaryExpression,
-                               UnaryForm, UnaryOperatorForm)
+                               UnaryForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -86,8 +87,8 @@ class Antlr4Parser(Parser):
                 if isinstance(x, TaleParser.UnaryFormContext):
                     return new(x, as_=UnaryForm)
 
-                if isinstance(x, TaleParser.UnaryOperatorFormContext):
-                    return new(x, as_=UnaryOperatorForm)
+                if isinstance(x, TaleParser.PrefixOperatorFormContext):
+                    return new(x, as_=PrefixOperatorForm)
 
                 if isinstance(x, TaleParser.KeywordFormContext):
                     return new(x, as_=KeywordForm)
@@ -136,22 +137,28 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.ExpressionContext):
                 x = next(x.getChildren())
 
-                if isinstance(x, TaleParser.PrimitiveContext):
-                    return new(x, as_=PrimitiveExpression)
-
                 if isinstance(x, TaleParser.UnaryContext):
                     return new(x, as_=UnaryExpression)
+
+                if isinstance(x, TaleParser.PrefixOperatorContext):
+                    return new(x, as_=PrefixOperatorExpression)
+
+                if isinstance(x, TaleParser.BinaryContext):
+                    return new(x, as_=BinaryExpression)
 
                 if isinstance(x, TaleParser.KeywordContext):
                     return new(x, as_=KeywordExpression)
 
-                if isinstance(x, TaleParser.BinaryContext):
-                    return new(x, as_=BinaryExpression)
+                if isinstance(x, TaleParser.PrimitiveContext):
+                    return new(x, as_=PrimitiveExpression)
 
                 return new(x, as_=Expression)
 
             if isinstance(x, TaleParser.UnaryContext):
                 return new(x, as_=UnaryExpression)
+
+            if isinstance(x, TaleParser.PrefixOperatorContext):
+                return new(x, as_=PrefixOperatorExpression)
 
             if isinstance(x, TaleParser.BinaryContext):
                 return new(x, as_=BinaryExpression)

@@ -32,13 +32,13 @@ statement: assignment | expression;
 assignment: form '=' assignmentBody;
 
 form: unaryForm
-    | unaryOperatorForm
+    | prefixOperatorForm
     | binaryForm
     | keywordForm
     | primitiveForm;
 
 unaryForm: parameter IDENTIFIER;
-unaryOperatorForm: OPERATOR singleParameter;
+prefixOperatorForm: OPERATOR singleParameter;
 binaryForm: parameter OPERATOR parameter;
 keywordForm: parameter? (IDENTIFIER ':' parameter)+;
 primitiveForm: IDENTIFIER;
@@ -63,7 +63,7 @@ simpleAssignmentBody: expression;
 compoundAssignmentBody: INDENT (NEWLINE | statement)+ DEDENT;
 
 expression: unary
-          | unaryOperator
+          | prefixOperator
           | binary
           | keyword
           | primitive;
@@ -71,8 +71,8 @@ expression: unary
 unary: unary IDENTIFIER
      | primitive IDENTIFIER;
 
-unaryOperator: OPERATOR primitiveItem
-             | OPERATOR '(' expression ')';
+prefixOperator: OPERATOR primitiveItem
+              | OPERATOR '(' expression ')';
 
 binary: binary OPERATOR binaryOperand |
         binaryOperand OPERATOR binaryOperand;

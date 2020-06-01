@@ -134,7 +134,7 @@ class TaleParser ( Parser ):
     RULE_assignment = 2
     RULE_form = 3
     RULE_unaryForm = 4
-    RULE_unaryOperatorForm = 5
+    RULE_prefixOperatorForm = 5
     RULE_binaryForm = 6
     RULE_keywordForm = 7
     RULE_primitiveForm = 8
@@ -150,7 +150,7 @@ class TaleParser ( Parser ):
     RULE_compoundAssignmentBody = 18
     RULE_expression = 19
     RULE_unary = 20
-    RULE_unaryOperator = 21
+    RULE_prefixOperator = 21
     RULE_binary = 22
     RULE_binaryOperand = 23
     RULE_keyword = 24
@@ -163,11 +163,11 @@ class TaleParser ( Parser ):
     RULE_stringLiteral = 31
 
     ruleNames =  [ "program", "statement", "assignment", "form", "unaryForm", 
-                   "unaryOperatorForm", "binaryForm", "keywordForm", "primitiveForm", 
+                   "prefixOperatorForm", "binaryForm", "keywordForm", "primitiveForm", 
                    "parameter", "tupleParameter", "singleParameter", "simpleParameter", 
                    "patternMatchingParameter", "parameterName", "parameterType", 
                    "assignmentBody", "simpleAssignmentBody", "compoundAssignmentBody", 
-                   "expression", "unary", "unaryOperator", "binary", "binaryOperand", 
+                   "expression", "unary", "prefixOperator", "binary", "binaryOperand", 
                    "keyword", "keywordArgument", "keywordName", "primitive", 
                    "primitiveItem", "literal", "intLiteral", "stringLiteral" ]
 
@@ -389,8 +389,8 @@ class TaleParser ( Parser ):
             return self.getTypedRuleContext(TaleParser.UnaryFormContext,0)
 
 
-        def unaryOperatorForm(self):
-            return self.getTypedRuleContext(TaleParser.UnaryOperatorFormContext,0)
+        def prefixOperatorForm(self):
+            return self.getTypedRuleContext(TaleParser.PrefixOperatorFormContext,0)
 
 
         def binaryForm(self):
@@ -436,7 +436,7 @@ class TaleParser ( Parser ):
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 82
-                self.unaryOperatorForm()
+                self.prefixOperatorForm()
                 pass
 
             elif la_ == 3:
@@ -513,7 +513,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class UnaryOperatorFormContext(ParserRuleContext):
+    class PrefixOperatorFormContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -527,23 +527,23 @@ class TaleParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return TaleParser.RULE_unaryOperatorForm
+            return TaleParser.RULE_prefixOperatorForm
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterUnaryOperatorForm" ):
-                listener.enterUnaryOperatorForm(self)
+            if hasattr( listener, "enterPrefixOperatorForm" ):
+                listener.enterPrefixOperatorForm(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitUnaryOperatorForm" ):
-                listener.exitUnaryOperatorForm(self)
+            if hasattr( listener, "exitPrefixOperatorForm" ):
+                listener.exitPrefixOperatorForm(self)
 
 
 
 
-    def unaryOperatorForm(self):
+    def prefixOperatorForm(self):
 
-        localctx = TaleParser.UnaryOperatorFormContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_unaryOperatorForm)
+        localctx = TaleParser.PrefixOperatorFormContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 10, self.RULE_prefixOperatorForm)
         try:
             self.enterOuterAlt(localctx, 1)
             self.state = 91
@@ -1287,8 +1287,8 @@ class TaleParser ( Parser ):
             return self.getTypedRuleContext(TaleParser.UnaryContext,0)
 
 
-        def unaryOperator(self):
-            return self.getTypedRuleContext(TaleParser.UnaryOperatorContext,0)
+        def prefixOperator(self):
+            return self.getTypedRuleContext(TaleParser.PrefixOperatorContext,0)
 
 
         def binary(self):
@@ -1334,7 +1334,7 @@ class TaleParser ( Parser ):
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
                 self.state = 157
-                self.unaryOperator()
+                self.prefixOperator()
                 pass
 
             elif la_ == 3:
@@ -1438,7 +1438,7 @@ class TaleParser ( Parser ):
         return localctx
 
 
-    class UnaryOperatorContext(ParserRuleContext):
+    class PrefixOperatorContext(ParserRuleContext):
 
         def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
             super().__init__(parent, invokingState)
@@ -1456,23 +1456,23 @@ class TaleParser ( Parser ):
 
 
         def getRuleIndex(self):
-            return TaleParser.RULE_unaryOperator
+            return TaleParser.RULE_prefixOperator
 
         def enterRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "enterUnaryOperator" ):
-                listener.enterUnaryOperator(self)
+            if hasattr( listener, "enterPrefixOperator" ):
+                listener.enterPrefixOperator(self)
 
         def exitRule(self, listener:ParseTreeListener):
-            if hasattr( listener, "exitUnaryOperator" ):
-                listener.exitUnaryOperator(self)
+            if hasattr( listener, "exitPrefixOperator" ):
+                listener.exitPrefixOperator(self)
 
 
 
 
-    def unaryOperator(self):
+    def prefixOperator(self):
 
-        localctx = TaleParser.UnaryOperatorContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_unaryOperator)
+        localctx = TaleParser.PrefixOperatorContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 42, self.RULE_prefixOperator)
         try:
             self.state = 181
             self._errHandler.sync(self)

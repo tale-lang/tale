@@ -38,7 +38,7 @@ statement
 assignment
 form
 unaryForm
-unaryOperatorForm
+prefixOperatorForm
 binaryForm
 keywordForm
 primitiveForm
@@ -54,7 +54,7 @@ simpleAssignmentBody
 compoundAssignmentBody
 expression
 unary
-unaryOperator
+prefixOperator
 binary
 binaryOperand
 keyword

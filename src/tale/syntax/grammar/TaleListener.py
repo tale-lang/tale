@@ -53,12 +53,12 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#unaryOperatorForm.
-    def enterUnaryOperatorForm(self, ctx:TaleParser.UnaryOperatorFormContext):
+    # Enter a parse tree produced by TaleParser#prefixOperatorForm.
+    def enterPrefixOperatorForm(self, ctx:TaleParser.PrefixOperatorFormContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#unaryOperatorForm.
-    def exitUnaryOperatorForm(self, ctx:TaleParser.UnaryOperatorFormContext):
+    # Exit a parse tree produced by TaleParser#prefixOperatorForm.
+    def exitPrefixOperatorForm(self, ctx:TaleParser.PrefixOperatorFormContext):
         pass
 
 
@@ -197,12 +197,12 @@ class TaleListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by TaleParser#unaryOperator.
-    def enterUnaryOperator(self, ctx:TaleParser.UnaryOperatorContext):
+    # Enter a parse tree produced by TaleParser#prefixOperator.
+    def enterPrefixOperator(self, ctx:TaleParser.PrefixOperatorContext):
         pass
 
-    # Exit a parse tree produced by TaleParser#unaryOperator.
-    def exitUnaryOperator(self, ctx:TaleParser.UnaryOperatorContext):
+    # Exit a parse tree produced by TaleParser#prefixOperator.
+    def exitPrefixOperator(self, ctx:TaleParser.PrefixOperatorContext):
         pass
 
 
