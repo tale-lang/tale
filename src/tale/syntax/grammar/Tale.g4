@@ -58,12 +58,12 @@ assignmentBody: simpleAssignmentBody
               | compoundAssignmentBody;
 
 simpleAssignmentBody: expression;
-compoundAssignmentBody: INDENT statement+ DEDENT;
+compoundAssignmentBody: INDENT (NEWLINE | statement)+ DEDENT;
 
-expression: unary NEWLINE
-          | binary NEWLINE
-          | keyword NEWLINE
-          | primitive NEWLINE;
+expression: unary
+          | binary
+          | keyword
+          | primitive;
 
 unary: unary IDENTIFIER
      | primitive IDENTIFIER;
