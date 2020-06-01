@@ -133,6 +133,32 @@ class UnaryOperatorForm(Form):
             return self.children[1]
 
 
+class BinaryForm(Form):
+    """A binary form.
+
+    A binary form consists of two parameters that are separated by some special
+    character.
+    For example, the following is a binary form:
+        (x) + (y)
+    where:
+        `(x)` is a first parameter;
+        `+` is an operator;
+        `(y)` is a second parameter.
+    """
+
+    @property
+    def first_parameter(self) -> 'Parameter':
+        return self.children[0]
+
+    @property
+    def operator(self) -> Node:
+        return self.children[1]
+
+    @property
+    def second_parameter(self) -> 'Parameter':
+        return self.children[2]
+
+
 class KeywordForm(Form):
     """A keyword form.
 
@@ -168,32 +194,6 @@ class KeywordForm(Form):
         children = group(children, by=2)
 
         return children
-
-
-class BinaryForm(Form):
-    """A binary form.
-
-    A binary form consists of two parameters that are separated by some special
-    character.
-    For example, the following is a binary form:
-        (x) + (y)
-    where:
-        `(x)` is a first parameter;
-        `+` is an operator;
-        `(y)` is a second parameter.
-    """
-
-    @property
-    def first_parameter(self) -> 'Parameter':
-        return self.children[0]
-
-    @property
-    def operator(self) -> Node:
-        return self.children[1]
-
-    @property
-    def second_parameter(self) -> 'Parameter':
-        return self.children[2]
 
 
 class PrimitiveForm(Form):
