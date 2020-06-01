@@ -17,7 +17,7 @@ from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
                                PrimitiveForm, Program, SimpleParameter,
                                SingleParameter, Statement, StringLiteral,
                                Token, TupleParameter, UnaryExpression,
-                               UnaryForm)
+                               UnaryForm, UnaryOperatorForm)
 from tale.syntax.parsers.parser import Parser
 
 
@@ -83,17 +83,20 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.FormContext):
                 x = next(x.getChildren())
 
-                if isinstance(x, TaleParser.PrimitiveFormContext):
-                    return new(x, as_=PrimitiveForm)
-
                 if isinstance(x, TaleParser.UnaryFormContext):
                     return new(x, as_=UnaryForm)
+
+                if isinstance(x, TaleParser.UnaryOperatorFormContext):
+                    return new(x, as_=UnaryOperatorForm)
 
                 if isinstance(x, TaleParser.KeywordFormContext):
                     return new(x, as_=KeywordForm)
 
                 if isinstance(x, TaleParser.BinaryFormContext):
                     return new(x, as_=BinaryForm)
+
+                if isinstance(x, TaleParser.PrimitiveFormContext):
+                    return new(x, as_=PrimitiveForm)
 
             if isinstance(x, TaleParser.ParameterContext):
                 x = next(x.getChildren())

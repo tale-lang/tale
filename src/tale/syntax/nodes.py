@@ -103,6 +103,36 @@ class UnaryForm(Form):
         return self.children[1].content
 
 
+class UnaryOperatorForm(Form):
+    """An unary operator form.
+
+    An unary operator form consists of operator followed by a parameter.
+
+    For example, the following is a unary operator form:
+        -(x)
+    where:
+        `-` is an operator;
+        `(x)` is a parameter.
+
+    Unary operators have higher precedence than unary forms.
+    For example, the following:
+        -1 asString
+    Is equal to:
+        (-1) asString
+    """
+
+    @property
+    def operator(self) -> str:
+        return self.children[0].content
+
+    @property
+    def parameter(self) -> 'Parameter':
+        if isinstance(self.children[1], Parameter):
+            return self.children[1]
+        else:
+            return self.children[1]
+
+
 class KeywordForm(Form):
     """A keyword form.
 
