@@ -1,5 +1,6 @@
-from typing import Any, Iterable, Optional, Tuple
+import os
 from abc import ABCMeta, abstractmethod
+from typing import Any, Iterable, Optional, Tuple
 
 from tale.runtime.objects import (TaleInt, TaleNone, TaleObject, TaleString,
                                   TaleTuple, TaleType)
@@ -35,7 +36,8 @@ class Value(metaclass=ABCMeta):
            isinstance(expression, PrimitiveExpressionItem):
             return PrimitiveValue(expression, scope)
 
-        raise ValueError(f"Couldn't create a value from {expression}")
+        raise ValueError(f"Couldn't recognize node:{os.linesep}"
+                         f"{expression}")
 
 
 class UnaryValue(Value):
