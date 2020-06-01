@@ -12,94 +12,103 @@ else:
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20")
-        buf.write("\u00df\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\u00f1\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
         buf.write("\t\31\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\4\36\t\36")
-        buf.write("\4\37\t\37\3\2\3\2\7\2A\n\2\f\2\16\2D\13\2\3\2\3\2\3\3")
-        buf.write("\3\3\5\3J\n\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3\5\5\5T\n\5")
-        buf.write("\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\5\b^\n\b\3\b\3\b\3\b")
-        buf.write("\6\bc\n\b\r\b\16\bd\3\t\3\t\3\n\3\n\5\nk\n\n\3\13\3\13")
-        buf.write("\3\13\6\13p\n\13\r\13\16\13q\3\f\3\f\5\fv\n\f\3\r\3\r")
-        buf.write("\3\r\3\r\5\r|\n\r\3\r\3\r\3\16\3\16\5\16\u0082\n\16\3")
-        buf.write("\17\3\17\3\20\3\20\3\21\3\21\5\21\u008a\n\21\3\22\3\22")
-        buf.write("\3\23\3\23\3\23\6\23\u0091\n\23\r\23\16\23\u0092\3\23")
-        buf.write("\3\23\3\24\3\24\3\24\3\24\5\24\u009b\n\24\3\25\3\25\3")
-        buf.write("\25\3\25\3\25\3\25\7\25\u00a3\n\25\f\25\16\25\u00a6\13")
-        buf.write("\25\3\26\3\26\3\26\3\26\3\26\3\26\3\26\3\26\7\26\u00b0")
-        buf.write("\n\26\f\26\16\26\u00b3\13\26\3\27\3\27\5\27\u00b7\n\27")
-        buf.write("\3\30\5\30\u00ba\n\30\3\30\3\30\3\30\3\30\6\30\u00c0\n")
-        buf.write("\30\r\30\16\30\u00c1\3\31\3\31\3\31\5\31\u00c7\n\31\3")
-        buf.write("\32\3\32\3\33\3\33\3\33\7\33\u00ce\n\33\f\33\16\33\u00d1")
-        buf.write("\13\33\3\34\3\34\5\34\u00d5\n\34\3\35\3\35\5\35\u00d9")
-        buf.write("\n\35\3\36\3\36\3\37\3\37\3\37\3\u00cf\4(* \2\4\6\b\n")
-        buf.write("\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64\668:<")
-        buf.write("\2\2\2\u00dd\2B\3\2\2\2\4I\3\2\2\2\6K\3\2\2\2\bS\3\2\2")
-        buf.write("\2\nU\3\2\2\2\fX\3\2\2\2\16]\3\2\2\2\20f\3\2\2\2\22j\3")
-        buf.write("\2\2\2\24l\3\2\2\2\26u\3\2\2\2\30w\3\2\2\2\32\u0081\3")
-        buf.write("\2\2\2\34\u0083\3\2\2\2\36\u0085\3\2\2\2 \u0089\3\2\2")
-        buf.write("\2\"\u008b\3\2\2\2$\u008d\3\2\2\2&\u009a\3\2\2\2(\u009c")
-        buf.write("\3\2\2\2*\u00a7\3\2\2\2,\u00b6\3\2\2\2.\u00b9\3\2\2\2")
-        buf.write("\60\u00c6\3\2\2\2\62\u00c8\3\2\2\2\64\u00ca\3\2\2\2\66")
-        buf.write("\u00d4\3\2\2\28\u00d8\3\2\2\2:\u00da\3\2\2\2<\u00dc\3")
-        buf.write("\2\2\2>A\7\r\2\2?A\5\4\3\2@>\3\2\2\2@?\3\2\2\2AD\3\2\2")
-        buf.write("\2B@\3\2\2\2BC\3\2\2\2CE\3\2\2\2DB\3\2\2\2EF\7\2\2\3F")
-        buf.write("\3\3\2\2\2GJ\5\6\4\2HJ\5&\24\2IG\3\2\2\2IH\3\2\2\2J\5")
-        buf.write("\3\2\2\2KL\5\b\5\2LM\7\3\2\2MN\5 \21\2N\7\3\2\2\2OT\5")
-        buf.write("\n\6\2PT\5\f\7\2QT\5\16\b\2RT\5\20\t\2SO\3\2\2\2SP\3\2")
-        buf.write("\2\2SQ\3\2\2\2SR\3\2\2\2T\t\3\2\2\2UV\5\22\n\2VW\7\b\2")
-        buf.write("\2W\13\3\2\2\2XY\5\22\n\2YZ\7\n\2\2Z[\5\22\n\2[\r\3\2")
-        buf.write("\2\2\\^\5\22\n\2]\\\3\2\2\2]^\3\2\2\2^b\3\2\2\2_`\7\b")
-        buf.write("\2\2`a\7\4\2\2ac\5\22\n\2b_\3\2\2\2cd\3\2\2\2db\3\2\2")
-        buf.write("\2de\3\2\2\2e\17\3\2\2\2fg\7\b\2\2g\21\3\2\2\2hk\5\26")
-        buf.write("\f\2ik\5\24\13\2jh\3\2\2\2ji\3\2\2\2k\23\3\2\2\2lo\5\26")
-        buf.write("\f\2mn\7\5\2\2np\5\26\f\2om\3\2\2\2pq\3\2\2\2qo\3\2\2")
-        buf.write("\2qr\3\2\2\2r\25\3\2\2\2sv\5\30\r\2tv\5\32\16\2us\3\2")
-        buf.write("\2\2ut\3\2\2\2v\27\3\2\2\2wx\7\6\2\2x{\5\34\17\2yz\7\4")
-        buf.write("\2\2z|\5\36\20\2{y\3\2\2\2{|\3\2\2\2|}\3\2\2\2}~\7\7\2")
-        buf.write("\2~\31\3\2\2\2\177\u0082\7\b\2\2\u0080\u0082\58\35\2\u0081")
-        buf.write("\177\3\2\2\2\u0081\u0080\3\2\2\2\u0082\33\3\2\2\2\u0083")
-        buf.write("\u0084\7\b\2\2\u0084\35\3\2\2\2\u0085\u0086\7\b\2\2\u0086")
-        buf.write("\37\3\2\2\2\u0087\u008a\5\"\22\2\u0088\u008a\5$\23\2\u0089")
-        buf.write("\u0087\3\2\2\2\u0089\u0088\3\2\2\2\u008a!\3\2\2\2\u008b")
-        buf.write("\u008c\5&\24\2\u008c#\3\2\2\2\u008d\u0090\7\17\2\2\u008e")
-        buf.write("\u0091\7\r\2\2\u008f\u0091\5\4\3\2\u0090\u008e\3\2\2\2")
-        buf.write("\u0090\u008f\3\2\2\2\u0091\u0092\3\2\2\2\u0092\u0090\3")
-        buf.write("\2\2\2\u0092\u0093\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u0095")
-        buf.write("\7\20\2\2\u0095%\3\2\2\2\u0096\u009b\5(\25\2\u0097\u009b")
-        buf.write("\5*\26\2\u0098\u009b\5.\30\2\u0099\u009b\5\64\33\2\u009a")
-        buf.write("\u0096\3\2\2\2\u009a\u0097\3\2\2\2\u009a\u0098\3\2\2\2")
-        buf.write("\u009a\u0099\3\2\2\2\u009b\'\3\2\2\2\u009c\u009d\b\25")
-        buf.write("\1\2\u009d\u009e\5\64\33\2\u009e\u009f\7\b\2\2\u009f\u00a4")
-        buf.write("\3\2\2\2\u00a0\u00a1\f\4\2\2\u00a1\u00a3\7\b\2\2\u00a2")
-        buf.write("\u00a0\3\2\2\2\u00a3\u00a6\3\2\2\2\u00a4\u00a2\3\2\2\2")
-        buf.write("\u00a4\u00a5\3\2\2\2\u00a5)\3\2\2\2\u00a6\u00a4\3\2\2")
-        buf.write("\2\u00a7\u00a8\b\26\1\2\u00a8\u00a9\5,\27\2\u00a9\u00aa")
-        buf.write("\7\n\2\2\u00aa\u00ab\5,\27\2\u00ab\u00b1\3\2\2\2\u00ac")
-        buf.write("\u00ad\f\4\2\2\u00ad\u00ae\7\n\2\2\u00ae\u00b0\5,\27\2")
-        buf.write("\u00af\u00ac\3\2\2\2\u00b0\u00b3\3\2\2\2\u00b1\u00af\3")
-        buf.write("\2\2\2\u00b1\u00b2\3\2\2\2\u00b2+\3\2\2\2\u00b3\u00b1")
-        buf.write("\3\2\2\2\u00b4\u00b7\5(\25\2\u00b5\u00b7\5\64\33\2\u00b6")
-        buf.write("\u00b4\3\2\2\2\u00b6\u00b5\3\2\2\2\u00b7-\3\2\2\2\u00b8")
-        buf.write("\u00ba\5\60\31\2\u00b9\u00b8\3\2\2\2\u00b9\u00ba\3\2\2")
-        buf.write("\2\u00ba\u00bf\3\2\2\2\u00bb\u00bc\5\62\32\2\u00bc\u00bd")
-        buf.write("\7\4\2\2\u00bd\u00be\5\60\31\2\u00be\u00c0\3\2\2\2\u00bf")
-        buf.write("\u00bb\3\2\2\2\u00c0\u00c1\3\2\2\2\u00c1\u00bf\3\2\2\2")
-        buf.write("\u00c1\u00c2\3\2\2\2\u00c2/\3\2\2\2\u00c3\u00c7\5(\25")
-        buf.write("\2\u00c4\u00c7\5*\26\2\u00c5\u00c7\5\64\33\2\u00c6\u00c3")
-        buf.write("\3\2\2\2\u00c6\u00c4\3\2\2\2\u00c6\u00c5\3\2\2\2\u00c7")
-        buf.write("\61\3\2\2\2\u00c8\u00c9\7\b\2\2\u00c9\63\3\2\2\2\u00ca")
-        buf.write("\u00cf\5\66\34\2\u00cb\u00cc\7\5\2\2\u00cc\u00ce\5\66")
-        buf.write("\34\2\u00cd\u00cb\3\2\2\2\u00ce\u00d1\3\2\2\2\u00cf\u00d0")
-        buf.write("\3\2\2\2\u00cf\u00cd\3\2\2\2\u00d0\65\3\2\2\2\u00d1\u00cf")
-        buf.write("\3\2\2\2\u00d2\u00d5\7\b\2\2\u00d3\u00d5\58\35\2\u00d4")
-        buf.write("\u00d2\3\2\2\2\u00d4\u00d3\3\2\2\2\u00d5\67\3\2\2\2\u00d6")
-        buf.write("\u00d9\5:\36\2\u00d7\u00d9\5<\37\2\u00d8\u00d6\3\2\2\2")
-        buf.write("\u00d8\u00d7\3\2\2\2\u00d99\3\2\2\2\u00da\u00db\7\t\2")
-        buf.write("\2\u00db;\3\2\2\2\u00dc\u00dd\7\13\2\2\u00dd=\3\2\2\2")
-        buf.write("\32@BIS]djqu{\u0081\u0089\u0090\u0092\u009a\u00a4\u00b1")
-        buf.write("\u00b6\u00b9\u00c1\u00c6\u00cf\u00d4\u00d8")
+        buf.write("\4\37\t\37\4 \t \4!\t!\3\2\3\2\7\2E\n\2\f\2\16\2H\13\2")
+        buf.write("\3\2\3\2\3\3\3\3\5\3N\n\3\3\4\3\4\3\4\3\4\3\5\3\5\3\5")
+        buf.write("\3\5\3\5\5\5Y\n\5\3\6\3\6\3\6\3\7\3\7\3\7\3\b\3\b\3\b")
+        buf.write("\3\b\3\t\5\tf\n\t\3\t\3\t\3\t\6\tk\n\t\r\t\16\tl\3\n\3")
+        buf.write("\n\3\13\3\13\5\13s\n\13\3\f\3\f\3\f\6\fx\n\f\r\f\16\f")
+        buf.write("y\3\r\3\r\5\r~\n\r\3\16\3\16\3\16\3\16\5\16\u0084\n\16")
+        buf.write("\3\16\3\16\3\17\3\17\5\17\u008a\n\17\3\20\3\20\3\21\3")
+        buf.write("\21\3\22\3\22\5\22\u0092\n\22\3\23\3\23\3\24\3\24\3\24")
+        buf.write("\6\24\u0099\n\24\r\24\16\24\u009a\3\24\3\24\3\25\3\25")
+        buf.write("\3\25\3\25\3\25\5\25\u00a4\n\25\3\26\3\26\3\26\3\26\3")
+        buf.write("\26\3\26\7\26\u00ac\n\26\f\26\16\26\u00af\13\26\3\27\3")
+        buf.write("\27\3\27\3\27\3\27\3\27\3\27\5\27\u00b8\n\27\3\30\3\30")
+        buf.write("\3\30\3\30\3\30\3\30\3\30\3\30\7\30\u00c2\n\30\f\30\16")
+        buf.write("\30\u00c5\13\30\3\31\3\31\5\31\u00c9\n\31\3\32\5\32\u00cc")
+        buf.write("\n\32\3\32\3\32\3\32\3\32\6\32\u00d2\n\32\r\32\16\32\u00d3")
+        buf.write("\3\33\3\33\3\33\5\33\u00d9\n\33\3\34\3\34\3\35\3\35\3")
+        buf.write("\35\7\35\u00e0\n\35\f\35\16\35\u00e3\13\35\3\36\3\36\5")
+        buf.write("\36\u00e7\n\36\3\37\3\37\5\37\u00eb\n\37\3 \3 \3!\3!\3")
+        buf.write("!\3\u00e1\4*.\"\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36")
+        buf.write(" \"$&(*,.\60\62\64\668:<>@\2\2\2\u00f0\2F\3\2\2\2\4M\3")
+        buf.write("\2\2\2\6O\3\2\2\2\bX\3\2\2\2\nZ\3\2\2\2\f]\3\2\2\2\16")
+        buf.write("`\3\2\2\2\20e\3\2\2\2\22n\3\2\2\2\24r\3\2\2\2\26t\3\2")
+        buf.write("\2\2\30}\3\2\2\2\32\177\3\2\2\2\34\u0089\3\2\2\2\36\u008b")
+        buf.write("\3\2\2\2 \u008d\3\2\2\2\"\u0091\3\2\2\2$\u0093\3\2\2\2")
+        buf.write("&\u0095\3\2\2\2(\u00a3\3\2\2\2*\u00a5\3\2\2\2,\u00b7\3")
+        buf.write("\2\2\2.\u00b9\3\2\2\2\60\u00c8\3\2\2\2\62\u00cb\3\2\2")
+        buf.write("\2\64\u00d8\3\2\2\2\66\u00da\3\2\2\28\u00dc\3\2\2\2:\u00e6")
+        buf.write("\3\2\2\2<\u00ea\3\2\2\2>\u00ec\3\2\2\2@\u00ee\3\2\2\2")
+        buf.write("BE\7\r\2\2CE\5\4\3\2DB\3\2\2\2DC\3\2\2\2EH\3\2\2\2FD\3")
+        buf.write("\2\2\2FG\3\2\2\2GI\3\2\2\2HF\3\2\2\2IJ\7\2\2\3J\3\3\2")
+        buf.write("\2\2KN\5\6\4\2LN\5(\25\2MK\3\2\2\2ML\3\2\2\2N\5\3\2\2")
+        buf.write("\2OP\5\b\5\2PQ\7\3\2\2QR\5\"\22\2R\7\3\2\2\2SY\5\n\6\2")
+        buf.write("TY\5\f\7\2UY\5\16\b\2VY\5\20\t\2WY\5\22\n\2XS\3\2\2\2")
+        buf.write("XT\3\2\2\2XU\3\2\2\2XV\3\2\2\2XW\3\2\2\2Y\t\3\2\2\2Z[")
+        buf.write("\5\24\13\2[\\\7\b\2\2\\\13\3\2\2\2]^\7\n\2\2^_\5\30\r")
+        buf.write("\2_\r\3\2\2\2`a\5\24\13\2ab\7\n\2\2bc\5\24\13\2c\17\3")
+        buf.write("\2\2\2df\5\24\13\2ed\3\2\2\2ef\3\2\2\2fj\3\2\2\2gh\7\b")
+        buf.write("\2\2hi\7\4\2\2ik\5\24\13\2jg\3\2\2\2kl\3\2\2\2lj\3\2\2")
+        buf.write("\2lm\3\2\2\2m\21\3\2\2\2no\7\b\2\2o\23\3\2\2\2ps\5\30")
+        buf.write("\r\2qs\5\26\f\2rp\3\2\2\2rq\3\2\2\2s\25\3\2\2\2tw\5\30")
+        buf.write("\r\2uv\7\5\2\2vx\5\30\r\2wu\3\2\2\2xy\3\2\2\2yw\3\2\2")
+        buf.write("\2yz\3\2\2\2z\27\3\2\2\2{~\5\32\16\2|~\5\34\17\2}{\3\2")
+        buf.write("\2\2}|\3\2\2\2~\31\3\2\2\2\177\u0080\7\6\2\2\u0080\u0083")
+        buf.write("\5\36\20\2\u0081\u0082\7\4\2\2\u0082\u0084\5 \21\2\u0083")
+        buf.write("\u0081\3\2\2\2\u0083\u0084\3\2\2\2\u0084\u0085\3\2\2\2")
+        buf.write("\u0085\u0086\7\7\2\2\u0086\33\3\2\2\2\u0087\u008a\7\b")
+        buf.write("\2\2\u0088\u008a\5<\37\2\u0089\u0087\3\2\2\2\u0089\u0088")
+        buf.write("\3\2\2\2\u008a\35\3\2\2\2\u008b\u008c\7\b\2\2\u008c\37")
+        buf.write("\3\2\2\2\u008d\u008e\7\b\2\2\u008e!\3\2\2\2\u008f\u0092")
+        buf.write("\5$\23\2\u0090\u0092\5&\24\2\u0091\u008f\3\2\2\2\u0091")
+        buf.write("\u0090\3\2\2\2\u0092#\3\2\2\2\u0093\u0094\5(\25\2\u0094")
+        buf.write("%\3\2\2\2\u0095\u0098\7\17\2\2\u0096\u0099\7\r\2\2\u0097")
+        buf.write("\u0099\5\4\3\2\u0098\u0096\3\2\2\2\u0098\u0097\3\2\2\2")
+        buf.write("\u0099\u009a\3\2\2\2\u009a\u0098\3\2\2\2\u009a\u009b\3")
+        buf.write("\2\2\2\u009b\u009c\3\2\2\2\u009c\u009d\7\20\2\2\u009d")
+        buf.write("\'\3\2\2\2\u009e\u00a4\5*\26\2\u009f\u00a4\5,\27\2\u00a0")
+        buf.write("\u00a4\5.\30\2\u00a1\u00a4\5\62\32\2\u00a2\u00a4\58\35")
+        buf.write("\2\u00a3\u009e\3\2\2\2\u00a3\u009f\3\2\2\2\u00a3\u00a0")
+        buf.write("\3\2\2\2\u00a3\u00a1\3\2\2\2\u00a3\u00a2\3\2\2\2\u00a4")
+        buf.write(")\3\2\2\2\u00a5\u00a6\b\26\1\2\u00a6\u00a7\58\35\2\u00a7")
+        buf.write("\u00a8\7\b\2\2\u00a8\u00ad\3\2\2\2\u00a9\u00aa\f\4\2\2")
+        buf.write("\u00aa\u00ac\7\b\2\2\u00ab\u00a9\3\2\2\2\u00ac\u00af\3")
+        buf.write("\2\2\2\u00ad\u00ab\3\2\2\2\u00ad\u00ae\3\2\2\2\u00ae+")
+        buf.write("\3\2\2\2\u00af\u00ad\3\2\2\2\u00b0\u00b1\7\n\2\2\u00b1")
+        buf.write("\u00b8\5:\36\2\u00b2\u00b3\7\n\2\2\u00b3\u00b4\7\6\2\2")
+        buf.write("\u00b4\u00b5\5(\25\2\u00b5\u00b6\7\7\2\2\u00b6\u00b8\3")
+        buf.write("\2\2\2\u00b7\u00b0\3\2\2\2\u00b7\u00b2\3\2\2\2\u00b8-")
+        buf.write("\3\2\2\2\u00b9\u00ba\b\30\1\2\u00ba\u00bb\5\60\31\2\u00bb")
+        buf.write("\u00bc\7\n\2\2\u00bc\u00bd\5\60\31\2\u00bd\u00c3\3\2\2")
+        buf.write("\2\u00be\u00bf\f\4\2\2\u00bf\u00c0\7\n\2\2\u00c0\u00c2")
+        buf.write("\5\60\31\2\u00c1\u00be\3\2\2\2\u00c2\u00c5\3\2\2\2\u00c3")
+        buf.write("\u00c1\3\2\2\2\u00c3\u00c4\3\2\2\2\u00c4/\3\2\2\2\u00c5")
+        buf.write("\u00c3\3\2\2\2\u00c6\u00c9\5*\26\2\u00c7\u00c9\58\35\2")
+        buf.write("\u00c8\u00c6\3\2\2\2\u00c8\u00c7\3\2\2\2\u00c9\61\3\2")
+        buf.write("\2\2\u00ca\u00cc\5\64\33\2\u00cb\u00ca\3\2\2\2\u00cb\u00cc")
+        buf.write("\3\2\2\2\u00cc\u00d1\3\2\2\2\u00cd\u00ce\5\66\34\2\u00ce")
+        buf.write("\u00cf\7\4\2\2\u00cf\u00d0\5\64\33\2\u00d0\u00d2\3\2\2")
+        buf.write("\2\u00d1\u00cd\3\2\2\2\u00d2\u00d3\3\2\2\2\u00d3\u00d1")
+        buf.write("\3\2\2\2\u00d3\u00d4\3\2\2\2\u00d4\63\3\2\2\2\u00d5\u00d9")
+        buf.write("\5*\26\2\u00d6\u00d9\5.\30\2\u00d7\u00d9\58\35\2\u00d8")
+        buf.write("\u00d5\3\2\2\2\u00d8\u00d6\3\2\2\2\u00d8\u00d7\3\2\2\2")
+        buf.write("\u00d9\65\3\2\2\2\u00da\u00db\7\b\2\2\u00db\67\3\2\2\2")
+        buf.write("\u00dc\u00e1\5:\36\2\u00dd\u00de\7\5\2\2\u00de\u00e0\5")
+        buf.write(":\36\2\u00df\u00dd\3\2\2\2\u00e0\u00e3\3\2\2\2\u00e1\u00e2")
+        buf.write("\3\2\2\2\u00e1\u00df\3\2\2\2\u00e29\3\2\2\2\u00e3\u00e1")
+        buf.write("\3\2\2\2\u00e4\u00e7\7\b\2\2\u00e5\u00e7\5<\37\2\u00e6")
+        buf.write("\u00e4\3\2\2\2\u00e6\u00e5\3\2\2\2\u00e7;\3\2\2\2\u00e8")
+        buf.write("\u00eb\5> \2\u00e9\u00eb\5@!\2\u00ea\u00e8\3\2\2\2\u00ea")
+        buf.write("\u00e9\3\2\2\2\u00eb=\3\2\2\2\u00ec\u00ed\7\t\2\2\u00ed")
+        buf.write("?\3\2\2\2\u00ee\u00ef\7\13\2\2\u00efA\3\2\2\2\33DFMXe")
+        buf.write("lry}\u0083\u0089\u0091\u0098\u009a\u00a3\u00ad\u00b7\u00c3")
+        buf.write("\u00c8\u00cb\u00d3\u00d8\u00e1\u00e6\u00ea")
         return buf.getvalue()
 
 
@@ -125,40 +134,42 @@ class TaleParser ( Parser ):
     RULE_assignment = 2
     RULE_form = 3
     RULE_unaryForm = 4
-    RULE_binaryForm = 5
-    RULE_keywordForm = 6
-    RULE_primitiveForm = 7
-    RULE_parameter = 8
-    RULE_tupleParameter = 9
-    RULE_singleParameter = 10
-    RULE_simpleParameter = 11
-    RULE_patternMatchingParameter = 12
-    RULE_parameterName = 13
-    RULE_parameterType = 14
-    RULE_assignmentBody = 15
-    RULE_simpleAssignmentBody = 16
-    RULE_compoundAssignmentBody = 17
-    RULE_expression = 18
-    RULE_unary = 19
-    RULE_binary = 20
-    RULE_binaryOperand = 21
-    RULE_keyword = 22
-    RULE_keywordArgument = 23
-    RULE_keywordName = 24
-    RULE_primitive = 25
-    RULE_primitiveItem = 26
-    RULE_literal = 27
-    RULE_intLiteral = 28
-    RULE_stringLiteral = 29
+    RULE_unaryOperatorForm = 5
+    RULE_binaryForm = 6
+    RULE_keywordForm = 7
+    RULE_primitiveForm = 8
+    RULE_parameter = 9
+    RULE_tupleParameter = 10
+    RULE_singleParameter = 11
+    RULE_simpleParameter = 12
+    RULE_patternMatchingParameter = 13
+    RULE_parameterName = 14
+    RULE_parameterType = 15
+    RULE_assignmentBody = 16
+    RULE_simpleAssignmentBody = 17
+    RULE_compoundAssignmentBody = 18
+    RULE_expression = 19
+    RULE_unary = 20
+    RULE_unaryOperator = 21
+    RULE_binary = 22
+    RULE_binaryOperand = 23
+    RULE_keyword = 24
+    RULE_keywordArgument = 25
+    RULE_keywordName = 26
+    RULE_primitive = 27
+    RULE_primitiveItem = 28
+    RULE_literal = 29
+    RULE_intLiteral = 30
+    RULE_stringLiteral = 31
 
     ruleNames =  [ "program", "statement", "assignment", "form", "unaryForm", 
-                   "binaryForm", "keywordForm", "primitiveForm", "parameter", 
-                   "tupleParameter", "singleParameter", "simpleParameter", 
+                   "unaryOperatorForm", "binaryForm", "keywordForm", "primitiveForm", 
+                   "parameter", "tupleParameter", "singleParameter", "simpleParameter", 
                    "patternMatchingParameter", "parameterName", "parameterType", 
                    "assignmentBody", "simpleAssignmentBody", "compoundAssignmentBody", 
-                   "expression", "unary", "binary", "binaryOperand", "keyword", 
-                   "keywordArgument", "keywordName", "primitive", "primitiveItem", 
-                   "literal", "intLiteral", "stringLiteral" ]
+                   "expression", "unary", "unaryOperator", "binary", "binaryOperand", 
+                   "keyword", "keywordArgument", "keywordName", "primitive", 
+                   "primitiveItem", "literal", "intLiteral", "stringLiteral" ]
 
     EOF = Token.EOF
     T__0=1
@@ -228,29 +239,29 @@ class TaleParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 64
+            self.state = 68
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TaleParser.T__3) | (1 << TaleParser.IDENTIFIER) | (1 << TaleParser.NUMBER) | (1 << TaleParser.STRING) | (1 << TaleParser.NEWLINE))) != 0):
-                self.state = 62
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TaleParser.T__3) | (1 << TaleParser.IDENTIFIER) | (1 << TaleParser.NUMBER) | (1 << TaleParser.OPERATOR) | (1 << TaleParser.STRING) | (1 << TaleParser.NEWLINE))) != 0):
+                self.state = 66
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [TaleParser.NEWLINE]:
-                    self.state = 60
+                    self.state = 64
                     self.match(TaleParser.NEWLINE)
                     pass
-                elif token in [TaleParser.T__3, TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.STRING]:
-                    self.state = 61
+                elif token in [TaleParser.T__3, TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.OPERATOR, TaleParser.STRING]:
+                    self.state = 65
                     self.statement()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 66
+                self.state = 70
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
-            self.state = 67
+            self.state = 71
             self.match(TaleParser.EOF)
         except RecognitionException as re:
             localctx.exception = re
@@ -294,18 +305,18 @@ class TaleParser ( Parser ):
         localctx = TaleParser.StatementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 2, self.RULE_statement)
         try:
-            self.state = 71
+            self.state = 75
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 69
+                self.state = 73
                 self.assignment()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 70
+                self.state = 74
                 self.expression()
                 pass
 
@@ -353,11 +364,11 @@ class TaleParser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_assignment)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 73
+            self.state = 77
             self.form()
-            self.state = 74
+            self.state = 78
             self.match(TaleParser.T__0)
-            self.state = 75
+            self.state = 79
             self.assignmentBody()
         except RecognitionException as re:
             localctx.exception = re
@@ -376,6 +387,10 @@ class TaleParser ( Parser ):
 
         def unaryForm(self):
             return self.getTypedRuleContext(TaleParser.UnaryFormContext,0)
+
+
+        def unaryOperatorForm(self):
+            return self.getTypedRuleContext(TaleParser.UnaryOperatorFormContext,0)
 
 
         def binaryForm(self):
@@ -409,30 +424,36 @@ class TaleParser ( Parser ):
         localctx = TaleParser.FormContext(self, self._ctx, self.state)
         self.enterRule(localctx, 6, self.RULE_form)
         try:
-            self.state = 81
+            self.state = 86
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 77
+                self.state = 81
                 self.unaryForm()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 78
-                self.binaryForm()
+                self.state = 82
+                self.unaryOperatorForm()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 79
-                self.keywordForm()
+                self.state = 83
+                self.binaryForm()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 80
+                self.state = 84
+                self.keywordForm()
+                pass
+
+            elif la_ == 5:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 85
                 self.primitiveForm()
                 pass
 
@@ -479,10 +500,56 @@ class TaleParser ( Parser ):
         self.enterRule(localctx, 8, self.RULE_unaryForm)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 83
+            self.state = 88
             self.parameter()
-            self.state = 84
+            self.state = 89
             self.match(TaleParser.IDENTIFIER)
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+
+    class UnaryOperatorFormContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def OPERATOR(self):
+            return self.getToken(TaleParser.OPERATOR, 0)
+
+        def singleParameter(self):
+            return self.getTypedRuleContext(TaleParser.SingleParameterContext,0)
+
+
+        def getRuleIndex(self):
+            return TaleParser.RULE_unaryOperatorForm
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterUnaryOperatorForm" ):
+                listener.enterUnaryOperatorForm(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitUnaryOperatorForm" ):
+                listener.exitUnaryOperatorForm(self)
+
+
+
+
+    def unaryOperatorForm(self):
+
+        localctx = TaleParser.UnaryOperatorFormContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 10, self.RULE_unaryOperatorForm)
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 91
+            self.match(TaleParser.OPERATOR)
+            self.state = 92
+            self.singleParameter()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -525,14 +592,14 @@ class TaleParser ( Parser ):
     def binaryForm(self):
 
         localctx = TaleParser.BinaryFormContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_binaryForm)
+        self.enterRule(localctx, 12, self.RULE_binaryForm)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 86
+            self.state = 94
             self.parameter()
-            self.state = 87
+            self.state = 95
             self.match(TaleParser.OPERATOR)
-            self.state = 88
+            self.state = 96
             self.parameter()
         except RecognitionException as re:
             localctx.exception = re
@@ -579,29 +646,29 @@ class TaleParser ( Parser ):
     def keywordForm(self):
 
         localctx = TaleParser.KeywordFormContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_keywordForm)
+        self.enterRule(localctx, 14, self.RULE_keywordForm)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 91
+            self.state = 99
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,4,self._ctx)
             if la_ == 1:
-                self.state = 90
+                self.state = 98
                 self.parameter()
 
 
-            self.state = 96 
+            self.state = 104 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 93
+                self.state = 101
                 self.match(TaleParser.IDENTIFIER)
-                self.state = 94
+                self.state = 102
                 self.match(TaleParser.T__1)
-                self.state = 95
+                self.state = 103
                 self.parameter()
-                self.state = 98 
+                self.state = 106 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==TaleParser.IDENTIFIER):
@@ -642,10 +709,10 @@ class TaleParser ( Parser ):
     def primitiveForm(self):
 
         localctx = TaleParser.PrimitiveFormContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_primitiveForm)
+        self.enterRule(localctx, 16, self.RULE_primitiveForm)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 100
+            self.state = 108
             self.match(TaleParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
@@ -687,20 +754,20 @@ class TaleParser ( Parser ):
     def parameter(self):
 
         localctx = TaleParser.ParameterContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 16, self.RULE_parameter)
+        self.enterRule(localctx, 18, self.RULE_parameter)
         try:
-            self.state = 104
+            self.state = 112
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,6,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 102
+                self.state = 110
                 self.singleParameter()
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 103
+                self.state = 111
                 self.tupleParameter()
                 pass
 
@@ -744,21 +811,21 @@ class TaleParser ( Parser ):
     def tupleParameter(self):
 
         localctx = TaleParser.TupleParameterContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_tupleParameter)
+        self.enterRule(localctx, 20, self.RULE_tupleParameter)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 106
+            self.state = 114
             self.singleParameter()
-            self.state = 109 
+            self.state = 117 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 107
+                self.state = 115
                 self.match(TaleParser.T__2)
-                self.state = 108
+                self.state = 116
                 self.singleParameter()
-                self.state = 111 
+                self.state = 119 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
                 if not (_la==TaleParser.T__2):
@@ -804,19 +871,19 @@ class TaleParser ( Parser ):
     def singleParameter(self):
 
         localctx = TaleParser.SingleParameterContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_singleParameter)
+        self.enterRule(localctx, 22, self.RULE_singleParameter)
         try:
-            self.state = 115
+            self.state = 123
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TaleParser.T__3]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 113
+                self.state = 121
                 self.simpleParameter()
                 pass
             elif token in [TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.STRING]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 114
+                self.state = 122
                 self.patternMatchingParameter()
                 pass
             else:
@@ -862,25 +929,25 @@ class TaleParser ( Parser ):
     def simpleParameter(self):
 
         localctx = TaleParser.SimpleParameterContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_simpleParameter)
+        self.enterRule(localctx, 24, self.RULE_simpleParameter)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 117
+            self.state = 125
             self.match(TaleParser.T__3)
-            self.state = 118
+            self.state = 126
             self.parameterName()
-            self.state = 121
+            self.state = 129
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if _la==TaleParser.T__1:
-                self.state = 119
+                self.state = 127
                 self.match(TaleParser.T__1)
-                self.state = 120
+                self.state = 128
                 self.parameterType()
 
 
-            self.state = 123
+            self.state = 131
             self.match(TaleParser.T__4)
         except RecognitionException as re:
             localctx.exception = re
@@ -921,19 +988,19 @@ class TaleParser ( Parser ):
     def patternMatchingParameter(self):
 
         localctx = TaleParser.PatternMatchingParameterContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 24, self.RULE_patternMatchingParameter)
+        self.enterRule(localctx, 26, self.RULE_patternMatchingParameter)
         try:
-            self.state = 127
+            self.state = 135
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TaleParser.IDENTIFIER]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 125
+                self.state = 133
                 self.match(TaleParser.IDENTIFIER)
                 pass
             elif token in [TaleParser.NUMBER, TaleParser.STRING]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 126
+                self.state = 134
                 self.literal()
                 pass
             else:
@@ -974,10 +1041,10 @@ class TaleParser ( Parser ):
     def parameterName(self):
 
         localctx = TaleParser.ParameterNameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 26, self.RULE_parameterName)
+        self.enterRule(localctx, 28, self.RULE_parameterName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 129
+            self.state = 137
             self.match(TaleParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
@@ -1014,10 +1081,10 @@ class TaleParser ( Parser ):
     def parameterType(self):
 
         localctx = TaleParser.ParameterTypeContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 28, self.RULE_parameterType)
+        self.enterRule(localctx, 30, self.RULE_parameterType)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 131
+            self.state = 139
             self.match(TaleParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
@@ -1059,19 +1126,19 @@ class TaleParser ( Parser ):
     def assignmentBody(self):
 
         localctx = TaleParser.AssignmentBodyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 30, self.RULE_assignmentBody)
+        self.enterRule(localctx, 32, self.RULE_assignmentBody)
         try:
-            self.state = 135
+            self.state = 143
             self._errHandler.sync(self)
             token = self._input.LA(1)
-            if token in [TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.STRING]:
+            if token in [TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.OPERATOR, TaleParser.STRING]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 133
+                self.state = 141
                 self.simpleAssignmentBody()
                 pass
             elif token in [TaleParser.INDENT]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 134
+                self.state = 142
                 self.compoundAssignmentBody()
                 pass
             else:
@@ -1113,10 +1180,10 @@ class TaleParser ( Parser ):
     def simpleAssignmentBody(self):
 
         localctx = TaleParser.SimpleAssignmentBodyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 32, self.RULE_simpleAssignmentBody)
+        self.enterRule(localctx, 34, self.RULE_simpleAssignmentBody)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 137
+            self.state = 145
             self.expression()
         except RecognitionException as re:
             localctx.exception = re
@@ -1169,37 +1236,37 @@ class TaleParser ( Parser ):
     def compoundAssignmentBody(self):
 
         localctx = TaleParser.CompoundAssignmentBodyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 34, self.RULE_compoundAssignmentBody)
+        self.enterRule(localctx, 36, self.RULE_compoundAssignmentBody)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 139
+            self.state = 147
             self.match(TaleParser.INDENT)
-            self.state = 142 
+            self.state = 150 
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while True:
-                self.state = 142
+                self.state = 150
                 self._errHandler.sync(self)
                 token = self._input.LA(1)
                 if token in [TaleParser.NEWLINE]:
-                    self.state = 140
+                    self.state = 148
                     self.match(TaleParser.NEWLINE)
                     pass
-                elif token in [TaleParser.T__3, TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.STRING]:
-                    self.state = 141
+                elif token in [TaleParser.T__3, TaleParser.IDENTIFIER, TaleParser.NUMBER, TaleParser.OPERATOR, TaleParser.STRING]:
+                    self.state = 149
                     self.statement()
                     pass
                 else:
                     raise NoViableAltException(self)
 
-                self.state = 144 
+                self.state = 152 
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
-                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TaleParser.T__3) | (1 << TaleParser.IDENTIFIER) | (1 << TaleParser.NUMBER) | (1 << TaleParser.STRING) | (1 << TaleParser.NEWLINE))) != 0)):
+                if not ((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << TaleParser.T__3) | (1 << TaleParser.IDENTIFIER) | (1 << TaleParser.NUMBER) | (1 << TaleParser.OPERATOR) | (1 << TaleParser.STRING) | (1 << TaleParser.NEWLINE))) != 0)):
                     break
 
-            self.state = 146
+            self.state = 154
             self.match(TaleParser.DEDENT)
         except RecognitionException as re:
             localctx.exception = re
@@ -1218,6 +1285,10 @@ class TaleParser ( Parser ):
 
         def unary(self):
             return self.getTypedRuleContext(TaleParser.UnaryContext,0)
+
+
+        def unaryOperator(self):
+            return self.getTypedRuleContext(TaleParser.UnaryOperatorContext,0)
 
 
         def binary(self):
@@ -1249,32 +1320,38 @@ class TaleParser ( Parser ):
     def expression(self):
 
         localctx = TaleParser.ExpressionContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 36, self.RULE_expression)
+        self.enterRule(localctx, 38, self.RULE_expression)
         try:
-            self.state = 152
+            self.state = 161
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,14,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 148
+                self.state = 156
                 self.unary(0)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 149
-                self.binary(0)
+                self.state = 157
+                self.unaryOperator()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 150
-                self.keyword()
+                self.state = 158
+                self.binary(0)
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 151
+                self.state = 159
+                self.keyword()
+                pass
+
+            elif la_ == 5:
+                self.enterOuterAlt(localctx, 5)
+                self.state = 160
                 self.primitive()
                 pass
 
@@ -1323,16 +1400,16 @@ class TaleParser ( Parser ):
         _parentState = self.state
         localctx = TaleParser.UnaryContext(self, self._ctx, _parentState)
         _prevctx = localctx
-        _startState = 38
-        self.enterRecursionRule(localctx, 38, self.RULE_unary, _p)
+        _startState = 40
+        self.enterRecursionRule(localctx, 40, self.RULE_unary, _p)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 155
+            self.state = 164
             self.primitive()
-            self.state = 156
+            self.state = 165
             self.match(TaleParser.IDENTIFIER)
             self._ctx.stop = self._input.LT(-1)
-            self.state = 162
+            self.state = 171
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,15,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -1342,13 +1419,13 @@ class TaleParser ( Parser ):
                     _prevctx = localctx
                     localctx = TaleParser.UnaryContext(self, _parentctx, _parentState)
                     self.pushNewRecursionContext(localctx, _startState, self.RULE_unary)
-                    self.state = 158
+                    self.state = 167
                     if not self.precpred(self._ctx, 2):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
-                    self.state = 159
+                    self.state = 168
                     self.match(TaleParser.IDENTIFIER) 
-                self.state = 164
+                self.state = 173
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,15,self._ctx)
 
@@ -1358,6 +1435,75 @@ class TaleParser ( Parser ):
             self._errHandler.recover(self, re)
         finally:
             self.unrollRecursionContexts(_parentctx)
+        return localctx
+
+
+    class UnaryOperatorContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def OPERATOR(self):
+            return self.getToken(TaleParser.OPERATOR, 0)
+
+        def primitiveItem(self):
+            return self.getTypedRuleContext(TaleParser.PrimitiveItemContext,0)
+
+
+        def expression(self):
+            return self.getTypedRuleContext(TaleParser.ExpressionContext,0)
+
+
+        def getRuleIndex(self):
+            return TaleParser.RULE_unaryOperator
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterUnaryOperator" ):
+                listener.enterUnaryOperator(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitUnaryOperator" ):
+                listener.exitUnaryOperator(self)
+
+
+
+
+    def unaryOperator(self):
+
+        localctx = TaleParser.UnaryOperatorContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 42, self.RULE_unaryOperator)
+        try:
+            self.state = 181
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,16,self._ctx)
+            if la_ == 1:
+                self.enterOuterAlt(localctx, 1)
+                self.state = 174
+                self.match(TaleParser.OPERATOR)
+                self.state = 175
+                self.primitiveItem()
+                pass
+
+            elif la_ == 2:
+                self.enterOuterAlt(localctx, 2)
+                self.state = 176
+                self.match(TaleParser.OPERATOR)
+                self.state = 177
+                self.match(TaleParser.T__3)
+                self.state = 178
+                self.expression()
+                self.state = 179
+                self.match(TaleParser.T__4)
+                pass
+
+
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
         return localctx
 
 
@@ -1399,20 +1545,20 @@ class TaleParser ( Parser ):
         _parentState = self.state
         localctx = TaleParser.BinaryContext(self, self._ctx, _parentState)
         _prevctx = localctx
-        _startState = 40
-        self.enterRecursionRule(localctx, 40, self.RULE_binary, _p)
+        _startState = 44
+        self.enterRecursionRule(localctx, 44, self.RULE_binary, _p)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 166
+            self.state = 184
             self.binaryOperand()
-            self.state = 167
+            self.state = 185
             self.match(TaleParser.OPERATOR)
-            self.state = 168
+            self.state = 186
             self.binaryOperand()
             self._ctx.stop = self._input.LT(-1)
-            self.state = 175
+            self.state = 193
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
+            _alt = self._interp.adaptivePredict(self._input,17,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1:
                     if self._parseListeners is not None:
@@ -1420,17 +1566,17 @@ class TaleParser ( Parser ):
                     _prevctx = localctx
                     localctx = TaleParser.BinaryContext(self, _parentctx, _parentState)
                     self.pushNewRecursionContext(localctx, _startState, self.RULE_binary)
-                    self.state = 170
+                    self.state = 188
                     if not self.precpred(self._ctx, 2):
                         from antlr4.error.Errors import FailedPredicateException
                         raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
-                    self.state = 171
+                    self.state = 189
                     self.match(TaleParser.OPERATOR)
-                    self.state = 172
+                    self.state = 190
                     self.binaryOperand() 
-                self.state = 177
+                self.state = 195
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,16,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,17,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1472,20 +1618,20 @@ class TaleParser ( Parser ):
     def binaryOperand(self):
 
         localctx = TaleParser.BinaryOperandContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 42, self.RULE_binaryOperand)
+        self.enterRule(localctx, 46, self.RULE_binaryOperand)
         try:
-            self.state = 180
+            self.state = 198
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,17,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,18,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 178
+                self.state = 196
                 self.unary(0)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 179
+                self.state = 197
                 self.primitive()
                 pass
 
@@ -1536,34 +1682,34 @@ class TaleParser ( Parser ):
     def keyword(self):
 
         localctx = TaleParser.KeywordContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 44, self.RULE_keyword)
+        self.enterRule(localctx, 48, self.RULE_keyword)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 183
+            self.state = 201
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,18,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,19,self._ctx)
             if la_ == 1:
-                self.state = 182
+                self.state = 200
                 self.keywordArgument()
 
 
-            self.state = 189 
+            self.state = 207 
             self._errHandler.sync(self)
             _alt = 1
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt == 1:
-                    self.state = 185
+                    self.state = 203
                     self.keywordName()
-                    self.state = 186
+                    self.state = 204
                     self.match(TaleParser.T__1)
-                    self.state = 187
+                    self.state = 205
                     self.keywordArgument()
 
                 else:
                     raise NoViableAltException(self)
-                self.state = 191 
+                self.state = 209 
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,19,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,20,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1609,26 +1755,26 @@ class TaleParser ( Parser ):
     def keywordArgument(self):
 
         localctx = TaleParser.KeywordArgumentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 46, self.RULE_keywordArgument)
+        self.enterRule(localctx, 50, self.RULE_keywordArgument)
         try:
-            self.state = 196
+            self.state = 214
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,20,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,21,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 193
+                self.state = 211
                 self.unary(0)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 194
+                self.state = 212
                 self.binary(0)
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 195
+                self.state = 213
                 self.primitive()
                 pass
 
@@ -1668,10 +1814,10 @@ class TaleParser ( Parser ):
     def keywordName(self):
 
         localctx = TaleParser.KeywordNameContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 48, self.RULE_keywordName)
+        self.enterRule(localctx, 52, self.RULE_keywordName)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 198
+            self.state = 216
             self.match(TaleParser.IDENTIFIER)
         except RecognitionException as re:
             localctx.exception = re
@@ -1712,23 +1858,23 @@ class TaleParser ( Parser ):
     def primitive(self):
 
         localctx = TaleParser.PrimitiveContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 50, self.RULE_primitive)
+        self.enterRule(localctx, 54, self.RULE_primitive)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 200
+            self.state = 218
             self.primitiveItem()
-            self.state = 205
+            self.state = 223
             self._errHandler.sync(self)
-            _alt = self._interp.adaptivePredict(self._input,21,self._ctx)
+            _alt = self._interp.adaptivePredict(self._input,22,self._ctx)
             while _alt!=1 and _alt!=ATN.INVALID_ALT_NUMBER:
                 if _alt==1+1:
-                    self.state = 201
+                    self.state = 219
                     self.match(TaleParser.T__2)
-                    self.state = 202
+                    self.state = 220
                     self.primitiveItem() 
-                self.state = 207
+                self.state = 225
                 self._errHandler.sync(self)
-                _alt = self._interp.adaptivePredict(self._input,21,self._ctx)
+                _alt = self._interp.adaptivePredict(self._input,22,self._ctx)
 
         except RecognitionException as re:
             localctx.exception = re
@@ -1769,19 +1915,19 @@ class TaleParser ( Parser ):
     def primitiveItem(self):
 
         localctx = TaleParser.PrimitiveItemContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 52, self.RULE_primitiveItem)
+        self.enterRule(localctx, 56, self.RULE_primitiveItem)
         try:
-            self.state = 210
+            self.state = 228
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TaleParser.IDENTIFIER]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 208
+                self.state = 226
                 self.match(TaleParser.IDENTIFIER)
                 pass
             elif token in [TaleParser.NUMBER, TaleParser.STRING]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 209
+                self.state = 227
                 self.literal()
                 pass
             else:
@@ -1827,19 +1973,19 @@ class TaleParser ( Parser ):
     def literal(self):
 
         localctx = TaleParser.LiteralContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 54, self.RULE_literal)
+        self.enterRule(localctx, 58, self.RULE_literal)
         try:
-            self.state = 214
+            self.state = 232
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [TaleParser.NUMBER]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 212
+                self.state = 230
                 self.intLiteral()
                 pass
             elif token in [TaleParser.STRING]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 213
+                self.state = 231
                 self.stringLiteral()
                 pass
             else:
@@ -1880,10 +2026,10 @@ class TaleParser ( Parser ):
     def intLiteral(self):
 
         localctx = TaleParser.IntLiteralContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 56, self.RULE_intLiteral)
+        self.enterRule(localctx, 60, self.RULE_intLiteral)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 216
+            self.state = 234
             self.match(TaleParser.NUMBER)
         except RecognitionException as re:
             localctx.exception = re
@@ -1920,10 +2066,10 @@ class TaleParser ( Parser ):
     def stringLiteral(self):
 
         localctx = TaleParser.StringLiteralContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 58, self.RULE_stringLiteral)
+        self.enterRule(localctx, 62, self.RULE_stringLiteral)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 218
+            self.state = 236
             self.match(TaleParser.STRING)
         except RecognitionException as re:
             localctx.exception = re
@@ -1938,8 +2084,8 @@ class TaleParser ( Parser ):
     def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
         if self._predicates == None:
             self._predicates = dict()
-        self._predicates[19] = self.unary_sempred
-        self._predicates[20] = self.binary_sempred
+        self._predicates[20] = self.unary_sempred
+        self._predicates[22] = self.binary_sempred
         pred = self._predicates.get(ruleIndex, None)
         if pred is None:
             raise Exception("No predicate with index:" + str(ruleIndex))
