@@ -35,7 +35,7 @@ class Value(metaclass=ABCMeta):
            isinstance(expression, PrimitiveExpressionItem):
             return PrimitiveValue(expression, scope)
 
-        raise ValueError("Couldn't create a value from {expression}")
+        raise ValueError(f"Couldn't create a value from {expression}")
 
 
 class UnaryValue(Value):
@@ -224,7 +224,7 @@ class BoundParameter(metaclass=ABCMeta):
         if isinstance(parameter, TupleParameter):
             return BoundTupleParameter(parameter)
 
-        raise ValueError("Couldn't create a value from {expression}")
+        raise ValueError(f"Couldn't create a value from {expression}")
 
     @abstractmethod
     def capture(self, argument: TaleObject) -> CapturedArgument:
