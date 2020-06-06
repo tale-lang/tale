@@ -689,6 +689,9 @@ class Scope:
             def value(x: Node) -> TaleObject:
                 return resolved(x) or captured(x)
 
+            if isinstance(x, KeywordArgument):
+                x = x.children[0]
+
             if isinstance(x, PrimitiveExpression):
                 items = map(value, x.items)
                 items = list(items)
@@ -713,9 +716,6 @@ class Scope:
                 return resolve_assignment(x)
             if isinstance(x, Expression):
                 return resolve_expression(x)
-
-        if isinstance(node, KeywordArgument):
-            node = node.children[0]
 
         if isinstance(node, Expression):
             return resolve_expression(node)

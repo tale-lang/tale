@@ -29,3 +29,19 @@ a + b
 
     # Assert.
     assert out == 'b'
+
+
+def test_calling_keyword_form():
+    # Arrange.
+    program = """
+(x) and: (y) = x
+(x) + (y) = x and: y
+
+a + b
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'a'
