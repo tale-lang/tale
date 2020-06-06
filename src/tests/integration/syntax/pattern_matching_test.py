@@ -243,3 +243,35 @@ def test_pattern_matching_with_half_of_tuple_argument():
 
     # Assert.
     assert out == 4
+
+
+def test_pattern_matching_with_prefix_operator_specific_branch():
+    # Arrange.
+    program = """
+-1 = 2
+-(x) = x
+
+-1
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 2
+
+
+def test_pattern_matching_with_prefix_operator_common_branch():
+    # Arrange.
+    program = """
+-1 = 2
+-(x) = x
+
+-3
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 3
