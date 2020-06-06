@@ -1,0 +1,9 @@
+not: True = False
+not: False = True
+
+!(x) = not: x
+
+True and: True = True
+(x)  and: (y)  = False
+
+True and: True
