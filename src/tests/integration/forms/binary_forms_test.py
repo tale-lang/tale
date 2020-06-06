@@ -31,7 +31,7 @@ a + b
     assert out == 'b'
 
 
-def test_calling_keyword_form():
+def test_calling_keyword_form_in_body():
     # Arrange.
     program = """
 (x) and: (y) = x
@@ -45,3 +45,18 @@ a + b
 
     # Assert.
     assert out == 'a'
+
+
+def test_compound_binary_expression():
+    # Arrange.
+    program = """
+(x) + (y) = y
+
+a + b + c + d
+"""
+
+    # Act.
+    out = execute(program)
+
+    # Assert.
+    assert out == 'd'
