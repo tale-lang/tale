@@ -23,7 +23,7 @@ class Value(metaclass=ABCMeta):
         print: x
         print: x
     The value of `x` is an instance of `PrimitiveValue`, which is itself an
-    instance of `TaleObject` of type `TaleInt`.
+    instance of `TaleObject` with type `TaleInt`.
     """
 
     @staticmethod
