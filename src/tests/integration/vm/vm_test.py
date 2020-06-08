@@ -31,3 +31,23 @@ def test_simple_assignment():
 
     # Assert.
     assert vm.stack == [1]
+
+
+class test_nested_assignment():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('x'),
+            StartBind('y'),
+                PushInt(1),
+            EndBind(),
+            Call('y'),
+        EndBind(),
+        Call('x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == [1]
