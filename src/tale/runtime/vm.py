@@ -1,33 +1,6 @@
 from typing import Iterable
 from abc import ABCMeta, abstractmethod
 
-# x = 1     -> Bind 'x'
-#              PushInt 1
-#              Return
-#              EndBind 'x'
-
-# 1         -> Nop
-# 1         -> PushInt 1      (if last expression in the block)
-# "1" last  -> PushString "1" (if last expression in the block)
-
-# x         -> Call 'x'       (if has return value)
-#              Pop
-
-# x         -> Call 'x'       (if last expression in the block)
-
-# !x        -> Call 'x'
-#              Call '!()'
-
-# x squared -> Call 'x'
-#              Call '()squared'
-
-# x + y     -> Call 'x'
-#              Call 'y'
-#              Call '()+()'
-
-# squared: x -> Call 'x'
-#               Call 'squared()'
-
 # Case 1:
 # ------
 # x = 1
