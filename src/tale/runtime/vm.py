@@ -5,35 +5,35 @@ from abc import ABCMeta, abstractmethod
 # ------
 # x = 1
 # x
-# -----
+# ------
 # StartBind 'x'
 #     PushInt 1
 #     Return
 # EndBind
 # Call 'x'
 # Return
-# -----
+# ------
 
 # Case 2:
 # ------
 # x = 1
 # 2
 # x
-# -----
+# ------
 # StartBind 'x'
 #     PushInt 1
 #     Return
 # EndBind
 # Call 'x'
 # Return
-# -----
+# ------
 
 # Case 3:
 # ------
 # x = 1
 # print: "Hello, world"
 # x
-# -----
+# ------
 # StartBind 'x'
 #     PushInt 1
 #     Return
@@ -43,7 +43,7 @@ from abc import ABCMeta, abstractmethod
 # Pop
 # Call 'x'
 # Return
-# -----
+# ------
 
 # Case 4:
 # ------
@@ -53,7 +53,7 @@ from abc import ABCMeta, abstractmethod
 #         z
 #     y
 # x
-# -----
+# ------
 # StartBind 'x'
 #   StartBind 'y'
 #       StartBind 'z'
@@ -67,7 +67,7 @@ from abc import ABCMeta, abstractmethod
 # EndBind
 # Call 'x'
 # Return
-# -----
+# ------
 
 # Case 5:
 # ------
@@ -79,7 +79,7 @@ from abc import ABCMeta, abstractmethod
 #     a + b
 #
 # fibonacci: 10
-# -----
+# ------
 # StartBind 'fibonacci()' 1
 #     PushInt 0
 #     Return
@@ -109,8 +109,7 @@ from abc import ABCMeta, abstractmethod
 # PushInt 10
 # Call 'fibonacci()'
 # Return
-# -----
-
+# ------
 
 class Instruction(metaclass=ABCMeta):
     """A Tale Virtual Machine's instruction."""
