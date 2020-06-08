@@ -1,3 +1,4 @@
+from typing import Iterable
 from abc import ABCMeta, abstractmethod
 
 # x = 1     -> Bind 'x'
@@ -141,10 +142,6 @@ from abc import ABCMeta, abstractmethod
 class Instruction(metaclass=ABCMeta):
     """A Tale Virtual Machine's instruction."""
 
-    @abstractmethod
-    def execute(self, vm: Vm):
-        """Changes the state of the virtual machine."""
-
 
 class StartBind(Instruction):
     """Starts a binding of the function.
@@ -227,6 +224,11 @@ class Scope:
             name: Name of the function whose body is searched for.
         """
 
+        def parent_body():
+            return self.parent.body(name) if self.parent is not None else None
+
+        return self.bindings.get(name, None) or parent_body()
+
 
 class Vm:
     """A Tale Virtual Machine implementation.
@@ -269,7 +271,7 @@ class Vm:
 
                 if len(body) > 0:
                     self.scope = Scope(parent=self.scope)
-                    execute(body)
+                    self.execute(body)
                     self.scope = self.scope.parent
                 else:
                     self.stack.push(body)
