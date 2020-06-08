@@ -1,3 +1,5 @@
+from abc import ABCMeta, abstractmethod
+
 # x = 1     -> Bind 'x'
 #              PushInt 1
 #              Return
@@ -135,10 +137,44 @@
 # -----
 
 
-class Instruction:
-    pass
+class Instruction(metaclass=ABCMeta):
+    """A Tale Virtual Machine's instruction."""
+
+    @abstractmethod
+    def execute(self, vm: Vm):
+        """Changes the state of the virtual machine."""
+
+
+class Bind(Instruction):
+    """Bind a function to its body."""
+
+
+class EndBind(Instruction):
+    """Ends current `Bind` definition."""
+
+
+class Call(Instruction):
+    """Call a function."""
+
+
+class Pop(Instruction):
+    """Pop a value from the stack."""
+
+
+class Load(Instruction):
+    """Load a local variable with the specified index onto the stack."""
+
+
+class PushInt(Instruction):
+    """Push an integer onto the stack."""
+
+
+class PushString(Instruction):
+    """Push a string onto the stack."""
 
 
 class Vm:
+    """A Tale Virtual Machine implementation."""
+
     def execute(self, instructions: Iterable[Instruction]):
-        pass
+        """Executes a list of instructions in this virtual machine."""
