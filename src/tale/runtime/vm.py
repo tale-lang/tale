@@ -8,10 +8,8 @@ from abc import ABCMeta, abstractmethod
 # ------
 # StartBind 'x'
 #     PushInt 1
-#     Return
 # EndBind
 # Call 'x'
-# Return
 # ------
 
 # Case 2:
@@ -22,10 +20,8 @@ from abc import ABCMeta, abstractmethod
 # ------
 # StartBind 'x'
 #     PushInt 1
-#     Return
 # EndBind
 # Call 'x'
-# Return
 # ------
 
 # Case 3:
@@ -36,13 +32,12 @@ from abc import ABCMeta, abstractmethod
 # ------
 # StartBind 'x'
 #     PushInt 1
-#     Return
 # EndBind
 # PushString "Hello, world"
+# PushArg
 # Call 'print()'
 # Pop
 # Call 'x'
-# Return
 # ------
 
 # Case 4:
@@ -58,15 +53,11 @@ from abc import ABCMeta, abstractmethod
 #   StartBind 'y'
 #       StartBind 'z'
 #           PushInt 1
-#           Return
 #       EndBind
 #       Call 'z'
-#       Return
 #   Call 'y'
-#   Return
 # EndBind
 # Call 'x'
-# Return
 # ------
 
 # Case 5:
@@ -82,32 +73,29 @@ from abc import ABCMeta, abstractmethod
 # ------
 # StartBind 'fibonacci()' 1
 #     PushInt 0
-#     Return
 # EndBind
 # StartBind 'fibonacci()' 2
 #     PushInt 1
-#     Return
 # EndBind
 # StartBind 'fibonacci()'
 #     PopTo 'n'
 #     StartBind 'a'
 #         Call 'n'
 #         Call 'fibonacci()'
-#         Return
 #     EndBind
 #     StartBind 'b'
 #         Call 'n'
 #         Call 'fibonacci()'
-#         Return
 #     EndBind
 #     Call 'a'
 #     Call 'b'
+#     PushArg
+#     PushArg
 #     Call '()+()'
-#     Return
 # EndBind
 # PushInt 10
+# PushArg
 # Call 'fibonacci()'
-# Return
 # ------
 
 # Without arg:
@@ -115,23 +103,24 @@ from abc import ABCMeta, abstractmethod
 
 # With simple arg:
 # PushInt 1
+# PushArg
 # Call '()x'
 
 # With typed arg:
 # PushInt 1
-# PushArg *, Int
+# PushArg
 # Call '()x'
 
 # With value arg:
 # PushInt 1
-# PushArg 1, *
+# PushArg
 # Call '()x'
 
 # With two typed args:
 # PushInt 1
 # PushInt 2
-# PushArg *, Int
-# PushArg *, Int
+# PushArg
+# PushArg
 # Call '()x()'
 
 class Instruction(metaclass=ABCMeta):
@@ -176,16 +165,7 @@ class PopTo(Instruction):
 
 
 class PushArg(Instruction):
-    """Pops a value from the stack and pushes it to the args stack.
-
-    Attributes:
-        value: A value of the argument. Required for pattern matching.
-        type_: A type of the argument. Required for pattern matching.
-    """
-
-    def __init__(self, value: str = None, type_: str = None):
-        self.value = value
-        self.type_ = type_
+    """Pops a value from the stack and pushes it to the args stack."""
 
 
 class PushInt(Instruction):
@@ -285,12 +265,16 @@ class Vm:
             if isinstance(i, Call):
                 body = self.scope.body(i.name)
 
-                if len(body) > 0:
+                if type(body) is list:
+                    for x in self.args_stack:
+                        self.stack.append(x)
+
+                    self.args_stack.clear()
                     self.scope = Scope(parent=self.scope)
                     self.execute(body)
                     self.scope = self.scope.parent
                 else:
-                    self.stack.push(body)
+                    self.stack.append(body)
 
             if isinstance(i, Pop):
                 self.stack.pop()
@@ -298,6 +282,9 @@ class Vm:
             if isinstance(i, PopTo):
                 value = self.stack.pop()
                 self.scope.bindings[i.name] = value
+
+            if isinstance(i, PushArg):
+                self.args_stack.append(self.stack.pop())
 
             if isinstance(i, PushString) or \
                isinstance(i, PushInt):

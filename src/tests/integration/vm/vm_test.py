@@ -1,4 +1,5 @@
-from tale.runtime.vm import Call, EndBind, PushInt, StartBind, Vm
+from tale.runtime.vm import (Call, EndBind, PopTo, PushArg, PushInt, StartBind,
+                             Vm)
 
 
 def test_simple_literal():
@@ -44,6 +45,26 @@ class test_nested_assignment():
             Call('y'),
         EndBind(),
         Call('x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == [1]
+
+
+class test_function_call():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('()x'),
+            PopTo('a'),
+            Call('a'),
+        EndBind(),
+        PushInt(1),
+        PushArg(),
+        Call('()x')
     ]
 
     # Act.
