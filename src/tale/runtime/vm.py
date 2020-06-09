@@ -100,7 +100,6 @@ from abc import ABCMeta, abstractmethod
 #         Call 'fibonacci()'
 #         Return
 #     EndBind
-#     StoreArg 0
 #     Call 'a'
 #     Call 'b'
 #     Call '()+()'
