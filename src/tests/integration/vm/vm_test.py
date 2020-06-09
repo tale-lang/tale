@@ -34,7 +34,7 @@ def test_simple_assignment():
     assert vm.stack == [1]
 
 
-class test_nested_assignment():
+def test_nested_assignment():
     # Arrange.
     vm = Vm()
     instructions = [
@@ -54,7 +54,7 @@ class test_nested_assignment():
     assert vm.stack == [1]
 
 
-class test_function_call():
+def test_function_call():
     # Arrange.
     vm = Vm()
     instructions = [
@@ -74,7 +74,7 @@ class test_function_call():
     assert vm.stack == [1]
 
 
-class test_function_call_with_value_pattern_matching():
+def test_function_call_with_value_pattern_matching():
     # Arrange.
     vm = Vm()
     instructions = [
@@ -92,3 +92,63 @@ class test_function_call_with_value_pattern_matching():
 
     # Assert.
     assert vm.stack == [2]
+
+
+def test_function_call_with_value_pattern_matching_that_failed_to_match():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('()x', [(1,)]),
+            PopTo('a'),
+            PushInt(2),
+        EndBind(),
+        PushInt(2),
+        PushArg(),
+        Call('()x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == []
+
+
+def test_function_call_with_type_pattern_matching():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('()x', [(None, 'Int')]),
+            PopTo('a'),
+            PushInt(2),
+        EndBind(),
+        PushInt(2),
+        PushArg(),
+        Call('()x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == [2]
+
+
+def test_function_call_with_type_pattern_matching_that_failed_to_match():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('()x', [(None, 'String')]),
+            PopTo('a'),
+            PushInt(2),
+        EndBind(),
+        PushInt(1),
+        PushArg(),
+        Call('()x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == []
