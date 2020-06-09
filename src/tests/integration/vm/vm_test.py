@@ -72,3 +72,23 @@ class test_function_call():
 
     # Assert.
     assert vm.stack == [1]
+
+
+class test_function_call_with_value_pattern_matching():
+    # Arrange.
+    vm = Vm()
+    instructions = [
+        StartBind('()x', [(1,)]),
+            PopTo('a'),
+            PushInt(2),
+        EndBind(),
+        PushInt(1),
+        PushArg(),
+        Call('()x')
+    ]
+
+    # Act.
+    vm.execute(instructions)
+
+    # Assert.
+    assert vm.stack == [2]

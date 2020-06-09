@@ -1,5 +1,5 @@
-from typing import Iterable
 from abc import ABCMeta, abstractmethod
+from typing import Any, Iterable, Tuple
 
 # Case 1:
 # ------
@@ -132,10 +132,13 @@ class StartBind(Instruction):
 
     Attributes:
         name: A name of the function.
+        params: A list of pairs where each consists of either an expected value
+            of an argument or an expected type of an argument.
     """
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, params: Iterable[Tuple[str, str]] = None):
         self.name = name
+        self.params = params
 
 
 class EndBind(Instruction):
@@ -190,6 +193,55 @@ class PushString(Instruction):
         self.value = value
 
 
+class Function:
+    """Represents a defined function.
+
+    Attributes:
+        name: A name of the function.
+        params: A list of parameters of the function that are needed for
+            pattern matching.
+        body: A list of instructions that represent the body of the function.
+    """
+
+    def __init__(self,
+                 name: str,
+                 params: Iterable[Tuple[str, str]],
+                 body: Iterable[Instruction]):
+        self.name = name
+        self.body = body
+        self.params = params
+
+    def matches(self, args: Iterable[Any]) -> bool:
+        if self.params is None:
+            return True
+
+        if len(self.params) != len(args):
+            return False
+
+        for param, arg in zip(self.params, args):
+            # Means that we need to pattern match on value.
+            if len(param) == 1:
+                if param[0] != arg:
+                    return False
+
+            # Means that we need to pattern match on type.
+            if len(param) == 2:
+                # TODO: Implement more accurate checking.
+                if param[1].lower() != type(arg).__name__:
+                    return False
+
+        return True
+
+
+# TODO: Refactor `Function` to abstract class.
+class ConstFunction(Function):
+    """Represents a function that returns a constant value."""
+
+    def __init__(self, name, value):
+        super().__init__(name, None, None)
+        self.value = value
+
+
 class Scope:
     """A scope of the execution.
 
@@ -203,19 +255,38 @@ class Scope:
 
     def __init__(self, parent: 'Scope' = None):
         self.parent = parent
-        self.bindings = {}
+        self._functions = []
 
-    def body(self, name: str) -> Iterable[Instruction]:
-        """Finds a function body for the specified function name.
+    def functions(self, name: str) -> Iterable[Function]:
+        """Finds all functions with the specified name.
 
         Args:
-            name: Name of the function whose body is searched for.
+            name: Name of a function. For example, 'x' or '()+()', etc.
+
+        Returns:
+            A sequence of functions that match the specified name.
+            They could be either from the current scope or from any parent one.
         """
 
-        def parent_body():
-            return self.parent.body(name) if self.parent is not None else None
+        def parent_functions() -> Iterable['Function']:
+            return self.parent._functions if self.parent is not None else []
 
-        return self.bindings.get(name, None) or parent_body()
+        for f in self._functions:
+            if f.name == name:
+                yield f
+
+        for f in parent_functions():
+            if f.name == name:
+                yield f
+
+    def define(self, f: Function):
+        """Defines a function in the scope.
+
+        Args:
+            f: A function to be defined.
+        """
+
+        self._functions.append(f)
 
 
 class Vm:
@@ -241,47 +312,60 @@ class Vm:
         """
 
         binding_stack = 0
-        current_binding = None
+        binding = None
+        name = None
+        params = None
+        body = None
 
         for i in instructions:
 
             if isinstance(i, StartBind):
                 binding_stack += 1
                 if binding_stack == 1:
-                    current_binding = i.name
-                    self.scope.bindings[i.name] = []
+                    binding = i.name
+                    name = i.name
+                    params = i.params
+                    body = []
                     continue
 
             if isinstance(i, EndBind):
                 binding_stack -= 1
                 if binding_stack == 0:
-                    current_binding = None
+                    self.scope.define(Function(name, params, body))
+                        
+                    binding = None
+                    body = None
+                    name = None
                     continue
 
             if binding_stack > 0:
-                self.scope.bindings[current_binding].append(i)
+                body.append(i)
                 continue
 
             if isinstance(i, Call):
-                body = self.scope.body(i.name)
+                functions = self.scope.functions(i.name)
 
-                if type(body) is list:
-                    for x in self.args_stack:
-                        self.stack.append(x)
+                for f in functions:
+                    if isinstance(f, ConstFunction):
+                        self.stack.append(f.value)
+                    else:
+                        if not f.matches(self.args_stack):
+                            continue
 
-                    self.args_stack.clear()
-                    self.scope = Scope(parent=self.scope)
-                    self.execute(body)
-                    self.scope = self.scope.parent
-                else:
-                    self.stack.append(body)
+                        for x in self.args_stack:
+                            self.stack.append(x)
+
+                        self.args_stack.clear()
+                        self.scope = Scope(parent=self.scope)
+                        self.execute(f.body)
+                        self.scope = self.scope.parent
 
             if isinstance(i, Pop):
                 self.stack.pop()
 
             if isinstance(i, PopTo):
                 value = self.stack.pop()
-                self.scope.bindings[i.name] = value
+                self.scope.define(ConstFunction(i.name, value))
 
             if isinstance(i, PushArg):
                 self.args_stack.append(self.stack.pop())
