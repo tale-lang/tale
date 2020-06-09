@@ -89,7 +89,7 @@ from abc import ABCMeta, abstractmethod
 #     Return
 # EndBind
 # StartBind 'fibonacci()'
-#     LoadArg 'n'
+#     PopTo 'n'
 #     StartBind 'a'
 #         Call 'n'
 #         Call 'fibonacci()'
@@ -109,6 +109,30 @@ from abc import ABCMeta, abstractmethod
 # Call 'fibonacci()'
 # Return
 # ------
+
+# Without arg:
+# Call 'x'
+
+# With simple arg:
+# PushInt 1
+# Call '()x'
+
+# With typed arg:
+# PushInt 1
+# PushArg *, Int
+# Call '()x'
+
+# With value arg:
+# PushInt 1
+# PushArg 1, *
+# Call '()x'
+
+# With two typed args:
+# PushInt 1
+# PushInt 2
+# PushArg *, Int
+# PushArg *, Int
+# Call '()x()'
 
 class Instruction(metaclass=ABCMeta):
     """A Tale Virtual Machine's instruction."""
@@ -144,11 +168,24 @@ class Pop(Instruction):
     """Pop a value from the stack."""
 
 
-class LoadArg(Instruction):
+class PopTo(Instruction):
     """Pops a value from the stack and binds it to the specified name."""
 
     def __init__(self, name: str):
         self.name = name
+
+
+class PushArg(Instruction):
+    """Pops a value from the stack and pushes it to the args stack.
+
+    Attributes:
+        value: A value of the argument. Required for pattern matching.
+        type_: A type of the argument. Required for pattern matching.
+    """
+
+    def __init__(self, value: str = None, type_: str = None):
+        self.value = value
+        self.type_ = type_
 
 
 class PushInt(Instruction):
@@ -206,14 +243,22 @@ class Vm:
 
     Attributes:
         stack: A stack of the virtual machine. Holds arguments and return values.
+        args_stack: A stack that holds arguments.
+        scope: A current scope of the execution. For example, each new function
+            call opens a new scope.
     """
 
     def __init__(self):
         self.stack = []
+        self.args_stack = []
         self.scope = Scope()
 
     def execute(self, instructions: Iterable[Instruction]):
-        """Executes a list of instructions in this virtual machine."""
+        """Executes a list of instructions in this virtual machine.
+
+        Args:
+            instructions: A sequence of instructions to be executed.
+        """
 
         binding_stack = 0
         current_binding = None
@@ -250,7 +295,7 @@ class Vm:
             if isinstance(i, Pop):
                 self.stack.pop()
 
-            if isinstance(i, LoadArg):
+            if isinstance(i, PopTo):
                 value = self.stack.pop()
                 self.scope.bindings[i.name] = value
 
