@@ -13,7 +13,8 @@ def test_simple_literal():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [1]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 1
 
 
 def test_simple_assignment():
@@ -31,7 +32,8 @@ def test_simple_assignment():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [1]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 1
 
 
 def test_nested_assignment():
@@ -51,7 +53,8 @@ def test_nested_assignment():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [1]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 1
 
 
 def test_function_call():
@@ -71,7 +74,8 @@ def test_function_call():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [1]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 1
 
 
 def test_function_call_with_value_pattern_matching():
@@ -91,7 +95,8 @@ def test_function_call_with_value_pattern_matching():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [2]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 2
 
 
 def test_function_call_with_value_pattern_matching_that_failed_to_match():
@@ -131,7 +136,8 @@ def test_function_call_with_type_pattern_matching():
     vm.execute(instructions)
 
     # Assert.
-    assert vm.stack == [2]
+    assert len(vm.stack) == 1
+    assert vm.stack[0].py_instance == 2
 
 
 def test_function_call_with_type_pattern_matching_that_failed_to_match():

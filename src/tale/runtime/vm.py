@@ -1,6 +1,8 @@
 from abc import ABCMeta, abstractmethod
 from typing import Any, Iterable, Tuple
 
+from tale.runtime.ts import TaleInt, TaleObject, TaleString
+
 # Case 1:
 # ------
 # x = 1
@@ -181,7 +183,7 @@ class PushInt(Instruction):
     """
 
     def __init__(self, value: int):
-        self.value = value
+        self.value = TaleObject(TaleInt, value)
 
 
 class PushString(Instruction):
@@ -192,7 +194,7 @@ class PushString(Instruction):
     """
 
     def __init__(self, value: str):
-        self.value = value
+        self.value = TaleObject(TaleString, value)
 
 
 class Function:
@@ -223,13 +225,13 @@ class Function:
         for param, arg in zip(self.params, args):
             # Means that we need to pattern match on value.
             if len(param) == 1:
-                if param[0] != arg:
+                if param[0] != arg.py_instance:
                     return False
 
             # Means that we need to pattern match on type.
             if len(param) == 2:
                 # TODO: Implement more accurate checking.
-                if param[1].lower() != type(arg).__name__:
+                if param[1] != arg.type.name.py_instance:
                     return False
 
         return True
