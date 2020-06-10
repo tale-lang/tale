@@ -2,7 +2,7 @@ from typing import Any
 
 
 class TaleObject:
-    """A basic block of Tale's object model.
+    """A basic block of the Tale's object model.
 
     All values in Tale exist only as instances of this class.
 
