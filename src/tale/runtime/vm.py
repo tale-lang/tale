@@ -81,10 +81,12 @@ from typing import Any, Iterable, Tuple
 #     PopTo 'n'
 #     StartBind 'a'
 #         Call 'n'
+#         PushArg
 #         Call 'fibonacci()'
 #     EndBind
 #     StartBind 'b'
 #         Call 'n'
+#         PushArg
 #         Call 'fibonacci()'
 #     EndBind
 #     Call 'a'
