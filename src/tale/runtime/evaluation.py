@@ -4,6 +4,7 @@ from typing import Any, Iterable, Optional, Tuple
 
 from tale.runtime.ts import (TaleInt, TaleNone, TaleObject, TaleString,
                              TaleTuple, TaleType)
+from tale.runtime.compiler import compile
 from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Expression, Form, IntLiteral, KeywordArgument,
                                KeywordExpression, KeywordForm, Node, Parameter,

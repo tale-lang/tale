@@ -130,7 +130,7 @@ class PrefixOperatorForm(Form):
         if isinstance(self.children[1], Parameter):
             return self.children[1]
         else:
-            return self.children[1]
+            return self.children[2]
 
 
 class BinaryForm(Form):
@@ -164,14 +164,14 @@ class KeywordForm(Form):
 
     A keyword form consists of parameters and identifiers.
     Unlike unary form, parameters and identifiers could be placed anywhere.
-    The only rule here is that an parameter couldn't be followed by an parameter,
+    The only rule here is that a parameter couldn't be followed by a parameter,
     or an identifier couldn't be followed by an identifier.
 
     For example, the following is a keyword form:
         just: (x)
     where:
         `just` is an identifier;
-        `(x)` is an parameter.
+        `(x)` is a parameter.
 
     Consider a more complex example:
         add: (x) to: (y)
@@ -186,7 +186,7 @@ class KeywordForm(Form):
             return self.children[0]
 
     @property
-    def parts(self) -> Iterable[Tuple[Node, Node]]:
+    def parts(self) -> Iterable[Tuple[Node, 'Parameter']]:
         def is_not_prefix_and_colon(x: Node):
             return x is not self.prefix and x.content != ':'
 
@@ -199,14 +199,14 @@ class KeywordForm(Form):
 class PrimitiveForm(Form):
     """A primitive form.
 
-    Primitive form captures only plain values.
+    Primitive form captures only plain identifiers, e.g., 'x'.
     """
 
 
 class Parameter(Node):
     """A parameter.
 
-    An parameter is either a single or a tuple one.
+    A parameter is either a single or a tuple one.
 
     For example, in the following form:
         (x) squared = x * x
@@ -240,23 +240,15 @@ class SingleParameter(Parameter):
     `2` is a pattern matching parameter.
     """
 
-    @property
-    def type_(self) -> str:
-        return self.children[3] if len(self.children) > 3 else None
-
 
 class SimpleParameter(SingleParameter):
-    """A single parameter.
+    """A simple parameter.
 
-    A single parameter is either a simple or a pattern matching one.
+    A simple parameter is just a parameter with name and (maybe) type.
 
     For example, in the following form:
         (x) squared = x * x
     `(x)` is a simple parameter.
-
-    On the other hand, in the form:
-        2 squared = 4
-    `2` is a pattern matching parameter.
     """
 
     @property
@@ -419,7 +411,8 @@ class KeywordName(Node):
 class PrimitiveExpression(Expression):
     """A primitive expression.
 
-    Primitive expression is just a plain value.
+    Primitive expression is just a sequence of plain values, e.g., `1`, `1, 2`,
+        etc.
     """
 
     @property
