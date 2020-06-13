@@ -16,7 +16,7 @@ from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
 Name = str
 Type = str
 Value = str
-Param = Iterable[Tuple[Name, Type, Value]]
+Param = Tuple[Name, Type, Value]
 Params = Iterable[Param]
 PatternMatchingParam = Iterable[Tuple[Value, Type]]
 
@@ -107,7 +107,8 @@ def compile(node: Node) -> Iterable[Instruction]:
 
         def generate_start_bind(name: str, params: Params):
             def converted(x: Param) -> PatternMatchingParam:
-                [(value, type) for _, type, value in x]
+                _, type, value = x
+                return value, type
 
             params = [converted(x) for x in params]
             instructions.append(StartBind(name, params))

@@ -1,7 +1,7 @@
 from typing import Type
 
 from tale.runtime.compiler import compile
-from tale.runtime.vm import Call, EndBind, PushInt, StartBind
+from tale.runtime.vm import Call, EndBind, PopTo, PushInt, StartBind
 from tale.syntax.nodes import Node
 from tale.syntax.parsers.antlr4 import Antlr4Parser
 
@@ -101,3 +101,21 @@ x
 
     # Assert.
     assert i[-1].name == 'x'
+
+
+def test_unary_form_assignment():
+    # Arrange.
+    program = """
+(x) squared = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert types(i) == [
+        StartBind,
+        PopTo,
+        PushInt,
+        EndBind
+    ]
