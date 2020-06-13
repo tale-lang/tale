@@ -119,3 +119,115 @@ def test_unary_form_assignment():
         PushInt,
         EndBind
     ]
+    
+
+def test_unary_form_assignment_actually_pops_an_argument():
+    # Arrange.
+    program = """
+(x) squared = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert i[1].name == 'x'
+
+
+def test_prefix_form_assignment():
+    # Arrange.
+    program = """
+!(x) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert types(i) == [
+        StartBind,
+        PopTo,
+        PushInt,
+        EndBind
+    ]
+
+
+def test_prefix_form_assignment_actually_pops_an_argument():
+    # Arrange.
+    program = """
+!(x) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert i[1].name == 'x'
+
+
+def test_binary_form_assignment():
+    # Arrange.
+    program = """
+(x) + (y) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert types(i) == [
+        StartBind,
+        PopTo,
+        PopTo,
+        PushInt,
+        EndBind
+    ]
+
+
+def test_binary_form_assignment_actually_pops_an_argument():
+    # Arrange.
+    program = """
+(x) + (y) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert i[1].name == 'x'
+    assert i[2].name == 'y'
+
+
+def test_keyword_form_assignment():
+    # Arrange.
+    program = """
+a: (x) b: (y) c: (z) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert types(i) == [
+        StartBind,
+        PopTo,
+        PopTo,
+        PopTo,
+        PushInt,
+        EndBind
+    ]
+
+
+def test_keyword_form_assignment_actually_pops_an_argument():
+    # Arrange.
+    program = """
+a: (x) b: (y) c: (z) = 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert i[1].name == 'x'
+    assert i[2].name == 'y'
+    assert i[3].name == 'z'
