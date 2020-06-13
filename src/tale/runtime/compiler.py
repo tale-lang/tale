@@ -41,7 +41,7 @@ def compile(node: Node) -> Iterable[Instruction]:
             def prefix(x: PrefixOperatorForm) -> str:
                 return f'{x.operator}{name_of_param(x.parameter)}'
             def binary(x: BinaryForm) -> str:
-                return f'{name_of_param(x.first_parameter)}{x.operator}' \
+                return f'{name_of_param(x.first_parameter)}{x.operator.content}' \
                        f'{name_of_param(x.second_parameter)}'
             def keyword(x: KeywordForm) -> str:
                 prefix = name_of_param(x.prefix) if x.prefix is not None else ''
@@ -69,9 +69,12 @@ def compile(node: Node) -> Iterable[Instruction]:
 
                 if isinstance(x, SingleParameter):
                     if isinstance(x, PatternMatchingParameter):
-                        return [(None, None, x.content)]
+                        if isinstance(x.children[0], IntLiteral):
+                            return [(None, None, int(x.content))]
+                        return [(None, None, int(x.content))]
                     if isinstance(x, SimpleParameter):
-                        return [(x.name, x.type_, None)]
+                        type_ = x.type_.content if x.type_ is not None else None
+                        return [(x.name, type_, None)]
 
             def unary(x: UnaryForm) -> Params:
                 return param_of(x.parameter)
@@ -171,7 +174,7 @@ def compile(node: Node) -> Iterable[Instruction]:
             def prefix(x: PrefixOperatorExpression) -> str:
                 return f'{x.operator}()'
             def binary(x: BinaryExpression) -> str:
-                return f'(){x.operator}()'
+                return f'(){x.operator.content}()'
             def keyword(x: KeywordExpression) -> str:
                 prefix = '()' if x.prefix is not None else ''
                 parts = [f'{id.content}()' for id, _ in x.parts]
@@ -193,27 +196,31 @@ def compile(node: Node) -> Iterable[Instruction]:
         if isinstance(x.children[0], StringLiteral):
             instructions.append(PushString(x.content))
             return
-        if isinstance(x.children[0], Token):
-            instructions.append(Call(x.content))
-            return
         if isinstance(x, PrimitiveExpression):
             for x in x.items:
                 generate_for_expression(x)
             return
+        if isinstance(x, Expression):
+            for arg in arguments(x):
+                if isinstance(arg, Node):
+                    arg = arg.children[0]
+                if isinstance(arg, KeywordArgument) or \
+                   isinstance(arg, PrimitiveExpressionItem):
+                    arg = arg.children[0]
 
-        for arg in arguments(x):
-            if isinstance(x, KeywordArgument):
-                arg = x.children[0]
+                if isinstance(arg, IntLiteral):
+                    instructions.append(PushInt(int(arg.content)))
+                if isinstance(arg, StringLiteral):
+                    instructions.append(PushString(arg.content))
+                if isinstance(arg, Expression):
+                    generate_for_expression(arg)
 
-            if isinstance(arg, IntLiteral):
-                instructions.append(PushInt(int(x.content)))
-            if isinstance(arg, StringLiteral):
-                instructions.append(PushString(x.content))
-            if isinstance(arg, Expression):
-                generate_for_expression(arg)
-
-        name = name_of_expression(x)
-        instructions.append(Call(name))
+            name = name_of_expression(x)
+            instructions.append(Call(name))
+            return
+        if isinstance(x.children[0], Token):
+            instructions.append(Call(x.content))
+            return
 
     def generate(x: Node):
         last = node.children[-1]

@@ -252,7 +252,7 @@ class SimpleParameter(SingleParameter):
     """
 
     @property
-    def type_(self) -> str:
+    def type_(self) -> Node:
         return self.children[3] if len(self.children) > 3 else None
 
     @property
