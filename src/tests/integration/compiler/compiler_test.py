@@ -193,7 +193,7 @@ def test_unary_form_call_with_correct_function_name():
 
     # Assert.
     assert i[-1].name == '()squared'
-    
+
 
 def test_prefix_form_assignment():
     # Arrange.
@@ -481,3 +481,57 @@ a: 1 b: 2 c: 3
 
     # Assert.
     assert i[-1].name == 'a()b()c()'
+
+
+def test_form_call_with_another_form_as_argument():
+    # Arrange.
+    program = """
+(x) squared = 1
+x = 1
+x squared
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    print(types(i))
+    assert types(i) == [
+        StartBind,
+            PopTo,
+            PushInt,
+        EndBind,
+        StartBind,
+            PushInt,
+        EndBind,
+        Call,
+        Call
+    ]
+
+
+def test_form_call_with_another_form_as_argument_mixed_with_literal():
+    # Arrange.
+    program = """
+(x) + (y) = 1
+x = 1
+x + 1
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    print(types(i))
+    assert types(i) == [
+        StartBind,
+            PopTo,
+            PopTo,
+            PushInt,
+        EndBind,
+        StartBind,
+            PushInt,
+        EndBind,
+        Call,
+        PushInt,
+        Call
+    ]

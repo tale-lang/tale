@@ -212,6 +212,8 @@ def compile(node: Node) -> Iterable[Instruction]:
                     instructions.append(PushInt(int(arg.content)))
                 if isinstance(arg, StringLiteral):
                     instructions.append(PushString(arg.content))
+                if isinstance(arg, Token):
+                    instructions.append(Call(x.content))
                 if isinstance(arg, Expression):
                     generate_for_expression(arg)
 
