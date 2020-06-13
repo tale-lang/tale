@@ -63,6 +63,7 @@ x = 1
     i = compile(ast(program))
 
     # Assert.
+    print(types(i))
     assert types(i) == [
         StartBind,
             PushInt,
@@ -533,5 +534,36 @@ x + 1
         EndBind,
         Call,
         PushInt,
+        Call
+    ]
+
+
+def test_complex_assignment_body():
+    # Arrange.
+    program = """
+x =
+    y =
+        z =
+            1
+        z
+    y
+x
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    print(types(i))
+    assert types(i) == [
+        StartBind,
+            StartBind,
+                StartBind,
+                    PushInt,
+                EndBind,
+                Call,
+            EndBind,
+            Call,
+        EndBind,
         Call
     ]

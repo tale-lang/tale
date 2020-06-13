@@ -2,10 +2,10 @@ from typing import Iterable, Tuple
 
 from tale.runtime.vm import (Call, EndBind, Instruction, Pop, PopTo, PushInt,
                              PushString, StartBind)
-from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
-                               Expression, Form, IntLiteral, KeywordArgument,
-                               KeywordExpression, KeywordForm, Node, Parameter,
-                               PatternMatchingParameter,
+from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
+                               BinaryForm, Expression, Form, IntLiteral,
+                               KeywordArgument, KeywordExpression, KeywordForm,
+                               Node, Parameter, PatternMatchingParameter,
                                PrefixOperatorExpression, PrefixOperatorForm,
                                PrimitiveExpression, PrimitiveExpressionItem,
                                PrimitiveForm, SimpleParameter, SingleParameter,
@@ -121,19 +121,14 @@ def compile(node: Node) -> Iterable[Instruction]:
                     if name is not None:
                         instructions.append(PopTo(name))
 
-            if isinstance(x, Expression) or \
-               isinstance(x, PrimitiveExpressionItem):
-                generate_params()
-                generate_for_expression(x)
-            else:
-                generate_params()
-                generate(x)
+            generate_params()
+            generate(x)
 
         def generate_end_bind():
             instructions.append(EndBind())
 
         name = name_of_form(x.form)
-        value = x.value.children[0]
+        value = x.value
         params = params_of_form(x.form)
 
         generate_start_bind(name, params)
@@ -190,15 +185,15 @@ def compile(node: Node) -> Iterable[Instruction]:
             if isinstance(x, KeywordExpression):
                 return keyword(x)
 
-        if isinstance(x.children[0], IntLiteral):
+        if isinstance(x, IntLiteral):
             instructions.append(PushInt(int(x.content)))
             return
-        if isinstance(x.children[0], StringLiteral):
+        if isinstance(x, StringLiteral):
             instructions.append(PushString(x.content))
             return
         if isinstance(x, PrimitiveExpression):
             for x in x.items:
-                generate_for_expression(x)
+                generate_for_expression(x.children[0])
             return
         if isinstance(x, Expression):
             for arg in arguments(x):
@@ -220,21 +215,20 @@ def compile(node: Node) -> Iterable[Instruction]:
             name = name_of_expression(x)
             instructions.append(Call(name))
             return
-        if isinstance(x.children[0], Token):
+        if isinstance(x, Token):
             instructions.append(Call(x.content))
             return
 
     def generate(x: Node):
-        last = node.children[-1]
-
         # Get rid of `<NL>` and other empty nodes.
-        children = [x for x in node.children if isinstance(x, Expression) or \
-                                                isinstance(x, Statement)] 
+        children = [x for x in x.children if isinstance(x, Expression) or \
+                                             isinstance(x, Statement)] 
+        last = children[-1]
 
         for child in children:
-            is_last = child == children[-1]
+            is_last = child == last
 
-            if isinstance(child, Statement):
+            if type(child) == Statement:
                 child = child.children[0]
 
             if isinstance(child, Assignment):

@@ -129,10 +129,6 @@ class Antlr4Parser(Parser):
             if isinstance(x, TaleParser.AssignmentBodyContext):
                 x = next(x.getChildren())
                 return new(x, as_=AssignmentBody)
-            
-            if isinstance(x, TaleParser.SimpleAssignmentBodyContext):
-                x = next(x.getChildren())
-                return node(x)
 
             if isinstance(x, TaleParser.ExpressionContext):
                 x = next(x.getChildren())
