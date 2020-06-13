@@ -65,7 +65,7 @@ x = 1
     # Assert.
     assert types(i) == [
         StartBind,
-        PushInt,
+            PushInt,
         EndBind
     ]
 
@@ -83,7 +83,7 @@ x
     # Assert.
     assert types(i) == [
         StartBind,
-        PushInt,
+            PushInt,
         EndBind,
         Call
     ]
@@ -115,8 +115,8 @@ def test_unary_form_assignment():
     # Assert.
     assert types(i) == [
         StartBind,
-        PopTo,
-        PushInt,
+            PopTo,
+            PushInt,
         EndBind
     ]
     
@@ -146,8 +146,8 @@ def test_prefix_form_assignment():
     # Assert.
     assert types(i) == [
         StartBind,
-        PopTo,
-        PushInt,
+            PopTo,
+            PushInt,
         EndBind
     ]
 
@@ -177,9 +177,9 @@ def test_binary_form_assignment():
     # Assert.
     assert types(i) == [
         StartBind,
-        PopTo,
-        PopTo,
-        PushInt,
+            PopTo,
+            PopTo,
+            PushInt,
         EndBind
     ]
 
@@ -210,10 +210,10 @@ a: (x) b: (y) c: (z) = 1
     # Assert.
     assert types(i) == [
         StartBind,
-        PopTo,
-        PopTo,
-        PopTo,
-        PushInt,
+            PopTo,
+            PopTo,
+            PopTo,
+            PushInt,
         EndBind
     ]
 
@@ -231,3 +231,38 @@ a: (x) b: (y) c: (z) = 1
     assert i[1].name == 'x'
     assert i[2].name == 'y'
     assert i[3].name == 'z'
+
+
+def test_unary_form_call():
+    # Arrange.
+    program = """
+(x) squared = 1
+1 squared
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert types(i) == [
+        StartBind,
+            PopTo,
+            PushInt,
+        EndBind,
+        PushInt,
+        Call
+    ]
+
+
+def test_unary_form_call_with_correct_function():
+    # Arrange.
+    program = """
+(x) squared = 1
+1 squared
+"""
+
+    # Act.
+    i = compile(ast(program))
+
+    # Assert.
+    assert i[-1].name == '()squared'

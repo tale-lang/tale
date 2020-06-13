@@ -178,13 +178,15 @@ def compile(node: Node) -> Iterable[Instruction]:
                 parts = ''.join(parts)
                 return f'{prefix}{parts}'
 
-            if isinstance(x, UnaryForm):
+            print(x)
+
+            if isinstance(x, UnaryExpression):
                 return unary(x)
-            if isinstance(x, PrefixOperatorForm):
+            if isinstance(x, PrefixOperatorExpression):
                 return prefix(x)
-            if isinstance(x, BinaryForm):
+            if isinstance(x, BinaryExpression):
                 return binary(x)
-            if isinstance(x, KeywordForm):
+            if isinstance(x, KeywordExpression):
                 return keyword(x)
 
         if isinstance(x.children[0], IntLiteral):
