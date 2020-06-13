@@ -178,8 +178,6 @@ def compile(node: Node) -> Iterable[Instruction]:
                 parts = ''.join(parts)
                 return f'{prefix}{parts}'
 
-            print(x)
-
             if isinstance(x, UnaryExpression):
                 return unary(x)
             if isinstance(x, PrefixOperatorExpression):
