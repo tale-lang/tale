@@ -12,7 +12,6 @@ from tale.syntax.nodes import (Assignment, BinaryExpression, BinaryForm,
                                Statement, StringLiteral, Token, TupleParameter,
                                UnaryExpression, UnaryForm)
 
-# TODO: Fix names. They are bad.
 Name = str
 Type = str
 Value = str
