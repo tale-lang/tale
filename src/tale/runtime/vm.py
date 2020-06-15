@@ -55,11 +55,7 @@ class EndBind(Instruction):
     """End current `Bind` definition."""
 
     def execute(self, vm: 'Vm'):
-        """Moves VM to the previous `Call` location.
-
-        Args:
-            vm: An instance of the Tale Virtual Machine.
-        """
+        """Moves VM to the previous `Call` location."""
 
         vm.scope = vm.scope.parent
         vm.jump_to(vm.return_stack.pop())
@@ -76,11 +72,8 @@ class Call(Instruction):
         self.name = name
 
     def execute(self, vm: 'Vm'):
-        """Moves VM to the location of the function that matches specified
+        """Moves VM to the location of the function that matches the specified
            name and arguments.
-
-        Args:
-            vm: An instance of the Tale Virtual Machine.
         """
 
         functions = vm.scope.functions(self.name)
@@ -128,7 +121,7 @@ class PopTo(Instruction):
 
 
 class PushArg(Instruction):
-    """Pops a value from the stack and pushes it to the args stack."""
+    """Pop a value from the stack and pushe it to the args stack."""
 
     def execute(self, vm: 'Vm'):
         vm.args_stack.append(vm.values_stack.pop())
@@ -166,13 +159,13 @@ class PushString(Instruction):
 
 
 class Function:
-    """Represents a defined function.
+    """A function that is defined within a virtual machine.
 
     Attributes:
         name: A name of the function.
         params: A list of parameters of the function that are needed for
             pattern matching.
-        address: An index of the function body.
+        address: An address of the function body.
     """
 
     def __init__(self,
@@ -207,7 +200,7 @@ class Function:
 
 # TODO: Refactor `Function` to abstract class.
 class ConstFunction(Function):
-    """Represents a function that returns a constant value."""
+    """A function that returns a constant value."""
 
     def __init__(self, name, value):
         super().__init__(name, None, None)
@@ -221,7 +214,7 @@ class Scope:
     which is destroyed after the function is finished.
 
     Attributes:
-        parent: A scope that is responsible for creation of this one.
+        parent: A scope that is responsible for the creation of this one.
     """
 
     def __init__(self, parent: 'Scope' = None):
@@ -232,7 +225,7 @@ class Scope:
         """Finds all functions with the specified name.
 
         Args:
-            name: Name of a function. For example, 'x' or '()+()', etc.
+            name: A function name. For example, 'x' or '()+()', etc.
 
         Returns:
             A sequence of functions that match the specified name.
@@ -266,9 +259,10 @@ class Vm:
     Attributes:
         instructions: A sequence of instructions this virtual machine should
             execute with.
-        instruction_index: An index of the executing instruction.
+        instruction_index: An index of the currently executing instruction.
         values_stack: A stack that holds values.
         args_stack: A stack that holds arguments.
+        return_stack: A stack that holds return addresses.
         scope: A current scope of the execution. For example, each new function
             call opens a new scope.
     """
@@ -284,16 +278,28 @@ class Vm:
 
     @property
     def current_instruction(self) -> Instruction:
+        """Returns the current instruction of the VM."""
+
         return self.instructions[self.instruction_index]
 
     @property
     def at_the_end(self) -> bool:
+        """Checks whether the VM is reached its end."""
+
         return self.instruction_index >= len(self.instructions) 
 
     def move_next(self):
+        """Advances the current instruction index by 1."""
+
         self.instruction_index += 1
 
     def jump_to(self, address: int):
+        """Sets the current instruction index to the specified address.
+
+        Args:
+            address: An address the VM should jump to.
+        """
+
         self.instruction_index = address
 
     def execute(self):
@@ -304,5 +310,4 @@ class Vm:
         """
 
         while not self.at_the_end:
-            print('Executing: ', self.current_instruction)
             self.current_instruction.execute(self)
