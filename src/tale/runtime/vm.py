@@ -1,29 +1,68 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Iterable, Tuple
+from typing import Any, Iterable, Sequence, Tuple
 
 from tale.runtime.ts import TaleInt, TaleObject, TaleString
 
 
 class Instruction(metaclass=ABCMeta):
     """A Tale Virtual Machine's instruction."""
+    
+    @abstractmethod
+    def execute(self, vm: 'Vm'):
+        """Changes the state of the virtual machine.
+
+        Args:
+            vm: An instance of the Tale Virtual Machine.
+        """
 
 
 class StartBind(Instruction):
     """Starts a binding of the function.
 
     Attributes:
-        name: A name of the function.
+        name: A name of the function that is represented by the binding.
         params: A list of pairs where each consists of either an expected value
-            of an argument or an expected type of an argument.
+            of a parameter or an expected type of a parameter.
     """
 
     def __init__(self, name: str, params: Iterable[Tuple[str, str]] = None):
         self.name = name
         self.params = params
 
+    def execute(self, vm: 'Vm'):
+        """Defines a function in the VM within the current scope.
+
+        Args:
+            vm: An instance of the Tale Virtual Machine.
+        """
+
+        address = vm.instruction_index + 1
+        stack = 1
+
+        while stack != 0:
+            vm.move_next()
+
+            if isinstance(vm.current_instruction, EndBind):
+                stack -= 1
+            if isinstance(vm.current_instruction, StartBind):
+                stack += 1
+
+        vm.scope.define(Function(self.name, self.params, address))
+        vm.move_next()
+
 
 class EndBind(Instruction):
     """End current `Bind` definition."""
+
+    def execute(self, vm: 'Vm'):
+        """Moves VM to the previous `Call` location.
+
+        Args:
+            vm: An instance of the Tale Virtual Machine.
+        """
+
+        vm.scope = vm.scope.parent
+        vm.jump_to(vm.return_stack.pop())
 
 
 class Call(Instruction):
@@ -36,20 +75,64 @@ class Call(Instruction):
     def __init__(self, name: str):
         self.name = name
 
+    def execute(self, vm: 'Vm'):
+        """Moves VM to the location of the function that matches specified
+           name and arguments.
+
+        Args:
+            vm: An instance of the Tale Virtual Machine.
+        """
+
+        functions = vm.scope.functions(self.name)
+
+        for f in functions:
+            if isinstance(f, ConstFunction):
+                vm.values_stack.append(f.value)
+                vm.move_next()
+                return
+            else:
+                if not f.matches(vm.args_stack):
+                    continue
+
+                # TODO: Rethink this.
+                for x in vm.args_stack:
+                    vm.values_stack.append(x)
+                vm.args_stack.clear()
+
+                vm.scope = Scope(parent=vm.scope)
+                vm.return_stack.append(vm.instruction_index + 1)
+                vm.jump_to(f.address)
+                return
+
+        vm.move_next()
+
 
 class Pop(Instruction):
     """Pop a value from the stack."""
 
+    def execute(self, vm: 'Vm'):
+        vm.values_stack.pop()
+        vm.move_next()
+
 
 class PopTo(Instruction):
-    """Pops a value from the stack and binds it to the specified name."""
+    """Pop a value from the stack and bind it to the specified name."""
 
     def __init__(self, name: str):
         self.name = name
 
+    def execute(self, vm: 'Vm'):
+        value = vm.values_stack.pop()
+        vm.scope.define(ConstFunction(self.name, value))
+        vm.move_next()
+
 
 class PushArg(Instruction):
     """Pops a value from the stack and pushes it to the args stack."""
+
+    def execute(self, vm: 'Vm'):
+        vm.args_stack.append(vm.values_stack.pop())
+        vm.move_next()
 
 
 class PushInt(Instruction):
@@ -62,6 +145,10 @@ class PushInt(Instruction):
     def __init__(self, value: int):
         self.value = TaleObject(TaleInt, value)
 
+    def execute(self, vm: 'Vm'):
+        vm.values_stack.append(self.value)
+        vm.move_next()
+
 
 class PushString(Instruction):
     """Push a string onto the stack.
@@ -73,6 +160,10 @@ class PushString(Instruction):
     def __init__(self, value: str):
         self.value = TaleObject(TaleString, value)
 
+    def execute(self, vm: 'Vm'):
+        vm.values_stack.append(self.value)
+        vm.move_next()
+
 
 class Function:
     """Represents a defined function.
@@ -81,16 +172,16 @@ class Function:
         name: A name of the function.
         params: A list of parameters of the function that are needed for
             pattern matching.
-        body: A list of instructions that represent the body of the function.
+        address: An index of the function body.
     """
 
     def __init__(self,
                  name: str,
                  params: Iterable[Tuple[str, str]],
-                 body: Iterable[Instruction]):
+                 address: int):
         self.name = name
-        self.body = body
         self.params = params
+        self.address = address
 
     def matches(self, args: Iterable[Any]) -> bool:
         if self.params is None:
@@ -130,8 +221,7 @@ class Scope:
     which is destroyed after the function is finished.
 
     Attributes:
-        stack: A stack of the virtual machine. Holds arguments and return values.
-        bindings: A dictionary of bindings that are defined in the current block.
+        parent: A scope that is responsible for creation of this one.
     """
 
     def __init__(self, parent: 'Scope' = None):
@@ -171,86 +261,48 @@ class Scope:
 
 
 class Vm:
-    """A Tale Virtual Machine implementation.
+    """An implementation of the Tale Virtual Machine.
 
     Attributes:
-        stack: A stack of the virtual machine. Holds arguments and return values.
+        instructions: A sequence of instructions this virtual machine should
+            execute with.
+        instruction_index: An index of the executing instruction.
+        values_stack: A stack that holds values.
         args_stack: A stack that holds arguments.
         scope: A current scope of the execution. For example, each new function
             call opens a new scope.
     """
 
-    def __init__(self):
-        self.stack = []
+    def __init__(self, instructions: Sequence[Instruction]):
+        self.instructions = instructions
+        self.instruction_index = 0
+
+        self.values_stack = []
         self.args_stack = []
+        self.return_stack = []
         self.scope = Scope()
 
-    def execute(self, instructions: Iterable[Instruction]):
+    @property
+    def current_instruction(self) -> Instruction:
+        return self.instructions[self.instruction_index]
+
+    @property
+    def at_the_end(self) -> bool:
+        return self.instruction_index >= len(self.instructions) 
+
+    def move_next(self):
+        self.instruction_index += 1
+
+    def jump_to(self, address: int):
+        self.instruction_index = address
+
+    def execute(self):
         """Executes a list of instructions in this virtual machine.
 
         Args:
             instructions: A sequence of instructions to be executed.
         """
 
-        binding_stack = 0
-        binding = None
-        name = None
-        params = None
-        body = None
-
-        for i in instructions:
-
-            if isinstance(i, StartBind):
-                binding_stack += 1
-                if binding_stack == 1:
-                    binding = i.name
-                    name = i.name
-                    params = i.params
-                    body = []
-                    continue
-
-            if isinstance(i, EndBind):
-                binding_stack -= 1
-                if binding_stack == 0:
-                    self.scope.define(Function(name, params, body))
-                        
-                    binding = None
-                    body = None
-                    name = None
-                    continue
-
-            if binding_stack > 0:
-                body.append(i)
-                continue
-
-            if isinstance(i, Call):
-                functions = self.scope.functions(i.name)
-
-                for f in functions:
-                    if isinstance(f, ConstFunction):
-                        self.stack.append(f.value)
-                    else:
-                        if not f.matches(self.args_stack):
-                            continue
-
-                        for x in self.args_stack:
-                            self.stack.append(x)
-
-                        self.args_stack.clear()
-                        self.scope = Scope(parent=self.scope)
-                        self.execute(f.body)
-                        self.scope = self.scope.parent
-
-            if isinstance(i, Pop):
-                self.stack.pop()
-
-            if isinstance(i, PopTo):
-                value = self.stack.pop()
-                self.scope.define(ConstFunction(i.name, value))
-
-            if isinstance(i, PushArg):
-                self.args_stack.append(self.stack.pop())
-
-            if isinstance(i, PushString) or \
-               isinstance(i, PushInt):
-                self.stack.append(i.value)
+        while not self.at_the_end:
+            print('Executing: ', self.current_instruction)
+            self.current_instruction.execute(self)

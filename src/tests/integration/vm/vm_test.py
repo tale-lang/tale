@@ -1,25 +1,32 @@
-from tale.runtime.vm import (Call, EndBind, PopTo, PushArg, PushInt, StartBind,
-                             Vm)
+from typing import Sequence
+
+from tale.runtime.vm import (Call, EndBind, Instruction, PopTo, PushArg,
+                             PushInt, StartBind, Vm)
+
+
+def execute(instructions: Sequence[Instruction]) -> Vm:
+    vm = Vm(instructions)
+    vm.execute()
+
+    return vm
 
 
 def test_simple_literal():
     # Arrange.
-    vm = Vm()
     instructions = [
         PushInt(1),
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 1
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 1
 
 
 def test_simple_assignment():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('x'),
             PushInt(1),
@@ -29,16 +36,15 @@ def test_simple_assignment():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 1
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 1
 
 
 def test_nested_assignment():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('x'),
             StartBind('y'),
@@ -50,16 +56,15 @@ def test_nested_assignment():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 1
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 1
 
 
 def test_function_call():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('()x'),
             PopTo('a'),
@@ -71,16 +76,15 @@ def test_function_call():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 1
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 1
 
 
 def test_function_call_with_value_pattern_matching():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('()x', [(1,)]),
             PopTo('a'),
@@ -92,16 +96,15 @@ def test_function_call_with_value_pattern_matching():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 2
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 2
 
 
 def test_function_call_with_value_pattern_matching_that_failed_to_match():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('()x', [(1,)]),
             PopTo('a'),
@@ -113,15 +116,14 @@ def test_function_call_with_value_pattern_matching_that_failed_to_match():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert vm.stack == []
+    assert vm.values_stack == []
 
 
 def test_function_call_with_type_pattern_matching():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('()x', [(None, 'Int')]),
             PopTo('a'),
@@ -133,16 +135,15 @@ def test_function_call_with_type_pattern_matching():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert len(vm.stack) == 1
-    assert vm.stack[0].py_instance == 2
+    assert len(vm.values_stack) == 1
+    assert vm.values_stack[0].py_instance == 2
 
 
 def test_function_call_with_type_pattern_matching_that_failed_to_match():
     # Arrange.
-    vm = Vm()
     instructions = [
         StartBind('()x', [(None, 'String')]),
             PopTo('a'),
@@ -154,7 +155,7 @@ def test_function_call_with_type_pattern_matching_that_failed_to_match():
     ]
 
     # Act.
-    vm.execute(instructions)
+    vm = execute(instructions)
 
     # Assert.
-    assert vm.stack == []
+    assert vm.values_stack == []
