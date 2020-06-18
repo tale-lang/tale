@@ -3,7 +3,16 @@
 import os
 import subprocess
 
-import click
+from mints import Arg, Flag, cli
+
+
+class File:
+    def __init__(self, path: str):
+        self.path = path
+
+    def read(self) -> str:
+        with open(self.path, 'r') as f:
+            return f.read()
 
 
 def rebuild_grammar():
@@ -18,11 +27,9 @@ def rebuild_grammar():
     build(grammar)
 
 
-@click.command()
-@click.argument('program', type=click.File())
-@click.option('--rebuild', is_flag=True)
-def cli(program, rebuild):
-    """Interprets a PROGRAM file as a Tale program."""
+@cli
+def interpret(program: Arg[File], rebuild: Flag):
+    """Interprets a program file as a Tale program."""
 
     if rebuild:
         rebuild_grammar()
@@ -31,6 +38,9 @@ def cli(program, rebuild):
 
     code = program.read()
     execute(code)
+
+
+cli.add_parser(File)
 
 
 if __name__ == '__main__':
