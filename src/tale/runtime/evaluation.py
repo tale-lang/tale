@@ -739,7 +739,7 @@ def evaluate(node: Node) -> TaleObject:
         tree: A root node of the syntax tree that represents the program.
 
     Returns:
-        A an output of the program.
+        An output of the program.
     """
 
     def identifier(name) -> Node:
