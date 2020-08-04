@@ -17,7 +17,7 @@ class Instruction(metaclass=ABCMeta):
 
 
 class StartBind(Instruction):
-    """Starts a binding of the function.
+    """Start a binding of the function.
 
     Attributes:
         name: A name of the function that is represented by the binding.
@@ -52,7 +52,7 @@ class StartBind(Instruction):
 
 
 class EndBind(Instruction):
-    """End current `Bind` definition."""
+    """End current `StartBind` definition."""
 
     def execute(self, vm: 'Vm'):
         """Moves VM to the previous `Call` location."""
