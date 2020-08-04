@@ -15,7 +15,7 @@ from tale.syntax.nodes import (Assignment, AssignmentBody, BinaryExpression,
 Name = str
 Type = str
 Value = str
-Param = Tuple[Name, Type, Value]
+Param = Iterable[Tuple[Name, Type, Value]]
 Params = Iterable[Param]
 PatternMatchingParam = Iterable[Tuple[Value, Type]]
 
@@ -65,31 +65,32 @@ def compile(node: Node) -> Iterable[Instruction]:
         def params_of_form(x: Form) -> Params:
             def param_of(x: Parameter) -> Param:
                 if isinstance(x, TupleParameter):
-                    return [param_of(x) for x in x.items]
+                    return [param_of(x)[0] for x in x.items]
 
                 if isinstance(x, SingleParameter):
                     if isinstance(x, PatternMatchingParameter):
                         if isinstance(x.children[0], IntLiteral):
                             return [(None, None, int(x.content))]
-                        return [(None, None, int(x.content))]
+                        return [(None, None, x.content)]
                     if isinstance(x, SimpleParameter):
                         type_ = x.type_.content if x.type_ is not None else None
                         return [(x.name, type_, None)]
 
             def unary(x: UnaryForm) -> Params:
-                return param_of(x.parameter)
+                return [param_of(x.parameter)]
             def prefix(x: PrefixOperatorForm) -> Params:
-                return param_of(x.parameter)
+                return [param_of(x.parameter)]
             def binary(x: BinaryForm) -> Params:
-                return param_of(x.first_parameter) + param_of(x.second_parameter)
+                return [param_of(x.first_parameter),
+                        param_of(x.second_parameter)]
             def keyword(x: KeywordForm) -> Params:
                 params = []
 
                 if x.prefix is not None:
-                    params = params + param_of(x.prefix)
+                    params.append(param_of(x.prefix))
 
                 for id, param in x.parts:
-                    params = params + param_of(param)
+                    params.append(param_of(param))
 
                 return params
 
@@ -109,17 +110,19 @@ def compile(node: Node) -> Iterable[Instruction]:
 
         def generate_start_bind(name: str, params: Params):
             def converted(x: Param) -> PatternMatchingParam:
-                _, type, value = x
-                return value, type
+                return [(value, type) for (_, type, value) in x]
 
             params = [converted(x) for x in params]
+            params = [item for sub in params for item in sub]
+
             instructions.append(StartBind(name, params))
 
         def generate_body(x: Node, params: Params):
             def generate_params():
-                for name, _, _ in params:
-                    if name is not None:
-                        instructions.append(PopTo(name))
+                for param in params:
+                    for name, _, _ in param:
+                        if name is not None:
+                            instructions.append(PopTo(name))
 
             generate_params()
             generate(x)
