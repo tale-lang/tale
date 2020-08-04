@@ -121,7 +121,7 @@ class PopTo(Instruction):
 
 
 class PushArg(Instruction):
-    """Pop a value from the stack and pushe it to the args stack."""
+    """Pop a value from the stack and push it to the args stack."""
 
     def execute(self, vm: 'Vm'):
         vm.args_stack.append(vm.values_stack.pop())
