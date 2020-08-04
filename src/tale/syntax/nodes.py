@@ -219,7 +219,7 @@ class Parameter(Node):
 
 
 class TupleParameter(Parameter):
-    """A comma separated sequence of sigle parameters."""
+    """A comma separated sequence of single parameters."""
 
     @property
     def items(self) -> Iterable['Parameter']:
