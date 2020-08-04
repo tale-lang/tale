@@ -30,13 +30,13 @@ def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
 def pipe(*funcs: List[Callable]) -> Any:
     """Composes a sequence of functions into a single pipe.
 
-    For example, a following code:
+    For example, the following code:
 
-        pipe(f, g)(x)
+        pipe(a, b, c)(x)
 
     Is similar to:
 
-        g(f(x))
+        c(b(a(x)))
 
     Args:
         funcs: A sequence of functions. 
