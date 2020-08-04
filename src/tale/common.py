@@ -11,7 +11,8 @@ def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
         by: A size of each chunk.
 
     Returns:
-        A sequence of tuples of the constant size.
+        A sequence of tuples of the constant size with `None` representing an
+        empty element.
 
     Examples:
         >>> list(group([1, 2, 3, 4], by=1))
@@ -27,7 +28,7 @@ def group(iterable: Iterable[Any], by: int) -> Iterable[Iterable[Any]]:
 
 
 def pipe(*funcs: List[Callable]) -> Any:
-    """Composes a sequence of functions into single pipe.
+    """Composes a sequence of functions into a single pipe.
 
     For example, a following code:
 
