@@ -263,7 +263,7 @@ class Vm:
         values_stack: A stack that holds values.
         args_stack: A stack that holds arguments.
         return_stack: A stack that holds return addresses.
-        scope: A current scope of the execution. For example, each new function
+        scope: A scope of the execution. For example, each new function
             call opens a new scope.
     """
 
