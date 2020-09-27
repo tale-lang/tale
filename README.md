@@ -5,7 +5,7 @@
 <h1 align="center">Tale</h1>
 
 <p align="center">
-    <i>A programming language for writing code that reads like English but still is strict, formal, and executes blazingly fast.</i>
+    <i>A WIP programming language for writing code that reads like English but still is strict, formal, and executes blazingly fast.</i>
 </p>
 
 <div align="center">
