@@ -13,7 +13,7 @@
 </div>
 
 ## Status
-The language is on very pre-pre-pre alpha stage. It has ideological foundation, syntax design for a bunch of features and approximate roadmap.
+The language is on very alpha stage. It has ideological foundation, syntax design for a bunch of features and approximate roadmap.
 
 ## Install
 There is no way to install the language yet as it's not implemented. But you can play with the latest version using these steps.
